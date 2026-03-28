@@ -1,124 +1,118 @@
 <template>
-  <div class="flex justify-center items-center w-full h-screen bg-[#E6E8E9]">
-    <div class="w-full max-w-[468px]">
-      <div
-        class="bg-light rounded-xl shadow-md p-8 md:p-10 animate-fadeIn border border-border-light"
-      >
-        <div class="text-center mb-8">
-          <div class="flex items-center justify-center gap-[32px] mb-4">
-            <div
-              class="w-[40px] h-[40px] bg-primary-dark rounded-lg flex items-center justify-center"
-            >
-              <q-icon
-                name="svguse:icons/icons.svg#icon-logo"
-                class="text-white"
-                size="20px"
-              />
-            </div>
-            <span class="text-headline-xl text-primary-dark">AI.INVEST</span>
-          </div>
+  <div class="login-form">
+    <!-- Heading -->
+    <div class="login-form__header">
+      <h1 class="text-title-lg login-form__title">Bem-vindo de volta</h1>
+      <p class="text-paragraph-md login-form__subtitle">
+        Acesse sua conta para continuar investindo com inteligência.
+      </p>
+    </div>
 
-          <h1 class="text-title-xl text-primary-dark mb-2! text-start">
-            Fazer login
-          </h1>
-
-          <p class="text-paragraph-md text-light-text-secondary text-start">
-            Seja bem-vindo(a)! Insira seu e-mail e senha para entrar em sua
-            conta.
-          </p>
+    <!-- Google Login -->
+    <c-button
+      unelevated
+      outline
+      no-caps
+      class="login-form__google-btn"
+      aria-label="Fazer login com o Google"
+    >
+      <template #default>
+        <div class="login-form__google-btn-inner">
+          <q-icon name="svguse:icons/icons.svg#icon-google" size="18px" />
+          <span class="text-paragraph-md">Continuar com o Google</span>
         </div>
+      </template>
+    </c-button>
 
-        <!-- Botão Google Login -->
-        <c-button
-          icon="svguse:icons/icons.svg#icon-google"
-          color="neutral-100"
-          text-color="black"
-          label="Fazer Login com o Google"
-          class="text-paragraph-md w-full!"
-        />
+    <!-- Divider -->
+    <div class="login-form__divider" aria-hidden="true">
+      <span class="login-form__divider-line"></span>
+      <span class="text-paragraph-sm login-form__divider-text">ou</span>
+      <span class="login-form__divider-line"></span>
+    </div>
 
-        <!-- Formulário -->
-        <form class="space-y-4 mt-8">
-          <!-- Campo Email -->
-          <div>
-            <div class="relative">
-              <c-input
-                outlined
-                id="email"
-                type="email"
-                autocomplete="email"
-                label="seu @email.com"
-                class="w-full"
-              />
-            </div>
-          </div>
+    <!-- Form -->
+    <form class="login-form__fields" @submit.prevent="handleLogin" novalidate>
+      <c-input
+        v-model="email"
+        outlined
+        dense
+        type="email"
+        label="E-mail"
+        autocomplete="email"
+        inputmode="email"
+        aria-label="E-mail"
+        class="login-form__input"
+      />
 
-          <!-- Campo Senha -->
-          <div>
-            <div class="relative">
-              <c-input
-                id="password"
-                outlined
-                :type="showPassword ? 'text' : 'password'"
-                autocomplete="current-password"
-                label="sua senha"
-                class="w-full"
-              >
-                <template v-slot:append>
-                  <q-icon
-                    name="visibility"
-                    @click="togglePasswordVisibility"
-                    class="cursor-pointer hover:text-primary"
-                  />
-                </template>
-              </c-input>
-            </div>
-          </div>
-
-          <!-- Link Esqueceu Senha -->
-          <div>
-            <router-link
-              to="/esqueceu-senha"
-              class="text-paragraph-sm text-light-text-secondary hover:text-primary transition-colors"
-              @click.prevent
-            >
-              Esqueceu sua senha?
-            </router-link>
-          </div>
-
-          <c-button
-            label="Criar na conta"
-            class="w-full! bg-primary dark:bg-primary-dark! text-white text-paragraph-md"
+      <c-input
+        v-model="password"
+        outlined
+        dense
+        :type="showPassword ? 'text' : 'password'"
+        label="Senha"
+        autocomplete="current-password"
+        aria-label="Senha"
+        class="login-form__input"
+      >
+        <template #append>
+          <q-icon
+            :name="showPassword ? 'visibility_off' : 'visibility'"
+            class="login-form__password-toggle"
+            :aria-label="showPassword ? 'Ocultar senha' : 'Mostrar senha'"
+            role="button"
+            tabindex="0"
+            @click="togglePasswordVisibility"
+            @keyup.enter="togglePasswordVisibility"
           />
-        </form>
+        </template>
+      </c-input>
 
-        <router-link
-          to="/cadastro"
-          class="flex items-center justify-center text-paragraph-sm text-light-text-secondary hover:text-primary transition-colors mt-4"
-          @click.prevent
-        >
-          Não tem uma conta ? Crie uma
+      <!-- Forgot password -->
+      <div class="login-form__forgot">
+        <router-link to="/esqueceu-senha" class="login-form__link text-paragraph-sm">
+          Esqueceu sua senha?
         </router-link>
       </div>
-    </div>
+
+      <!-- Submit -->
+      <c-button
+        type="submit"
+        unelevated
+        no-caps
+        color="primary"
+        :loading="loading"
+        class="login-form__submit-btn"
+        label="Entrar"
+        aria-label="Entrar na conta"
+      />
+    </form>
+
+    <!-- Register link -->
+    <p class="text-paragraph-sm login-form__register">
+      Não tem uma conta?
+      <router-link to="/cadastro" class="login-form__link login-form__link--emphasis">
+        Criar conta grátis
+      </router-link>
+    </p>
   </div>
 </template>
 
 <script>
-import CButton from "src/components/Button/CButton.vue";
-import CInput from "src/components/Input/CInput.vue";
+import CButton from "components/Button/CButton.vue";
+import CInput from "components/Input/CInput.vue";
 
 export default {
   name: "PageLogin",
 
-  components: {
-    CButton,
-    CInput,
-  },
+  components: { CButton, CInput },
 
   data() {
     return {
+      email: "",
+      password: "",
       showPassword: false,
+      loading: false,
     };
   },
 
@@ -126,8 +120,153 @@ export default {
     togglePasswordVisibility() {
       this.showPassword = !this.showPassword;
     },
+
+    handleLogin() {
+      // TODO: integrar com serviço de autenticação
+    },
+
+    handleGoogleLogin() {
+      // TODO: integrar com Google OAuth
+    },
   },
 };
 </script>
 
-<style lang="sass" scoped></style>
+<style scoped>
+/* ── Form root ───────────────────────────────────── */
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  animation: loginFadeUp 0.35s cubic-bezier(0.25, 0.8, 0.5, 1) both;
+}
+
+@keyframes loginFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ── Header ──────────────────────────────────────── */
+.login-form__header {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.login-form__title {
+  color: var(--color-primary-dark);
+}
+
+.login-form__subtitle {
+  color: var(--color-light-text-secondary);
+}
+
+/* ── Google button ───────────────────────────────── */
+.login-form__google-btn {
+  width: 100%;
+  border-color: var(--color-border-light) !important;
+  color: var(--color-light-text) !important;
+  height: 44px;
+  transition: background-color var(--transition-hover), border-color var(--transition-hover);
+}
+
+.login-form__google-btn:hover {
+  background-color: var(--color-neutral-100) !important;
+  border-color: var(--color-neutral-300) !important;
+}
+
+.login-form__google-btn-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+}
+
+/* ── Divider ─────────────────────────────────────── */
+.login-form__divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.login-form__divider-line {
+  flex: 1;
+  height: 1px;
+  background-color: var(--color-border-light);
+}
+
+.login-form__divider-text {
+  color: var(--color-light-text-secondary);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* ── Fields ──────────────────────────────────────── */
+.login-form__fields {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.login-form__input {
+  width: 100%;
+}
+
+/* ── Password toggle ─────────────────────────────── */
+.login-form__password-toggle {
+  cursor: pointer;
+  color: var(--color-light-text-secondary);
+  transition: color var(--transition-hover);
+}
+
+.login-form__password-toggle:hover {
+  color: var(--color-primary);
+}
+
+/* ── Forgot password ─────────────────────────────── */
+.login-form__forgot {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: -8px;
+}
+
+/* ── Submit button ───────────────────────────────── */
+.login-form__submit-btn {
+  width: 100%;
+  height: 44px;
+  margin-top: 8px;
+}
+
+/* ── Links ───────────────────────────────────────── */
+.login-form__link {
+  color: var(--color-light-text-secondary);
+  text-decoration: none;
+  transition: color var(--transition-hover);
+}
+
+.login-form__link:hover {
+  color: var(--color-primary);
+}
+
+.login-form__link--emphasis {
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+.login-form__link--emphasis:hover {
+  color: var(--color-primary-dark);
+}
+
+/* ── Register ────────────────────────────────────── */
+.login-form__register {
+  text-align: center;
+  color: var(--color-light-text-secondary);
+}
+</style>
