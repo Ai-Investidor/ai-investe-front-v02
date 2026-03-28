@@ -1,0 +1,311 @@
+@import 'tailwindcss';
+
+@custom-variant dark (&:where(.body--dark, .body--dark *));
+
+@theme {
+  /* ═══════════════════════════════════════════════════════════
+     BRAND — Primary (Blue)
+     Quasar: $primary → #3396fe
+  ═══════════════════════════════════════════════════════════ */
+  --color-primary: #3396fe;
+  --color-primary-light: #3894f1;
+  --color-primary-dark: #0d2b50;
+  --color-primary-darker: #052650;
+  --color-primary-dark2: #0c376c;
+
+  /* ═══════════════════════════════════════════════════════════
+     BRAND — Secondary / Accent (Teal)
+     Quasar: $secondary → #009388 | $accent → #0c376c
+  ═══════════════════════════════════════════════════════════ */
+  --color-secondary: #009388;
+  --color-accent: #009388;
+  --color-accent-light: #00a89b;
+  --color-accent-dark: #007d73;
+
+  /* ═══════════════════════════════════════════════════════════
+     BACKGROUNDS — Dark Theme
+     Quasar: $dark → #111d2d | $dark-page → #020c16
+  ═══════════════════════════════════════════════════════════ */
+  --color-dark: #020c16;
+  --color-dark-card: #111d2d;
+  --color-dark-elevated: #0d2b50;
+
+  /* ═══════════════════════════════════════════════════════════
+     BACKGROUNDS — Light Theme
+  ═══════════════════════════════════════════════════════════ */
+  --color-light: #ffffff;
+  --color-light-page: #e6e8e9;
+  --color-light-muted: #e8e8e8;
+
+  /* ═══════════════════════════════════════════════════════════
+     TEXT — Dark Theme
+  ═══════════════════════════════════════════════════════════ */
+  --color-dark-text: #ffffff;
+  --color-dark-text-secondary: rgb(255 255 255 / 0.6);
+  --color-dark-text-muted: rgb(255 255 255 / 0.43);
+  --color-dark-text-placeholder: rgb(255 255 255 / 0.46);
+
+  /* ═══════════════════════════════════════════════════════════
+     TEXT — Light Theme
+     Quasar: $input-text-color | $input-label-color
+  ═══════════════════════════════════════════════════════════ */
+  --color-light-text: #052650;
+  --color-light-text-secondary: #4c505e;
+  --color-light-text-muted: #606370;
+
+  /* ═══════════════════════════════════════════════════════════
+     NEUTRAL — Gray Scale (lightest → darkest)
+  ═══════════════════════════════════════════════════════════ */
+  --color-neutral-50: #f9fafb;
+  --color-neutral-100: #f3f4f6;
+  --color-neutral-200: #e5e7eb;
+  --color-neutral-300: #d1d5db;
+  --color-neutral-400: #9ca3af;
+  --color-neutral-500: #6b7280;
+  --color-neutral-600: #4b5563;
+  --color-neutral-700: #374151;
+  --color-neutral-800: #1f2937;
+  --color-neutral-900: #111827;
+  --color-neutral-950: #030712;
+
+  /* ═══════════════════════════════════════════════════════════
+     BORDERS / SEPARATORS
+     Quasar: $separator-color | $separator-dark-color
+  ═══════════════════════════════════════════════════════════ */
+  --color-border-dark: rgb(51 150 254 / 0.13);
+  --color-border-light: rgb(1 7 27 / 0.1);
+
+  /* ═══════════════════════════════════════════════════════════
+     SEMANTIC / STATE COLORS
+     Quasar: $positive | $negative | $info | $warning
+  ═══════════════════════════════════════════════════════════ */
+  --color-error: #ef4444;
+  --color-success: #10b981;
+  --color-warning: #f59e0b;
+  --color-info: #3396fe;
+
+  /* ═══════════════════════════════════════════════════════════
+     OVERLAYS / DIMMED
+     Quasar: $dimmed-background | $light-dimmed-background
+  ═══════════════════════════════════════════════════════════ */
+  --color-overlay: rgb(0 0 0 / 0.4);
+  --color-overlay-light: rgb(255 255 255 / 0.6);
+
+  /* ═══════════════════════════════════════════════════════════
+     UI SURFACES
+     Quasar: $menu-background | $tooltip-background | $tooltip-color
+  ═══════════════════════════════════════════════════════════ */
+  --color-surface: #ffffff;
+  --color-surface-tooltip: #111d2d;
+  --color-on-tooltip: #ffffff;
+
+  /* ═══════════════════════════════════════════════════════════
+     FONT FAMILIES
+     Quasar: $typography-font-family
+  ═══════════════════════════════════════════════════════════ */
+  --font-family-sans:
+    'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue',
+    Arial, sans-serif;
+  --font-family-display: 'Bebas Neue', sans-serif;
+  --font-family-heading: 'DM Sans', Inter, sans-serif;
+  --font-family-button: Montserrat, Inter, sans-serif;
+
+  /* ═══════════════════════════════════════════════════════════
+     FONT SIZES
+     Quasar: $body-font-size → 14px | $button-font-size → 14px
+  ═══════════════════════════════════════════════════════════ */
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-base: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.25rem;
+  --font-size-2xl: 1.5rem;
+  --font-size-3xl: 1.875rem;
+  --font-size-4xl: 2.25rem;
+  --font-size-5xl: 3rem;
+
+  /* ═══════════════════════════════════════════════════════════
+     LINE HEIGHTS
+     Quasar: $body-line-height → 1.5
+  ═══════════════════════════════════════════════════════════ */
+  --line-height-xs: 1rem;
+  --line-height-sm: 1.25rem;
+  --line-height-base: 1.5rem;
+  --line-height-lg: 1.75rem;
+  --line-height-xl: 1.75rem;
+  --line-height-2xl: 2rem;
+  --line-height-3xl: 2.25rem;
+  --line-height-4xl: 2.5rem;
+  --line-height-5xl: 3rem;
+
+  /* ═══════════════════════════════════════════════════════════
+     FONT WEIGHTS
+     Quasar: $button-font-weight → 500 | $text-weights
+  ═══════════════════════════════════════════════════════════ */
+  --font-weight-thin: 100;
+  --font-weight-light: 300;
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --font-weight-extrabold: 800;
+  --font-weight-bolder: 900;
+
+  /* ═══════════════════════════════════════════════════════════
+     BOX SHADOWS
+     Quasar: $shadow-color → #000 | elevation system
+  ═══════════════════════════════════════════════════════════ */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -1px rgb(0 0 0 / 0.06);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -2px rgb(0 0 0 / 0.05);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 10px 10px -5px rgb(0 0 0 / 0.04);
+  --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+  --shadow-inner: inset 0 2px 4px 0 rgb(0 0 0 / 0.06);
+
+  /* ─── Quasar elevation aliases (shadow-1 → shadow-4) ──────── */
+  --shadow-elevation-1:
+    0 1px 3px rgb(0 0 0 / 0.2), 0 1px 1px rgb(0 0 0 / 0.14), 0 2px 1px -1px rgb(0 0 0 / 0.12);
+  --shadow-elevation-2:
+    0 1px 5px rgb(0 0 0 / 0.2), 0 2px 2px rgb(0 0 0 / 0.14), 0 3px 1px -2px rgb(0 0 0 / 0.12);
+  --shadow-elevation-3:
+    0 1px 8px rgb(0 0 0 / 0.2), 0 3px 4px rgb(0 0 0 / 0.14), 0 3px 3px -2px rgb(0 0 0 / 0.12);
+  --shadow-elevation-4:
+    0 2px 4px -1px rgb(0 0 0 / 0.2), 0 4px 5px rgb(0 0 0 / 0.14), 0 1px 10px rgb(0 0 0 / 0.12);
+
+  /* ─── Layout shadow (Quasar: $layout-shadow) ─────────────── */
+  --shadow-layout: 0 0 10px 2px rgb(0 0 0 / 0.2), 0 0 10px rgb(0 0 0 / 0.24);
+
+  /* ═══════════════════════════════════════════════════════════
+     BORDER RADIUS
+     Quasar: $generic-border-radius → 4px
+             $button-border-radius  → 3px
+             $button-rounded-border-radius → 28px
+  ═══════════════════════════════════════════════════════════ */
+  --radius-sm: 3px;
+  --radius-base: 4px;
+  --radius-md: 8px;
+  --radius-xl: 12px;
+  --radius-2xl: 16px;
+  --radius-3xl: 24px;
+  --radius-pill: 28px;
+  --radius-full: 9999px;
+
+  /* ═══════════════════════════════════════════════════════════
+     SPACING
+  ═══════════════════════════════════════════════════════════ */
+  --spacing-18: 4.5rem;
+  --spacing-88: 22rem;
+  --spacing-128: 32rem;
+
+  /* ═══════════════════════════════════════════════════════════
+     BACKDROP BLUR
+  ═══════════════════════════════════════════════════════════ */
+  --blur-xs: 2px;
+
+  /* ═══════════════════════════════════════════════════════════
+     Z-INDEX
+     Quasar: $z-fab | $z-side | $z-marginals | $z-menu | $z-notify …
+  ═══════════════════════════════════════════════════════════ */
+  --z-fab: 990;
+  --z-side: 1000;
+  --z-marginals: 2000;
+  --z-fixed-drawer: 3000;
+  --z-fullscreen: 6000;
+  --z-menu: 6000;
+  --z-top: 7000;
+  --z-tooltip: 9000;
+  --z-notify: 9500;
+  --z-max: 9998;
+
+  /* ═══════════════════════════════════════════════════════════
+     TRANSITIONS
+     Quasar: $generic-hover-transition | $shadow-transition
+  ═══════════════════════════════════════════════════════════ */
+  --transition-hover: 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
+  --transition-shadow: box-shadow 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-option: 0.22s cubic-bezier(0, 0, 0.2, 1);
+
+  /* ═══════════════════════════════════════════════════════════
+     TOOLBAR
+     Quasar: $toolbar-min-height → 50px
+  ═══════════════════════════════════════════════════════════ */
+  --toolbar-height: 50px;
+}
+
+/* ===================================================
+   TYPOGRAPHY COMPONENTS
+   Paragraph  → corpo de texto, leitura corrida
+   Title      → títulos de seções e blocos
+   Headline   → heroes, banners e chamadas principais
+   =================================================== */
+@layer components {
+  /* ── Paragraph ───────────────────────────────── */
+  .text-paragraph-sm {
+    font-size: var(--font-size-sm) !important;
+    font-weight: var(--font-weight-regular) !important;
+    line-height: 1.6 !important;
+  }
+  .text-paragraph-md {
+    font-size: var(--font-size-base) !important;
+    font-weight: var(--font-weight-regular) !important;
+    line-height: 1.6 !important;
+  }
+  .text-paragraph-lg {
+    font-size: var(--font-size-lg) !important;
+    font-weight: var(--font-weight-regular) !important;
+    line-height: 1.5 !important;
+  }
+  .text-paragraph-xl {
+    font-size: var(--font-size-xl) !important;
+    font-weight: var(--font-weight-regular) !important;
+    line-height: 1.5 !important;
+  }
+
+  /* ── Title ───────────────────────────────────── */
+  .text-title-sm {
+    font-size: var(--font-size-lg) !important;
+    font-weight: var(--font-weight-semibold) !important;
+    line-height: 1.3 !important;
+  }
+  .text-title-md {
+    font-size: var(--font-size-xl) !important;
+    font-weight: var(--font-weight-semibold) !important;
+    line-height: 1.3 !important;
+  }
+  .text-title-lg {
+    font-size: var(--font-size-2xl) !important;
+    font-weight: var(--font-weight-semibold) !important;
+    line-height: 1.2 !important;
+  }
+  .text-title-xl {
+    font-size: var(--font-size-3xl) !important;
+    font-weight: var(--font-weight-semibold) !important;
+    line-height: 1.2 !important;
+  }
+
+  /* ── Headline ────────────────────────────────── */
+  .text-headline-sm {
+    font-size: var(--font-size-2xl) !important;
+    font-weight: var(--font-weight-extrabold) !important;
+    line-height: 1.1 !important;
+    letter-spacing: -0.01em !important;
+  }
+  .text-headline-md {
+    font-size: var(--font-size-3xl) !important;
+    font-weight: var(--font-weight-extrabold) !important;
+    line-height: 1.1 !important;
+    letter-spacing: -0.02em !important;
+  }
+  .text-headline-lg {
+    font-size: var(--font-size-4xl) !important;
+    font-weight: var(--font-weight-extrabold) !important;
+    line-height: 1.05 !important;
+    letter-spacing: -0.02em !important;
+  }
+  .text-headline-xl {
+    font-size: var(--font-size-5xl) !important;
+    font-weight: var(--font-weight-extrabold) !important;
+    line-height: 1 !important;
+    letter-spacing: -0.03em !important;
+  }
+}

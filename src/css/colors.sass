@@ -1,0 +1,11 @@
+@use 'quasar.variables' as *
+
+// ─── Color map ────────────────────────────────────────────────
+$colors: ('neutral-50': $neutral-50, 'neutral-100': $neutral-100, 'neutral-200': $neutral-200, 'neutral-300': $neutral-300, 'neutral-400': $neutral-400, 'neutral-500': $neutral-500, 'neutral-600': $neutral-600, 'neutral-700': $neutral-700, 'neutral-800': $neutral-800, 'neutral-900': $neutral-900, 'neutral-950': $neutral-950, 'positive': $positive, 'negative': $negative, 'info': $info, 'warning': $warning, 'separator': $separator-color, 'separator-dark': $separator-dark-color, 'overlay': $dimmed-background, 'overlay-light': $light-dimmed-background, 'shadow': $shadow-color, 'input-text': $input-text-color, 'input-label': $input-label-color, 'input-label-muted': $input-label-color-muted, 'tooltip': $tooltip-color, 'tooltip-bg': $tooltip-background, 'menu-bg': $menu-background)
+
+// ─── Generate .text-* and .bg-* ───────────────────────────────
+@each $name, $value in $colors
+  .text-#{$name}
+    color: $value !important
+  .bg-#{$name}
+    background: $value !important

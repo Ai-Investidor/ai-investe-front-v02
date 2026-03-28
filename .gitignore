@@ -1,0 +1,115 @@
+# =============================================
+# Dependencies
+# =============================================
+node_modules/
+.pnp
+.pnp.js
+
+# =============================================
+# Build / Output
+# =============================================
+dist/
+dist-ssr/
+dev-dist/
+/build/
+*.local
+
+# =============================================
+# Quasar
+# =============================================
+.quasar/
+/src-capacitor/
+/src-cordova/
+/src-electron/
+/src-bex/dev/
+/src-bex/www/
+quasar.config.*.temporary.compiled*
+
+# =============================================
+# Vite / Webpack
+# =============================================
+*.cache
+.vite/
+.webpack/
+
+# =============================================
+# Environment Variables
+# =============================================
+.env
+.env.*
+!.env.example
+!.env.development.example
+!.env.production.example
+
+# =============================================
+# Editor / IDE
+# =============================================
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+*.swp
+*.swo
+*~
+
+# =============================================
+# OS
+# =============================================
+.DS_Store
+Thumbs.db
+Desktop.ini
+._*
+
+# =============================================
+# Logs
+# =============================================
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+bun-debugger.log*
+
+# =============================================
+# Testing
+# =============================================
+coverage/
+cypress/screenshots/
+cypress/videos/
+cypress/downloads/
+test-results/
+.nyc_output/
+
+# =============================================
+# Package Managers
+# =============================================
+.yarn/
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+.pnpm-store/
+
+# =============================================
+# Misc
+# =============================================
+*.tgz
+*.zip
+*.tar.gz
+.eslintcache
+.stylelintcache
+
+# =============================================
+# Claude Code
+# =============================================
+.claude
+.vscode
+docs
+CLAUDE.md
