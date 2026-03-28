@@ -1,9 +1,8 @@
 <template>
   <div class="register-form">
-
     <!-- Heading -->
     <div class="register-form__header">
-      <h1 class="text-title-lg register-form__title">Crie sua conta</h1>
+      <h1 class="text-title-xl register-form__title">Crie sua conta</h1>
       <p class="text-paragraph-md register-form__subtitle">
         Comece gratuitamente. Não é necessário cartão de crédito.
       </p>
@@ -34,8 +33,11 @@
     </div>
 
     <!-- Form -->
-    <form class="register-form__fields" @submit.prevent="handleRegister" novalidate>
-
+    <form
+      class="register-form__fields"
+      @submit.prevent="handleRegister"
+      novalidate
+    >
       <c-input
         v-model="name"
         outlined
@@ -98,7 +100,11 @@
             <q-icon
               :name="showConfirmPassword ? 'visibility_off' : 'visibility'"
               class="register-form__password-toggle"
-              :aria-label="showConfirmPassword ? 'Ocultar confirmação de senha' : 'Mostrar confirmação de senha'"
+              :aria-label="
+                showConfirmPassword
+                  ? 'Ocultar confirmação de senha'
+                  : 'Mostrar confirmação de senha'
+              "
               role="button"
               tabindex="0"
               @click="toggleConfirmPassword"
@@ -111,9 +117,17 @@
       <!-- Terms note -->
       <p class="text-paragraph-sm register-form__terms">
         Ao criar sua conta você concorda com nossos
-        <router-link to="/termos" class="register-form__link register-form__link--emphasis">Termos de Uso</router-link>
+        <router-link
+          to="/termos"
+          class="register-form__link register-form__link--emphasis"
+          >Termos de Uso</router-link
+        >
         e
-        <router-link to="/privacidade" class="register-form__link register-form__link--emphasis">Política de Privacidade</router-link>.
+        <router-link
+          to="/privacidade"
+          class="register-form__link register-form__link--emphasis"
+          >Política de Privacidade</router-link
+        >.
       </p>
 
       <!-- Submit -->
@@ -127,17 +141,18 @@
         aria-label="Criar conta grátis"
         class="register-form__submit-btn"
       />
-
     </form>
 
     <!-- Login link -->
     <p class="text-paragraph-sm register-form__login">
       Já tem uma conta?
-      <router-link to="/login" class="register-form__link register-form__link--emphasis">
+      <router-link
+        to="/login"
+        class="register-form__link register-form__link--emphasis"
+      >
         Fazer login
       </router-link>
     </p>
-
   </div>
 </template>
 
@@ -223,7 +238,9 @@ export default {
   border-color: var(--color-border-light) !important;
   color: var(--color-light-text) !important;
   height: 44px;
-  transition: background-color var(--transition-hover), border-color var(--transition-hover);
+  transition:
+    background-color var(--transition-hover),
+    border-color var(--transition-hover);
 }
 
 .register-form__google-btn:hover {

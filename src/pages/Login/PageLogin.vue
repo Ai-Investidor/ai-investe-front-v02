@@ -2,7 +2,7 @@
   <div class="login-form">
     <!-- Heading -->
     <div class="login-form__header">
-      <h1 class="text-title-lg login-form__title">Bem-vindo de volta</h1>
+      <h1 class="text-title-xl login-form__title">Bem-vindo de volta</h1>
       <p class="text-paragraph-md login-form__subtitle">
         Acesse sua conta para continuar investindo com inteligência.
       </p>
@@ -70,7 +70,10 @@
 
       <!-- Forgot password -->
       <div class="login-form__forgot">
-        <router-link to="/esqueceu-senha" class="login-form__link text-paragraph-sm">
+        <router-link
+          to="/esqueceu-senha"
+          class="login-form__link text-paragraph-sm"
+        >
           Esqueceu sua senha?
         </router-link>
       </div>
@@ -91,7 +94,10 @@
     <!-- Register link -->
     <p class="text-paragraph-sm login-form__register">
       Não tem uma conta?
-      <router-link to="/cadastro" class="login-form__link login-form__link--emphasis">
+      <router-link
+        to="/cadastro"
+        class="login-form__link login-form__link--emphasis"
+      >
         Criar conta grátis
       </router-link>
     </p>
@@ -173,7 +179,9 @@ export default {
   border-color: var(--color-border-light) !important;
   color: var(--color-light-text) !important;
   height: 44px;
-  transition: background-color var(--transition-hover), border-color var(--transition-hover);
+  transition:
+    background-color var(--transition-hover),
+    border-color var(--transition-hover);
 }
 
 .login-form__google-btn:hover {

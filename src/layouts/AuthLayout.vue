@@ -6,26 +6,49 @@
       <div class="auth-brand-grid" aria-hidden="true">
         <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
           <defs>
-            <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-              <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(51,150,254,0.12)" stroke-width="1"/>
+            <pattern
+              id="grid"
+              width="40"
+              height="40"
+              patternUnits="userSpaceOnUse"
+            >
+              <path
+                d="M 40 0 L 0 0 0 40"
+                fill="none"
+                stroke="rgba(51,150,254,0.12)"
+                stroke-width="1"
+              />
             </pattern>
           </defs>
           <rect width="100%" height="100%" fill="url(#grid)" />
         </svg>
       </div>
 
-      <div class="auth-brand-circle auth-brand-circle--1" aria-hidden="true"></div>
-      <div class="auth-brand-circle auth-brand-circle--2" aria-hidden="true"></div>
-      <div class="auth-brand-circle auth-brand-circle--3" aria-hidden="true"></div>
+      <div
+        class="auth-brand-circle auth-brand-circle--1"
+        aria-hidden="true"
+      ></div>
+      <div
+        class="auth-brand-circle auth-brand-circle--2"
+        aria-hidden="true"
+      ></div>
+      <div
+        class="auth-brand-circle auth-brand-circle--3"
+        aria-hidden="true"
+      ></div>
 
       <!-- Brand Content -->
       <div class="auth-brand-content">
         <!-- Logo -->
         <div class="auth-brand-logo">
           <div class="auth-brand-logo__icon">
-            <q-icon name="svguse:icons/icons.svg#icon-logo" size="22px" color="white" />
+            <q-icon
+              name="svguse:icons/icons.svg#icon-logo"
+              size="22px"
+              color="white"
+            />
           </div>
-          <span class="auth-brand-logo__name">AI.INVEST</span>
+          <span class="text-headline-xl auth-brand-logo__name">AI.INVEST</span>
         </div>
 
         <!-- Headline -->
@@ -34,7 +57,8 @@
             Inteligência artificial para seus investimentos
           </h2>
           <p class="text-paragraph-lg auth-brand-subtitle">
-            Tome decisões mais inteligentes com análises em tempo real, carteiras personalizadas e insights do mercado global.
+            Tome decisões mais inteligentes com análises em tempo real,
+            carteiras personalizadas e insights do mercado global.
           </p>
         </div>
 
@@ -44,19 +68,25 @@
             <div class="auth-brand-feature__icon">
               <q-icon name="check" size="14px" color="primary" />
             </div>
-            <span class="text-paragraph-md text-white">Análise de ativos com IA em tempo real</span>
+            <span class="text-paragraph-md text-white"
+              >Análise de ativos com IA em tempo real</span
+            >
           </li>
           <li class="auth-brand-feature">
             <div class="auth-brand-feature__icon">
               <q-icon name="check" size="14px" color="primary" />
             </div>
-            <span class="text-paragraph-md text-white">Carteiras personalizadas e balanceamento automático</span>
+            <span class="text-paragraph-md text-white"
+              >Carteiras personalizadas e balanceamento automático</span
+            >
           </li>
           <li class="auth-brand-feature">
             <div class="auth-brand-feature__icon">
               <q-icon name="check" size="14px" color="primary" />
             </div>
-            <span class="text-paragraph-md text-white">Insights e alertas do mercado global</span>
+            <span class="text-paragraph-md text-white"
+              >Insights e alertas do mercado global</span
+            >
           </li>
         </ul>
 
@@ -72,7 +102,11 @@
       <!-- Mobile-only logo -->
       <div class="auth-mobile-logo">
         <div class="auth-mobile-logo__icon">
-          <q-icon name="svguse:icons/icons.svg#icon-logo" size="18px" color="white" />
+          <q-icon
+            name="svguse:icons/icons.svg#icon-logo"
+            size="18px"
+            color="white"
+          />
         </div>
         <span class="auth-mobile-logo__name text-title-sm">AI.INVEST</span>
       </div>
@@ -133,7 +167,11 @@ export default {
 .auth-brand-circle--1 {
   width: 320px;
   height: 320px;
-  background: radial-gradient(circle, rgba(51, 150, 254, 0.18) 0%, transparent 70%);
+  background: radial-gradient(
+    circle,
+    rgba(51, 150, 254, 0.18) 0%,
+    transparent 70%
+  );
   top: -80px;
   right: -80px;
 }
@@ -141,7 +179,11 @@ export default {
 .auth-brand-circle--2 {
   width: 480px;
   height: 480px;
-  background: radial-gradient(circle, rgba(12, 55, 108, 0.5) 0%, transparent 70%);
+  background: radial-gradient(
+    circle,
+    rgba(12, 55, 108, 0.5) 0%,
+    transparent 70%
+  );
   bottom: -120px;
   left: -120px;
 }
@@ -149,7 +191,11 @@ export default {
 .auth-brand-circle--3 {
   width: 200px;
   height: 200px;
-  background: radial-gradient(circle, rgba(51, 150, 254, 0.1) 0%, transparent 70%);
+  background: radial-gradient(
+    circle,
+    rgba(51, 150, 254, 0.1) 0%,
+    transparent 70%
+  );
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
