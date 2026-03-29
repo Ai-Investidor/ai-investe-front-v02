@@ -19,13 +19,16 @@
           <span class="text-gray-600 flex-shrink-0">{{
             formatFileSize(file.size)
           }}</span>
-          <button
+          <c-button
+            flat
+            round
+            dense
+            size="xs"
+            icon="close"
             class="ml-1 text-gray-600 hover:text-red-400 transition-colors flex-shrink-0"
             :aria-label="`Remover ${file.name}`"
             @click="$emit('remove-file', index)"
-          >
-            <q-icon name="close" size="12px" />
-          </button>
+          />
         </div>
       </div>
 
@@ -35,15 +38,16 @@
       >
         <!-- Botão de anexo com menu -->
         <div class="flex-shrink-0 self-end mb-0.5">
-          <button
-            ref="attachBtnRef"
+          <c-button
+            flat
+            round
+            dense
+            icon="add_circle_outline"
             :disabled="disabled"
-            class="w-9 h-9 rounded-xl flex items-center justify-center transition-all duration-200 text-gray-500 hover:text-primary hover:bg-[#21262D] disabled:opacity-40 disabled:cursor-not-allowed"
+            class="w-9 h-9 text-neutral-300 hover:text-primary!"
             aria-label="Anexar arquivo"
             @click="toggleAttachMenu"
-          >
-            <q-icon name="add_circle_outline" size="20px" />
-          </button>
+          />
 
           <q-menu
             anchor="top left"
@@ -55,29 +59,35 @@
             <div class="bg-[#161B22] overflow-hidden shadow-xl min-w-[200px]">
               <div class="px-3 py-2">
                 <span
-                  class="text-xs text-gray-500 font-medium uppercase tracking-wider"
+                  class="text-xs text-neutral-500 font-medium uppercase tracking-wider"
                 >
                   Anexar
                 </span>
               </div>
+
+              <q-separator class="my-1" color="neutral-500" />
+
               <div class="py-1">
-                <button
+                <c-button
                   v-for="option in attachMenuOptions"
                   :key="option.key"
                   v-close-popup
-                  class="w-full flex items-center gap-3 px-4 py-3 text-paragraph-sm text-gray-300 hover:bg-[#21262D] hover:text-white transition-colors text-left"
+                  flat
+                  no-caps
+                  align="left"
+                  class="w-full text-paragraph-sm text-white hover:bg-[#21262D] px-4 py-3"
                   @click="handleAttachOption(option)"
                 >
                   <q-icon
                     :name="option.icon"
                     size="18px"
-                    class="text-primary flex-shrink-0"
+                    class="text-primary flex-shrink-0 mr-3"
                   />
                   <div class="flex flex-col">
                     <span class="font-medium">{{ option.label }}</span>
                     <span class="text-xs text-gray-600">{{ option.hint }}</span>
                   </div>
-                </button>
+                </c-button>
               </div>
             </div>
           </q-menu>
@@ -96,36 +106,21 @@
         />
 
         <!-- Botão de enviar -->
-        <button
+        <c-button
           :disabled="disabled || !canSend"
-          class="flex-shrink-0 w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-200 self-end"
+          round
+          unelevated
+          icon="send"
+          :loading="disabled"
+          class="flex-shrink-0 w-10 h-10 self-end"
           :class="
             canSend
-              ? 'bg-gradient-to-br from-primary to-secondary text-white hover:shadow-lg hover:shadow-primary/30 hover:-translate-y-px'
-              : 'bg-[#21262D] text-gray-600 cursor-not-allowed'
+              ? 'bg-gradient-to-br from-primary to-secondary text-primary! hover:shadow-lg'
+              : 'bg-[#21262D] text-neutral-300'
           "
           aria-label="Enviar mensagem"
           @click="handleSend"
-        >
-          <svg
-            v-if="!disabled"
-            class="w-4 h-4"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
-            />
-          </svg>
-          <div
-            v-else
-            class="w-4 h-4 border-2 border-gray-400 border-t-transparent rounded-full animate-spin"
-          />
-        </button>
+        />
       </div>
 
       <p class="text-xs text-gray-600 text-center mt-4!">
@@ -154,8 +149,14 @@
 </template>
 
 <script>
+import CButton from "components/Button/CButton.vue";
+
 export default {
   name: "CChatInputArea",
+
+  components: {
+    CButton,
+  },
 
   props: {
     placeholder: {
