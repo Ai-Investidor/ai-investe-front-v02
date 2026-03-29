@@ -1,29 +1,30 @@
 <template>
-  <aside v-if="open" class="w-[281px] bg-dark-card border-r border-border-dark flex flex-col h-full">
-    <!-- Header -->
-    <header class="flex items-center gap-[10px] px-[30px] py-[19.3px]">
-      <span class="font-display text-[24px] text-dark-text">Ai.invest</span>
-      <span class="font-display text-[24px] text-dark-text">-</span>
-      <span class="font-display text-[24px] text-dark-text">chat</span>
-    </header>
-
+  <aside
+    v-if="open"
+    class="w-[281px] bg-dark-card border-r border-border-dark flex flex-col h-full"
+  >
     <!-- Novo Chat Button -->
-    <div class="border-t border-b border-border-dark flex items-center justify-center py-[14px]">
-      <button
-        type="button"
-        class="bg-primary hover:bg-primary-dark text-dark-text rounded-[7px] flex items-center justify-center gap-[10px] px-[50px] py-[3px]"
+    <div
+      class="border-t border-b border-border-dark flex items-center justify-center py-[14px]"
+    >
+      <c-button
+        icon="add"
+        label="Novo Chat"
+        color="primary"
+        class="w-4/5! rounded-[7px] px-[50px] py-[3px]"
+        unelevated
+        no-caps
         @click="$emit('new-chat')"
-      >
-        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M6 0V12M0 6H12" stroke="white" stroke-width="2" stroke-linecap="round"/>
-        </svg>
-        <span class="font-sans text-[20px] tracking-[-1.8px]">Novo Chat</span>
-      </button>
+      />
     </div>
 
     <!-- Conversas -->
-    <div class="flex flex-col gap-[4px] overflow-y-auto border-t border-b border-border-dark px-[14px] py-[14px]">
-      <p class="font-sans font-medium text-[15px] text-dark-text tracking-[-1.35px] mb-[8px]">
+    <div
+      class="flex flex-col gap-[4px] overflow-y-auto border-t border-b border-border-dark px-[14px] py-[14px]"
+    >
+      <p
+        class="font-sans font-medium text-[15px] text-dark-text tracking-[-1.35px] mb-[8px]"
+      >
         Conversas recentes
       </p>
 
@@ -34,15 +35,31 @@
         class="w-full flex items-center gap-[10px] p-[8px] rounded-[7px] hover:bg-dark-elevated transition-colors text-left"
         @click="$emit('select-conversation', conversation.id)"
       >
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M21 11.5C21.0034 12.8199 20.6951 14.1219 20.1 15.3C19.3944 16.7118 18.3098 17.8992 16.9674 18.7293C15.6251 19.5594 14.0782 19.9994 12.5 20C11.1801 20.0035 9.87812 19.6951 8.7 19.1L3 21L4.9 15.3C4.30493 14.1219 3.99656 12.8199 4 11.5C4.00061 9.92179 4.44061 8.37488 5.27072 7.03258C6.10083 5.69028 7.28825 4.6056 8.7 3.90003C9.87812 3.30496 11.1801 2.99659 12.5 3.00003H13C15.0843 3.11502 17.053 3.99479 18.5291 5.47089C20.0052 6.94699 20.885 8.91568 21 11V11.5Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <svg
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M21 11.5C21.0034 12.8199 20.6951 14.1219 20.1 15.3C19.3944 16.7118 18.3098 17.8992 16.9674 18.7293C15.6251 19.5594 14.0782 19.9994 12.5 20C11.1801 20.0035 9.87812 19.6951 8.7 19.1L3 21L4.9 15.3C4.30493 14.1219 3.99656 12.8199 4 11.5C4.00061 9.92179 4.44061 8.37488 5.27072 7.03258C6.10083 5.69028 7.28825 4.6056 8.7 3.90003C9.87812 3.30496 11.1801 2.99659 12.5 3.00003H13C15.0843 3.11502 17.053 3.99479 18.5291 5.47089C20.0052 6.94699 20.885 8.91568 21 11V11.5Z"
+            stroke="white"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
         </svg>
 
         <div class="flex flex-col items-start justify-center">
-          <p class="font-sans font-medium text-[15px] text-dark-text tracking-[-1.35px] truncate max-w-[180px]">
+          <p
+            class="font-sans font-medium text-[15px] text-dark-text tracking-[-1.35px] truncate max-w-[180px]"
+          >
             {{ conversation.title }}
           </p>
-          <p class="font-sans font-medium text-[11px] text-dark-text-secondary tracking-[-0.99px]">
+          <p
+            class="font-sans font-medium text-[11px] text-dark-text-secondary tracking-[-0.99px]"
+          >
             {{ formatForDisplay(conversation.timestamp) }}
           </p>
         </div>
@@ -52,8 +69,14 @@
 </template>
 
 <script>
+import CButton from "components/Button/CButton.vue";
+
 export default {
-  name: 'CChatConversationsMenu',
+  name: "CChatConversationsMenu",
+
+  components: {
+    CButton,
+  },
 
   props: {
     open: {
@@ -70,6 +93,6 @@ export default {
     },
   },
 
-  emits: ['new-chat', 'select-conversation'],
-}
+  emits: ["new-chat", "select-conversation"],
+};
 </script>

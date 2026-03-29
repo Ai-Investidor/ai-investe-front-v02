@@ -30,7 +30,7 @@ export default {
   data() {
     return {
       sidebarOpen: true,
-      sidebarMini: false,
+      sidebarMini: true,
     };
   },
 

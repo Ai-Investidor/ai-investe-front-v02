@@ -196,7 +196,7 @@ import {
   phoneRules,
   passwordRules,
   confirmPasswordRules,
-} from "constants/rules";
+} from "@constants/rules";
 
 export default {
   name: "PageRegister",

@@ -3,19 +3,25 @@
     <div class="app-header__inner">
       <!-- Left: toggle + page title -->
       <div class="app-header__left">
-        <button class="app-header__toggle" aria-label="Alternar sidebar" @click="onToggle">
-          <q-icon name="menu" size="20px" />
-        </button>
-
+        <!--
+            <button class="app-header__toggle" aria-label="Alternar sidebar" @click="onToggle">
+            <q-icon name="menu" size="20px" />
+            </button>
+        -->
         <div class="app-header__breadcrumb">
-          <span class="app-header__page-title text-title-sm">{{ currentPageTitle }}</span>
-          <span class="app-header__page-date text-paragraph-sm">{{ currentDate }}</span>
+          <span class="app-header__page-title text-title-sm">{{
+            currentPageTitle
+          }}</span>
+          <span class="app-header__page-date text-paragraph-sm">{{
+            currentDate
+          }}</span>
         </div>
       </div>
 
       <!-- Right: search + actions + user -->
       <div class="app-header__right">
         <!-- Search -->
+        <!--
         <div class="app-header__search">
           <q-icon name="search" size="16px" class="app-header__search-icon" />
           <input
@@ -27,18 +33,29 @@
           <span class="app-header__search-kbd">⌘K</span>
         </div>
 
+        -->
+
         <!-- Notifications -->
         <button class="app-header__action" aria-label="Notificações">
           <q-icon name="notifications_none" size="20px" />
           <span class="app-header__action-badge">3</span>
-          <q-tooltip anchor="bottom middle" self="top middle" :offset="[0, 6]">Notificações</q-tooltip>
+          <q-tooltip anchor="bottom middle" self="top middle" :offset="[0, 6]"
+            >Notificações</q-tooltip
+          >
         </button>
 
         <!-- Theme toggle -->
-        <button class="app-header__action" aria-label="Alternar tema" @click="onToggleDark">
-          <q-icon :name="$q.dark.isActive ? 'light_mode' : 'dark_mode'" size="18px" />
+        <button
+          class="app-header__action"
+          aria-label="Alternar tema"
+          @click="onToggleDark"
+        >
+          <q-icon
+            :name="$q.dark.isActive ? 'light_mode' : 'dark_mode'"
+            size="18px"
+          />
           <q-tooltip anchor="bottom middle" self="top middle" :offset="[0, 6]">
-            {{ $q.dark.isActive ? 'Modo claro' : 'Modo escuro' }}
+            {{ $q.dark.isActive ? "Modo claro" : "Modo escuro" }}
           </q-tooltip>
         </button>
 
@@ -51,10 +68,18 @@
             <span class="text-paragraph-sm">JD</span>
           </div>
           <div class="app-header__user-info">
-            <span class="app-header__user-name text-paragraph-sm">Jefferson Dev</span>
-            <span class="app-header__user-role text-paragraph-sm">Pro Investor</span>
+            <span class="app-header__user-name text-paragraph-sm"
+              >Jefferson Dev</span
+            >
+            <span class="app-header__user-role text-paragraph-sm"
+              >Pro Investor</span
+            >
           </div>
-          <q-icon name="keyboard_arrow_down" size="16px" class="app-header__chevron" />
+          <q-icon
+            name="keyboard_arrow_down"
+            size="16px"
+            class="app-header__chevron"
+          />
         </div>
       </div>
     </div>
@@ -154,7 +179,9 @@ export default {
   color: rgba(255, 255, 255, 0.55);
   cursor: pointer;
   flex-shrink: 0;
-  transition: background-color 0.2s, color 0.2s;
+  transition:
+    background-color 0.2s,
+    color 0.2s;
 }
 
 .app-header__toggle:hover {
@@ -203,7 +230,9 @@ export default {
   padding: 0 12px;
   height: 36px;
   width: 240px;
-  transition: border-color 0.2s, background-color 0.2s;
+  transition:
+    border-color 0.2s,
+    background-color 0.2s;
   cursor: text;
 }
 
@@ -254,7 +283,9 @@ export default {
   background: transparent;
   color: rgba(255, 255, 255, 0.55);
   cursor: pointer;
-  transition: background-color 0.2s, color 0.2s;
+  transition:
+    background-color 0.2s,
+    color 0.2s;
 }
 
 .app-header__action:hover {

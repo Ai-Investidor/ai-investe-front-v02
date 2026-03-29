@@ -6,13 +6,21 @@
     :width="240"
     :mini-width="64"
     class="app-sidebar"
+    @mouseenter="hovered = true"
+    @mouseleave="hovered = false"
   >
     <!-- Logo -->
     <div class="sidebar-logo" :class="{ 'sidebar-logo--mini': isMini }">
       <div class="sidebar-logo__icon">
-        <q-icon name="svguse:icons/icons.svg#icon-logo" size="20px" color="white" />
+        <q-icon
+          name="svguse:icons/icons.svg#icon-logo"
+          size="20px"
+          color="white"
+        />
       </div>
-      <span v-if="!isMini" class="sidebar-logo__name text-title-sm">AI.INVEST</span>
+      <span v-if="!isMini" class="sidebar-logo__name text-title-sm"
+        >AI.INVEST</span
+      >
     </div>
 
     <!-- Scroll area -->
@@ -74,14 +82,20 @@
         >
           <div class="sidebar-nav__icon-wrap">
             <q-icon :name="item.icon" size="20px" />
-            <span v-if="isMini && item.badge" class="sidebar-nav__dot sidebar-nav__dot--accent" />
+            <span
+              v-if="isMini && item.badge"
+              class="sidebar-nav__dot sidebar-nav__dot--accent"
+            />
           </div>
 
           <span v-if="!isMini" class="sidebar-nav__label text-paragraph-md">
             {{ item.label }}
           </span>
 
-          <span v-if="!isMini && item.badge" class="sidebar-nav__badge sidebar-nav__badge--neutral">
+          <span
+            v-if="!isMini && item.badge"
+            class="sidebar-nav__badge sidebar-nav__badge--neutral"
+          >
             {{ item.badge }}
           </span>
 
@@ -109,7 +123,9 @@
         <div class="sidebar-nav__icon-wrap">
           <q-icon name="logout" size="20px" />
         </div>
-        <span v-if="!isMini" class="sidebar-nav__label text-paragraph-md">Sair</span>
+        <span v-if="!isMini" class="sidebar-nav__label text-paragraph-md"
+          >Sair</span
+        >
         <q-tooltip
           v-if="isMini"
           anchor="center right"
@@ -128,7 +144,8 @@
 import {
   NavigationSideMenuMain,
   NavigationSideMenuBottom,
-} from "src/constants/menus";
+} from "@constants/menus";
+import useAuth from "@composables/useAuth";
 
 export default {
   name: "CSidebar",
@@ -150,6 +167,7 @@ export default {
     return {
       NavigationSideMenuMain,
       NavigationSideMenuBottom,
+      hovered: false,
     };
   },
 
@@ -164,7 +182,7 @@ export default {
     },
 
     isMini() {
-      return this.mini;
+      return this.mini && !this.hovered;
     },
   },
 
@@ -180,7 +198,8 @@ export default {
     },
 
     onLogout() {
-      // TODO: chamar composable de auth ao implementar
+      const { logout } = useAuth();
+      logout();
     },
   },
 };
@@ -283,7 +302,10 @@ export default {
   position: relative;
   border-left: 3px solid transparent;
   color: rgba(255, 255, 255, 0.5);
-  transition: background-color 0.18s ease, color 0.18s ease, border-color 0.18s ease;
+  transition:
+    background-color 0.18s ease,
+    color 0.18s ease,
+    border-color 0.18s ease;
   user-select: none;
 }
 

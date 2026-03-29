@@ -96,7 +96,6 @@ export function useChat() {
 
     // Snapshot dos arquivos antes de limpar
     const filesToSend = [...pendingFiles.value];
-    const hasFiles = filesToSend.length > 0;
 
     // Adiciona mensagem do usuário na UI imediatamente
     const userMessage = {

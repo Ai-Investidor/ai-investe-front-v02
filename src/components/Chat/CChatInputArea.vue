@@ -49,13 +49,11 @@
             anchor="top left"
             self="bottom left"
             :offset="[0, 8]"
-            class="chat-attach-menu"
+            class="chat-attach-menu border border-[#30363D] rounded-xl!"
             auto-close
           >
-            <div
-              class="bg-[#161B22] border border-[#30363D] rounded-xl overflow-hidden shadow-xl min-w-[200px]"
-            >
-              <div class="px-3 py-2 border-b border-[#30363D]">
+            <div class="bg-[#161B22] overflow-hidden shadow-xl min-w-[200px]">
+              <div class="px-3 py-2">
                 <span
                   class="text-xs text-gray-500 font-medium uppercase tracking-wider"
                 >
@@ -67,7 +65,7 @@
                   v-for="option in attachMenuOptions"
                   :key="option.key"
                   v-close-popup
-                  class="w-full flex items-center gap-3 px-4 py-3 text-sm text-gray-300 hover:bg-[#21262D] hover:text-white transition-colors text-left"
+                  class="w-full flex items-center gap-3 px-4 py-3 text-paragraph-sm text-gray-300 hover:bg-[#21262D] hover:text-white transition-colors text-left"
                   @click="handleAttachOption(option)"
                 >
                   <q-icon

@@ -1,7 +1,7 @@
 <template>
   <div
     ref="listRef"
-    class="flex-1 overflow-y-auto px-4 md:px-8 lg:px-16 py-6"
+    class="flex-1 min-h-0 overflow-y-auto px-4 md:px-8 lg:px-16 py-6"
   >
     <CChatMessage
       v-for="msg in messages"
@@ -11,22 +11,17 @@
       :timestamp="msg.timestamp"
     />
 
-    <CChatMessage
-      v-if="isTyping"
-      message=""
-      sender="ai"
-      :is-typing="true"
-    />
+    <CChatMessage v-if="isTyping" message="" sender="ai" :is-typing="true" />
 
     <div ref="bottomRef" />
   </div>
 </template>
 
 <script>
-import CChatMessage from 'components/Chat/CChatMessage.vue'
+import CChatMessage from "components/Chat/CChatMessage.vue";
 
 export default {
-  name: 'CChatMessageList',
+  name: "CChatMessageList",
 
   components: {
     CChatMessage,
@@ -46,12 +41,12 @@ export default {
   watch: {
     messages: {
       handler() {
-        this.scrollToBottom()
+        this.scrollToBottom();
       },
       deep: true,
     },
     isTyping() {
-      this.scrollToBottom()
+      this.scrollToBottom();
     },
   },
 
@@ -59,12 +54,12 @@ export default {
     scrollToBottom() {
       this.$nextTick(() => {
         if (this.$refs.bottomRef) {
-          this.$refs.bottomRef.scrollIntoView({ behavior: 'smooth' })
+          this.$refs.bottomRef.scrollIntoView({ behavior: "smooth" });
         }
-      })
+      });
     },
   },
-}
+};
 </script>
 
 <style scoped>
