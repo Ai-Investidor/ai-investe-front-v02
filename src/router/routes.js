@@ -2,8 +2,10 @@ const routes = [
   {
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
-    children: [{ path: '', component: () => import('pages/IndexPage.vue') }],
- 
+    children: [
+      { path: '', component: () => import('pages/IndexPage.vue') },
+      { path: 'chat', component: () => import('pages/Chat/PageChat.vue') },
+    ],
   },
 
   // Auth routes — wrapped in AuthLayout (split-screen branding + form)

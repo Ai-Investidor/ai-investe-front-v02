@@ -6,7 +6,6 @@ import {
   createWebHashHistory,
 } from "vue-router";
 import routes from "./routes";
-import { useAuthStore } from "@stores/auth.store";
 
 /*
  * If not building with SSR mode, you can
