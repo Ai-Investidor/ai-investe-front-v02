@@ -15,6 +15,7 @@
       no-caps
       class="register-form__google-btn"
       aria-label="Cadastrar com o Google"
+      :loading="loading"
       @click="handleGoogleRegister"
     >
       <template #default>
@@ -33,10 +34,11 @@
     </div>
 
     <!-- Form -->
-    <form
+    <q-form
+      ref="registerForm"
       class="register-form__fields"
       @submit.prevent="handleRegister"
-      novalidate
+      greedy
     >
       <c-input
         v-model="name"
@@ -47,6 +49,8 @@
         autocomplete="name"
         aria-label="Nome completo"
         class="register-form__input"
+        :rules="nameRules"
+        lazy-rules
       />
 
       <c-input
@@ -59,6 +63,27 @@
         inputmode="email"
         aria-label="E-mail"
         class="register-form__input"
+        :rules="emailRules"
+        lazy-rules
+      />
+
+      <c-input
+        v-model="phone"
+        outlined
+        dense
+        type="tel"
+        label="Telefone"
+        autocomplete="tel"
+        inputmode="tel"
+        aria-label="Telefone"
+        :mask="phoneMask"
+        fill-mask
+        unmasked-value
+        hint="(11) 91234-5678"
+        class="register-form__input"
+        :rules="phoneRules"
+        lazy-rules
+        @update:model-value="updatePhoneMask"
       />
 
       <!-- Password row: two fields side by side on desktop -->
@@ -72,6 +97,8 @@
           autocomplete="new-password"
           aria-label="Senha"
           class="register-form__input"
+          :rules="passwordRules"
+          lazy-rules
         >
           <template #append>
             <q-icon
@@ -95,6 +122,8 @@
           autocomplete="new-password"
           aria-label="Confirmar senha"
           class="register-form__input"
+          :rules="confirmPasswordRules"
+          lazy-rules
         >
           <template #append>
             <q-icon
@@ -141,7 +170,7 @@
         aria-label="Criar conta grátis"
         class="register-form__submit-btn"
       />
-    </form>
+    </q-form>
 
     <!-- Login link -->
     <p class="text-paragraph-sm register-form__login">
@@ -157,24 +186,55 @@
 </template>
 
 <script>
-import CButton from "components/Button/CButton.vue";
-import CInput from "components/Input/CInput.vue";
+import CButton from "@components/Button/CButton.vue";
+import CInput from "@components/Input/CInput.vue";
+import useAuth from "@composables/useAuth";
+import { useAuthStore } from "@stores/auth.store";
+import {
+  nameRules,
+  emailRules,
+  phoneRules,
+  passwordRules,
+  confirmPasswordRules,
+} from "constants/rules";
 
 export default {
   name: "PageRegister",
 
   components: { CButton, CInput },
 
+  setup() {
+    return {
+      auth: useAuth(),
+      authStore: useAuthStore(),
+    };
+  },
+
   data() {
     return {
       name: "",
       email: "",
+      phone: "",
       password: "",
       confirmPassword: "",
       showPassword: false,
       showConfirmPassword: false,
-      loading: false,
+      phoneMask: "(##) #####-####",
+      nameRules,
+      emailRules,
+      phoneRules,
+      passwordRules,
     };
+  },
+
+  computed: {
+    loading() {
+      return this.authStore.loading;
+    },
+
+    confirmPasswordRules() {
+      return confirmPasswordRules(this.password);
+    },
   },
 
   methods: {
@@ -186,12 +246,22 @@ export default {
       this.showConfirmPassword = !this.showConfirmPassword;
     },
 
-    handleRegister() {
-      // TODO: integrar com serviço de autenticação
+    async handleRegister() {
+      const valid = await this.$refs.registerForm.validate();
+      if (!valid) return;
+
+      await this.auth.register(this.email, this.password);
     },
 
-    handleGoogleRegister() {
-      // TODO: integrar com Google OAuth
+    async handleGoogleRegister() {
+      await this.auth.loginWithGoogle();
+    },
+
+    updatePhoneMask(val) {
+      // Troca a máscara dinamicamente: celular (9 dígitos) ou fixo (8 dígitos)
+      // val já vem sem máscara por causa de unmasked-value
+      this.phoneMask =
+        val && val.length > 10 ? "(##) #####-####" : "(##) ####-####";
     },
   },
 };

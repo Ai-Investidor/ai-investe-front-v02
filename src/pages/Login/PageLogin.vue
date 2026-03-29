@@ -15,6 +15,8 @@
       no-caps
       class="login-form__google-btn"
       aria-label="Fazer login com o Google"
+      :loading="loadingGoogle"
+      @click="handleGoogleLogin"
     >
       <template #default>
         <div class="login-form__google-btn-inner">
@@ -32,7 +34,12 @@
     </div>
 
     <!-- Form -->
-    <form class="login-form__fields" @submit.prevent="handleLogin" novalidate>
+    <q-form
+      ref="loginForm"
+      class="login-form__fields"
+      @submit.prevent="handleLogin"
+      greedy
+    >
       <c-input
         v-model="email"
         outlined
@@ -43,6 +50,8 @@
         inputmode="email"
         aria-label="E-mail"
         class="login-form__input"
+        :rules="emailRules"
+        lazy-rules
       />
 
       <c-input
@@ -54,6 +63,8 @@
         autocomplete="current-password"
         aria-label="Senha"
         class="login-form__input"
+        :rules="passwordRules"
+        lazy-rules
       >
         <template #append>
           <q-icon
@@ -89,7 +100,7 @@
         label="Entrar"
         aria-label="Entrar na conta"
       />
-    </form>
+    </q-form>
 
     <!-- Register link -->
     <p class="text-paragraph-sm login-form__register">
@@ -105,21 +116,38 @@
 </template>
 
 <script>
-import CButton from "components/Button/CButton.vue";
-import CInput from "components/Input/CInput.vue";
+import CButton from "@components/Button/CButton.vue";
+import CInput from "@components/Input/CInput.vue";
+import useAuth from "@composables/useAuth";
+import { useAuthStore } from "@stores/auth.store";
+import { emailRules, passwordRules } from "@constants/rules";
 
 export default {
   name: "PageLogin",
 
   components: { CButton, CInput },
 
+  setup() {
+    return {
+      auth: useAuth(),
+      authStore: useAuthStore(),
+    };
+  },
+
   data() {
     return {
       email: "",
       password: "",
       showPassword: false,
-      loading: false,
+      emailRules,
+      passwordRules,
     };
+  },
+
+  computed: {
+    loading() {
+      return this.authStore.loading;
+    },
   },
 
   methods: {
@@ -127,12 +155,15 @@ export default {
       this.showPassword = !this.showPassword;
     },
 
-    handleLogin() {
-      // TODO: integrar com serviço de autenticação
+    async handleLogin() {
+      const valid = await this.$refs.loginForm.validate();
+      if (!valid) return;
+
+      await this.auth.login(this.email, this.password);
     },
 
-    handleGoogleLogin() {
-      // TODO: integrar com Google OAuth
+    async handleGoogleLogin() {
+      await this.auth.loginWithGoogle();
     },
   },
 };

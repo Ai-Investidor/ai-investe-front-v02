@@ -1,14 +1,14 @@
 // Configuration for your app
 // https://v2.quasar.dev/quasar-cli-vite/quasar-config-file
 
-import { defineConfig } from '#q-app/wrappers'
-import tailwindcss from '@tailwindcss/vite'
-import { dirname, resolve } from 'path'
-import { fileURLToPath } from 'url'
+import { defineConfig } from "#q-app/wrappers";
+import tailwindcss from "@tailwindcss/vite";
+import { dirname, resolve } from "path";
+import { fileURLToPath } from "url";
 
 // Definindo __filename e __dirname para uso em alias
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = dirname(__filename)
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 export default defineConfig((/* ctx */) => {
   return {
@@ -18,10 +18,10 @@ export default defineConfig((/* ctx */) => {
     // app boot file (/src/boot)
     // --> boot files are part of "main.js"
     // https://v2.quasar.dev/quasar-cli-vite/boot-files
-    boot: ['logger', 'notify', 'axios'],
+    boot: ["logger", "superbase", "notify", "axios"],
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-file#css
-    css: ['app.sass', 'tailwind.css', 'colors.sass'],
+    css: ["app.sass", "tailwind.css", "colors.sass"],
 
     // https://github.com/quasarframework/quasar/tree/dev/extras
     extras: [
@@ -33,32 +33,35 @@ export default defineConfig((/* ctx */) => {
       // 'line-awesome',
       // 'roboto-font-latin-ext', // this or either 'roboto-font', NEVER both!
 
-      'roboto-font', // optional, you are not bound to it
-      'material-icons', // optional, you are not bound to it
+      "roboto-font", // optional, you are not bound to it
+      "material-icons", // optional, you are not bound to it
     ],
 
     // Full list of options: https://v2.quasar.dev/quasar-cli-vite/quasar-config-file#build
     build: {
       alias: {
-        '@': resolve(__dirname, 'src'),
-        '@public': resolve(__dirname, 'public'),
-        '@assets': resolve(__dirname, 'src/assets'),
-        '@boot': resolve(__dirname, 'src/boot'),
-        '@components': resolve(__dirname, 'src/components'),
-        '@css': resolve(__dirname, 'src/css'),
-        '@layouts': resolve(__dirname, 'src/layouts'),
-        '@pages': resolve(__dirname, 'src/pages'),
-        '@router': resolve(__dirname, 'src/router'),
-        '@store': resolve(__dirname, 'src/store'),
-        '@utils': resolve(__dirname, 'src/utils'),
+        "@": resolve(__dirname, "src"),
+        "@public": resolve(__dirname, "public"),
+        "@assets": resolve(__dirname, "src/assets"),
+        "@boot": resolve(__dirname, "src/boot"),
+        "@components": resolve(__dirname, "src/components"),
+        "@css": resolve(__dirname, "src/css"),
+        "@layouts": resolve(__dirname, "src/layouts"),
+        "@pages": resolve(__dirname, "src/pages"),
+        "@router": resolve(__dirname, "src/router"),
+        "@services": resolve(__dirname, "src/services"),
+        "@composables": resolve(__dirname, "src/composables"),
+        "@stores": resolve(__dirname, "src/stores"),
+        "@constants": resolve(__dirname, "src/constants"),
+        "@utils": resolve(__dirname, "src/utils"),
       },
 
       target: {
-        browser: 'baseline-widely-available',
-        node: 'node22',
+        browser: "baseline-widely-available",
+        node: "node22",
       },
 
-      vueRouterMode: 'hash', // available values: 'hash', 'history'
+      vueRouterMode: "hash", // available values: 'hash', 'history'
       // vueRouterBase,
       // vueDevtools,
       // vueOptionsAPI: false,
@@ -80,10 +83,11 @@ export default defineConfig((/* ctx */) => {
       vitePlugins: [
         tailwindcss(),
         [
-          'vite-plugin-checker',
+          "vite-plugin-checker",
           {
             eslint: {
-              lintCommand: 'eslint -c ./eslint.config.js "./src*/**/*.{js,mjs,cjs,vue}"',
+              lintCommand:
+                'eslint -c ./eslint.config.js "./src*/**/*.{js,mjs,cjs,vue}"',
               useFlatConfig: true,
             },
           },
@@ -113,7 +117,7 @@ export default defineConfig((/* ctx */) => {
       // directives: [],
 
       // Quasar plugins
-      plugins: ['Notify'],
+      plugins: ["Notify"],
     },
 
     // animations: 'all', // --- includes all animations
@@ -139,7 +143,7 @@ export default defineConfig((/* ctx */) => {
       // (gets superseded if process.env.PORT is specified at runtime)
 
       middlewares: [
-        'render', // keep this as last one
+        "render", // keep this as last one
       ],
 
       // extendPackageJson (json) {},
@@ -159,7 +163,7 @@ export default defineConfig((/* ctx */) => {
 
     // https://v2.quasar.dev/quasar-cli-vite/developing-pwa/configuring-pwa
     pwa: {
-      workboxMode: 'GenerateSW', // 'GenerateSW' or 'InjectManifest'
+      workboxMode: "GenerateSW", // 'GenerateSW' or 'InjectManifest'
       // swFilename: 'sw.js',
       // manifestFilename: 'manifest.json',
       // extendManifestJson (json) {},
@@ -188,12 +192,12 @@ export default defineConfig((/* ctx */) => {
       // extendPackageJson (json) {},
 
       // Electron preload scripts (if any) from /src-electron, WITHOUT file extension
-      preloadScripts: ['electron-preload'],
+      preloadScripts: ["electron-preload"],
 
       // specify the debugging port to use for the Electron app when running in development mode
       inspectPort: 5858,
 
-      bundler: 'packager', // 'packager' or 'builder'
+      bundler: "packager", // 'packager' or 'builder'
 
       packager: {
         // https://github.com/electron-userland/electron-packager/blob/master/docs/api.md#options
@@ -209,7 +213,7 @@ export default defineConfig((/* ctx */) => {
       builder: {
         // https://www.electron.build/configuration
 
-        appId: 'ai-investe-front',
+        appId: "ai-investe-front",
       },
     },
 
@@ -228,5 +232,5 @@ export default defineConfig((/* ctx */) => {
        */
       extraScripts: [],
     },
-  }
-})
+  };
+});

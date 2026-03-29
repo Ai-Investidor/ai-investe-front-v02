@@ -1,8 +1,13 @@
 <template>
   <q-layout view="lHh Lpr lFf">
-    <c-header @click:toggle="toggleLeftDrawer" />
+    <c-header :sidebar-mini="sidebarMini" @toggle:sidebar="onToggleSidebar" />
 
-    <c-sidebar :open="leftDrawerOpen" />
+    <c-sidebar
+      :open="sidebarOpen"
+      :mini="sidebarMini"
+      @update:open="sidebarOpen = $event"
+      @update:mini="sidebarMini = $event"
+    />
 
     <q-page-container>
       <router-view />
@@ -24,13 +29,18 @@ export default {
 
   data() {
     return {
-      leftDrawerOpen: true,
+      sidebarOpen: true,
+      sidebarMini: false,
     };
   },
 
   methods: {
-    toggleLeftDrawer() {
-      this.leftDrawerOpen = !this.leftDrawerOpen;
+    onToggleSidebar() {
+      if (this.$q.screen.gt.sm) {
+        this.sidebarMini = !this.sidebarMini;
+      } else {
+        this.sidebarOpen = !this.sidebarOpen;
+      }
     },
   },
 };
