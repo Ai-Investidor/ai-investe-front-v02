@@ -15,12 +15,12 @@
       <CChatConversationsMenu
         v-show="sidebarOpen"
         :open="sidebarOpen"
-        :conversations="chat.conversations.value"
+        :conversations="chat.sessions.value"
         :formatForDisplay="chat.formatForDisplay"
         class="z-20 flex-shrink-0 h-full"
         :class="$q.screen.lt.md ? 'absolute inset-y-0 left-0' : 'relative'"
         @new-chat="chat.newConversation"
-        @select-conversation="onSelectConversation"
+        @select-conversation="(id) => onSelectConversation(id)"
       />
     </transition>
 
@@ -74,7 +74,7 @@
         :disabled="chat.isTyping.value"
         :pending-files="chat.pendingFiles.value"
         class="flex-shrink-0"
-        @send="chat.sendMessage"
+        @send="sendNewMessage"
         @attach-files="chat.attachFiles"
         @remove-file="chat.removeFile"
       />
@@ -84,6 +84,7 @@
 
 <script>
 import { useChat } from "@composables/useChat";
+import { useAuthStore } from "@stores/auth.store";
 import CButton from "@components/Button/CButton.vue";
 import CChatConversationsMenu from "@components/Chat/CChatConversationsMenu.vue";
 import CChatWelcome from "@components/Chat/CChatWelcome.vue";
@@ -102,8 +103,11 @@ export default {
   },
 
   setup() {
+    const authStore = useAuthStore();
+
     return {
       chat: useChat(),
+      authStore,
     };
   },
 
@@ -120,6 +124,10 @@ export default {
       );
       return conv?.title || "Nova conversa";
     },
+
+    userId() {
+      return this.authStore.user?.id;
+    },
   },
 
   created() {
@@ -128,9 +136,22 @@ export default {
     }
   },
 
+  mounted() {
+    this.chat.selectedSession.value = null;
+
+    this.onLoadSessions();
+  },
+
   methods: {
-    onSelectConversation(id) {
-      this.chat.selectConversation(id);
+    async onLoadSessions() {
+      if (this.userId) {
+        await this.chat.loadSessions(this.userId);
+      }
+    },
+
+    async onSelectConversation(id) {
+      await this.chat.getMessagesSessions(id);
+
       if (this.$q.screen.lt.md) {
         this.sidebarOpen = false;
       }
@@ -141,6 +162,11 @@ export default {
         this.chat.newConversation();
       }
       await this.chat.sendMessage(text);
+    },
+
+    async sendNewMessage(text) {
+      await this.chat.sendMessage(text);
+      this.onLoadSessions();
     },
   },
 };

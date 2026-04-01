@@ -7,9 +7,13 @@ export function useChat() {
   // ── Estado ────────────────────────────────────────────────────────────────
 
   const conversations = ref([]);
+  const sessions = ref([]);
   const activeConversationId = ref(null);
   const isTyping = ref(false);
+  const isLoadingSessions = ref(false);
+  const isLoadingMessages = ref(false);
   const pendingFiles = ref([]);
+  const selectedSession = ref(null);
 
   // ── Computed ──────────────────────────────────────────────────────────────
 
@@ -25,12 +29,14 @@ export function useChat() {
     () => activeConversationId.value !== null,
   );
 
-  const historyPayload = computed(() =>
+  /*   const historyPayload = computed(() =>
     messages.value.map((m) => ({
       role: m.sender === "user" ? "user" : "assistant",
       content: m.text,
     })),
   );
+
+  */
 
   // ── Conversas ─────────────────────────────────────────────────────────────
 
@@ -39,15 +45,16 @@ export function useChat() {
     pendingFiles.value = [];
   }
 
-  function newConversation() {
+  function newConversation(title) {
     const id = String(Date.now());
     conversations.value.unshift({
       id,
-      title: "Nova conversa",
+      title: title ?? "Nova conversa",
       timestamp: new Date(),
       messages: [],
     });
     activeConversationId.value = id;
+    selectedSession.value = null;
     pendingFiles.value = [];
   }
 
@@ -71,6 +78,81 @@ export function useChat() {
 
   function clearFiles() {
     pendingFiles.value = [];
+  }
+
+  // ── Sessions ───────────────────────────────────────────────────────────────
+
+  async function loadSessions(idSession) {
+    if (!idSession) return;
+
+    isLoadingSessions.value = true;
+
+    try {
+      const { data, error } = await chatService.getSessions(idSession);
+
+      if (error) throw error;
+      
+      sessions.value = data ?? [];
+
+    } catch (err) {
+      console.error("Erro ao carregar sessions:", err);
+      sessions.value = [];
+    } finally {
+      isLoadingSessions.value = false;
+    }
+  }
+
+  async function getMessagesSessions(sessionId) {
+    if (!sessionId) return;
+
+    isLoadingMessages.value = true;
+
+    try {
+      const { data, error } = await chatService.getMessagesSessions(sessionId);
+
+      if (error) throw error;
+
+      const loadedMessages = (data ?? [])
+        .slice()
+        .reverse()
+        .map((msg) => ({
+          id: String(msg.id),
+          sender: msg.role === "user" ? "user" : "ai",
+          text: msg.content ?? msg.message ?? msg.text ?? "",
+          files: [],
+          timestamp: new Date(msg.created_at),
+        }));
+
+      const session = sessions.value.find((s) => s.id === sessionId);
+
+      const conversation = {
+        id: sessionId,
+        title: session?.title ?? "Conversa anterior",
+        timestamp: session?.created_at
+          ? new Date(session.created_at)
+          : new Date(),
+        messages: loadedMessages,
+      };
+
+      const existingIndex = conversations.value.findIndex(
+        (c) => c.id === sessionId,
+      );
+
+      if (existingIndex >= 0) {
+        conversations.value[existingIndex] = conversation;
+      } else {
+        conversations.value.unshift(conversation);
+      }
+
+      activeConversationId.value = sessionId;
+      selectedSession.value = sessionId;
+
+      pendingFiles.value = [];
+    } catch (err) {
+      console.error("Erro ao carregar mensagens da sessão:", err);
+    } finally {
+      isLoadingMessages.value = false;
+    }
   }
 
   // ── Envio de mensagem ─────────────────────────────────────────────────────
@@ -119,11 +201,14 @@ export function useChat() {
     isTyping.value = true;
 
     try {
-      const history = historyPayload.value.slice(0, -1); // exclui a mensagem recém adicionada
+      // const history = historyPayload.value.slice(0, -1); // exclui a mensagem recém adicionada
+      const sessionId = activeConversationId.value;
 
       const form = new FormData();
       form.append("message", trimmed);
-      form.append("history", JSON.stringify(history));
+      if (sessionId) form.append("session_id", sessionId);
+      //form.append("history", JSON.stringify(history));
+      //
       filesToSend.forEach((file) => form.append("files", file, file.name));
 
       const responseData = await chatService.sendMessage(form);
@@ -182,9 +267,13 @@ export function useChat() {
   return {
     // Estado
     conversations,
+    sessions,
     activeConversationId,
     isTyping,
+    isLoadingSessions,
+    isLoadingMessages,
     pendingFiles,
+    selectedSession,
 
     // Computed
     messages,
@@ -195,6 +284,10 @@ export function useChat() {
     selectConversation,
     newConversation,
     deleteConversation,
+
+    // Sessions
+    loadSessions,
+    getMessagesSessions,
 
     // Arquivos
     attachFiles,

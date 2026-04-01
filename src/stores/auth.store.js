@@ -1,10 +1,8 @@
 import { defineStore, acceptHMRUpdate } from "pinia";
 
-const STORAGE_KEY = "ai_investe_user";
-
 export const useAuthStore = defineStore("auth", {
   state: () => ({
-    user: JSON.parse(localStorage.getItem(STORAGE_KEY) ?? "null"),
+    user: null,
     session: null,
     loading: false,
   }),
@@ -20,12 +18,10 @@ export const useAuthStore = defineStore("auth", {
     setSession(session) {
       this.session = session;
       this.user = session?.user ?? null;
-      this._persistUser();
     },
 
     setUser(user) {
       this.user = user;
-      this._persistUser();
     },
 
     setLoading(value) {
@@ -36,15 +32,6 @@ export const useAuthStore = defineStore("auth", {
       this.user = null;
       this.session = null;
       this.loading = false;
-      localStorage.removeItem(STORAGE_KEY);
-    },
-
-    _persistUser() {
-      if (this.user) {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(this.user));
-      } else {
-        localStorage.removeItem(STORAGE_KEY);
-      }
     },
   },
 });

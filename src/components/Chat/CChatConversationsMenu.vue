@@ -32,8 +32,8 @@
         v-for="conversation in conversations"
         :key="conversation.id"
         type="button"
-        class="w-full flex items-center gap-[10px] p-[8px] rounded-[7px] hover:bg-dark-elevated transition-colors text-left"
-        @click="$emit('select-conversation', conversation.id)"
+        class="w-full cursor-pointer flex items-center gap-[10px] p-[8px] rounded-[7px] hover:bg-dark-elevated transition-colors text-left"
+        @click="$emit('select-conversation', conversation.session_id)"
       >
         <svg
           width="18"
@@ -55,12 +55,12 @@
           <p
             class="font-sans font-medium text-[15px] text-dark-text tracking-[-1.35px] truncate max-w-[180px]"
           >
-            {{ conversation.title }}
+            {{ conversation.title ?? "Nova Conversa" }}
           </p>
           <p
             class="font-sans font-medium text-[11px] text-dark-text-secondary tracking-[-0.99px]"
           >
-            {{ formatForDisplay(conversation.timestamp) }}
+            {{ new Date().toLocaleString() }}
           </p>
         </div>
       </button>
