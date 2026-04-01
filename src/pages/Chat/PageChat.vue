@@ -54,8 +54,15 @@
       </header>
 
       <!-- Mensagens ou Welcome -->
+      <div
+        v-if="chat.isLoadingMessages.value"
+        class="flex justify-center items-center flex-1 min-h-0"
+      >
+        <CSpinner size="4rem" />
+      </div>
+
       <CChatWelcome
-        v-if="
+        v-else-if="
           !chat.hasActiveConversation.value || chat.messages.value.length === 0
         "
         class="flex-1 overflow-y-auto"
@@ -90,6 +97,7 @@ import CChatConversationsMenu from "@components/Chat/CChatConversationsMenu.vue"
 import CChatWelcome from "@components/Chat/CChatWelcome.vue";
 import CChatMessageList from "@components/Chat/CChatMessageList.vue";
 import CChatInputArea from "@components/Chat/CChatInputArea.vue";
+import CSpinner from "@components/Spinner/CSpinner.vue";
 
 export default {
   name: "PageChat",
@@ -100,6 +108,7 @@ export default {
     CChatWelcome,
     CChatMessageList,
     CChatInputArea,
+    CSpinner,
   },
 
   setup() {
