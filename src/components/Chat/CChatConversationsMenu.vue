@@ -33,6 +33,10 @@
         :key="conversation.id"
         type="button"
         class="w-full cursor-pointer flex items-center gap-[10px] p-[8px] rounded-[7px] hover:bg-dark-elevated transition-colors text-left"
+        :class="{
+          'bg-dark-elevated ring-1 ring-inset ring-white/10':
+            conversation.session_id === activeConversationId,
+        }"
         @click="$emit('select-conversation', conversation.session_id)"
       >
         <svg
@@ -60,7 +64,11 @@
           <p
             class="font-sans font-medium text-[11px] text-dark-text-secondary tracking-[-0.99px]"
           >
-            {{ new Date().toLocaleString() }}
+            {{
+              conversation.created_at
+                ? formatDateBR(conversation.created_at)
+                : "N/A"
+            }}
           </p>
         </div>
       </button>
@@ -69,7 +77,8 @@
 </template>
 
 <script>
-import CButton from "components/Button/CButton.vue";
+import CButton from "@components/Button/CButton.vue";
+import { formatDateBR } from "@utils/dates.util";
 
 export default {
   name: "CChatConversationsMenu",
@@ -87,12 +96,16 @@ export default {
       type: Array,
       required: true,
     },
-    formatForDisplay: {
-      type: Function,
-      required: true,
+    activeConversationId: {
+      type: String,
+      default: null,
     },
   },
 
   emits: ["new-chat", "select-conversation"],
+
+  methods: {
+    formatDateBR,
+  },
 };
 </script>

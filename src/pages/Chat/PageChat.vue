@@ -16,7 +16,7 @@
         v-show="sidebarOpen"
         :open="sidebarOpen"
         :conversations="chat.sessions.value"
-        :formatForDisplay="chat.formatForDisplay"
+        :active-conversation-id="chat.activeConversationId.value"
         class="z-20 flex-shrink-0 h-full"
         :class="$q.screen.lt.md ? 'absolute inset-y-0 left-0' : 'relative'"
         @new-chat="chat.newConversation"
@@ -71,6 +71,7 @@
 
       <CChatMessageList
         v-else
+        ref="messageList"
         :messages="chat.messages.value"
         :is-typing="chat.isTyping.value"
         class="flex-1 min-h-0"
@@ -161,6 +162,10 @@ export default {
     async onSelectConversation(id) {
       await this.chat.getMessagesSessions(id);
 
+      this.$nextTick(() => {
+        this.$refs.messageList?.scrollToBottom();
+      });
+
       if (this.$q.screen.lt.md) {
         this.sidebarOpen = false;
       }
@@ -171,6 +176,7 @@ export default {
         this.chat.newConversation();
       }
       await this.chat.sendMessage(text);
+      this.onLoadSessions();
     },
 
     async sendNewMessage(text) {

@@ -24,7 +24,10 @@
     </div>
 
     <!-- Scroll area -->
-    <div class="sidebar-body">
+    <div
+      class="sidebar-body"
+      :class="{ 'sidebar-body--animating': isAnimating }"
+    >
       <!-- Main navigation -->
       <nav class="sidebar-nav">
         <div
@@ -113,7 +116,13 @@
     </div>
 
     <!-- Footer: logout -->
-    <div class="sidebar-footer" :class="{ 'sidebar-footer--mini': isMini }">
+    <div
+      class="sidebar-footer"
+      :class="{
+        'sidebar-footer--mini': isMini,
+        'sidebar-body--animating': isAnimating,
+      }"
+    >
       <div class="sidebar-divider" />
       <div
         class="sidebar-nav__item sidebar-nav__item--logout"
@@ -168,7 +177,18 @@ export default {
       NavigationSideMenuMain,
       NavigationSideMenuBottom,
       hovered: false,
+      isAnimating: false,
     };
+  },
+
+  watch: {
+    hovered() {
+      this.isAnimating = true;
+      clearTimeout(this._animatingTimer);
+      this._animatingTimer = setTimeout(() => {
+        this.isAnimating = false;
+      }, 350);
+    },
   },
 
   computed: {
@@ -271,6 +291,11 @@ export default {
 
 .sidebar-body::-webkit-scrollbar {
   display: none;
+}
+
+.sidebar-body--animating,
+.sidebar-body--animating * {
+  pointer-events: none !important;
 }
 
 /* ── Section label ───────────────────────────────── */
