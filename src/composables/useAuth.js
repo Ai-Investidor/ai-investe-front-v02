@@ -138,7 +138,7 @@ export default function useAuth() {
       return true;
     } catch {
       NotifyError("Erro ao encerrar a sessão. Tente novamente.");
-      alert("quebrou");
+
       return false;
     } finally {
       store.setLoading(false);
