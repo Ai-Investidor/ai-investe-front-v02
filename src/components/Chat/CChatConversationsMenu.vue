@@ -1,9 +1,9 @@
 <template>
   <aside
     v-if="open"
-    class="w-[281px] bg-dark-card border-r border-border-dark flex flex-col h-full"
+    class="w-[281px] bg-dark-card border-r border-border-dark flex! flex-col h-full"
   >
-    <!-- Novo Chat Button -->
+    <!-- ] Button -->
     <div
       class="border-t border-b border-border-dark flex items-center justify-center py-[14px]"
     >
@@ -20,7 +20,8 @@
 
     <!-- Conversas -->
     <div
-      class="flex flex-col gap-[4px] overflow-y-auto border-t border-b border-border-dark px-[14px] py-[14px]"
+      ref="conversationsList"
+      class="space-y-4! overflow-y-auto! overflow-x-hidden border-t border-b border-border-dark p-[14px]"
     >
       <p
         class="font-sans font-medium text-[15px] text-dark-text tracking-[-1.35px] mb-[8px]"
@@ -104,8 +105,19 @@ export default {
 
   emits: ["new-chat", "select-conversation"],
 
+  watch: {
+    conversations() {
+      this.$nextTick(() => this.scrollToBottom());
+    },
+  },
+
   methods: {
     formatDateBR,
+
+    scrollToBottom() {
+      const el = this.$refs.conversationsList;
+      if (el) el.scrollTop = el.scrollHeight;
+    },
   },
 };
 </script>
