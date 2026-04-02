@@ -80,7 +80,7 @@
     </div>
   </div>
 
-  <Menu v-model="isOpenMenuAction" :reference="$refs.refIconActions" width="13rem">
+  <CMenu v-model="isOpenMenuAction" :reference="$refs.refIconActions" width="13rem">
     <template #header>
       <h2 class="text-white font-semibold text-center">Menu</h2>
     </template>
@@ -107,7 +107,7 @@
         </button>
       </li>
     </ol>
-  </Menu>
+  </CMenu>
 
   <input
     type="file"
@@ -118,7 +118,7 @@
 </template>
 
 <script>
-import Menu from './Menu.vue'
+import CMenu from './Menu.vue'
 import FileCard from '@components/CFileCard.vue'
 import { toast } from '@utils/toast'
 
@@ -126,7 +126,7 @@ export default {
   name: 'CChatInput',
 
   components: {
-    Menu,
+    CMenu,
     FileCard,
   },
 

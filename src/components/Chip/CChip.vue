@@ -23,6 +23,7 @@ export default {
 
   computed: {
     filteredAttrs() {
+      // eslint-disable-next-line no-unused-vars
       const { size, label, ...rest } = this.$attrs
       return rest
     },

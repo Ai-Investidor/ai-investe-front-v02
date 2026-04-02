@@ -58,7 +58,7 @@ export default {
   data() {
     return {
       showScrollButton: false,
-      _scrollEndTimer: null,
+      scrollEndTimer: null,
     };
   },
 
@@ -82,8 +82,8 @@ export default {
       // Esconde imediatamente enquanto está scrollando
       this.showScrollButton = false;
 
-      clearTimeout(this._scrollEndTimer);
-      this._scrollEndTimer = setTimeout(() => {
+      clearTimeout(this.scrollEndTimer);
+      this.scrollEndTimer = setTimeout(() => {
         const distanceFromBottom = el.scrollHeight - el.scrollTop - el.clientHeight;
         this.showScrollButton = distanceFromBottom > 120;
       }, 150);
@@ -92,7 +92,7 @@ export default {
     /** Chamável externamente via $refs: this.$refs.messageList.scrollToBottom() */
     scrollToBottom() {
       this.showScrollButton = false;
-      clearTimeout(this._scrollEndTimer);
+      clearTimeout(this.scrollEndTimer);
       this.$nextTick(() => {
         const el = this.$refs.listRef;
         if (!el) return;

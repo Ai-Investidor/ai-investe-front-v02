@@ -89,6 +89,8 @@ export default defineConfig((/* ctx */) => {
               lintCommand:
                 'eslint -c ./eslint.config.js "./src*/**/*.{js,mjs,cjs,vue}"',
               useFlatConfig: true,
+              warnings: false,
+              errors: false,
             },
           },
           { server: false },

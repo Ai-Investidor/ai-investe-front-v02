@@ -28,6 +28,7 @@ export default {
 
   computed: {
     filteredAttrs() {
+      // eslint-disable-next-line no-unused-vars
       const { color, bg, badge, badgeColor, small, size, ...rest } = this.$attrs
       return rest
     },
