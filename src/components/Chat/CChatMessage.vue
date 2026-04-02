@@ -98,7 +98,7 @@ export default {
       if (this.isTyping) return ''
       try {
         return marked.parse(this.message, { breaks: true })
-      } catch (e) {
+      } catch {
         return this.message.replace(/\n/g, '<br>')
       }
     },

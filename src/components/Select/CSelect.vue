@@ -1,7 +1,7 @@
 <template>
   <div v-if="label" class="o-select-wrapper">
     <label class="o-select-label">{{ label }}</label>
-    <Select
+    <PrimeSelect
       ref="componentRef"
       class="Oselect"
       :class="'size-' + (size || 'md')"
@@ -30,10 +30,10 @@
           </div>
         </slot>
       </template>
-    </Select>
+    </PrimeSelect>
   </div>
 
-  <Select
+  <PrimeSelect
     v-else
     ref="componentRef"
     class="Oselect"
@@ -63,11 +63,11 @@
         </div>
       </slot>
     </template>
-  </Select>
+  </PrimeSelect>
 </template>
 
 <script>
-import Select from 'primevue/select'
+import PrimeSelect from 'primevue/select'
 import OIcon from 'components/Icon/OIcon.vue'
 
 const IGNORED_ATTRS = new Set([
@@ -99,7 +99,7 @@ export default {
   name: 'CSelect',
 
   components: {
-    Select,
+    PrimeSelect,
     OIcon,
   },
 

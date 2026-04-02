@@ -39,6 +39,7 @@ export default {
     },
 
     filteredAttrs() {
+      // eslint-disable-next-line no-unused-vars
       const { size, ...rest } = this.$attrs
       return rest
     },
