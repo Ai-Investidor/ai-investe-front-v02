@@ -4,7 +4,7 @@ import { Logger } from "@boot/logger";
 import { NotifyError } from "@boot/notify";
 import { useAuthStore } from "src/stores/auth.store";
 
-const BASE_URL = process.env.VITE_BASE_URL_API || "https://localhost:8000";
+const BASE_URL = import.meta.env.VITE_BASE_URL_API || "https://localhost:8000";
 
 export const URLS = {
   CHAT_ADVISOR: "/chat",

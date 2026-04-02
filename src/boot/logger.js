@@ -1,6 +1,6 @@
 import { defineBoot } from '@quasar/app-vite/wrappers'
 
-const isDevelopment = process.env?.DEV
+const isDevelopment = import.meta.env?.DEV
 
 export const Logger = {
   info: (message) => {

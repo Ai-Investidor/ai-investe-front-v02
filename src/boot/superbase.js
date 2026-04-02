@@ -4,8 +4,8 @@ import { createClient } from "@supabase/supabase-js";
 import { Logger } from "./logger";
 import { useAuthStore } from "@stores/auth.store";
 
-const supabaseUrl = process.env.VITE_SUPABASE_URL;
-const supabaseKey = process.env.VITE_SUPABASE_ANON_KEY;
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
 if (!supabaseUrl || !supabaseKey) {
   Logger.error("Chaves do Supabase não encontradas. Verifique o arquivo .env");

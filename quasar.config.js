@@ -70,13 +70,7 @@ export default defineConfig((/* ctx */) => {
 
       // publicPath: '/',
       // analyze: true,
-      env: {
-        VITE_SUPABASE_URL: process.env.VITE_SUPABASE_URL,
-        VITE_SUPABASE_ANON_KEY: process.env.VITE_SUPABASE_ANON_KEY,
-        VITE_BASE_URL_API: process.env.VITE_BASE_URL_API,
-        VITE_ROUTER_MODE: process.env.VITE_ROUTER_MODE,
-        NODE_ENV: process.env.NODE_ENV,
-      },
+      // env: {},
       // rawDefine: {}
       // ignorePublicFolder: true,
       // minify: false,

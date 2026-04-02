@@ -18,9 +18,9 @@ import { useAuthStore } from "src/stores/auth.store";
  */
 
 export default defineRouter(function (/* { store, ssrContext } */) {
-  const createHistory = process.env.SERVER
+  const createHistory = import.meta.env.SERVER
     ? createMemoryHistory
-    : process.env.VITE_ROUTER_MODE === "history"
+    : import.meta.env.VITE_ROUTER_MODE === "history"
       ? createWebHistory
       : createWebHashHistory;
 
