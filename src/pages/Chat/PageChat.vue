@@ -1,71 +1,37 @@
 <template>
   <q-page
-    :style-fn="(offset) => ({ height: `calc(100vh - ${offset}px)` })"
-    class="flex overflow-hidden bg-[#0D1117] h-full"
+    :style-fn="(offset) => ({ height: `calc(100vh - ${offset}px)`, minHeight: '0' })"
+    class="page-chat"
   >
-    <!-- Overlay mobile para fechar sidebar -->
-    <div
-      v-if="sidebarOpen && $q.screen.lt.md"
-      class="fixed inset-0 bg-black/50 z-10"
-      @click="sidebarOpen = false"
-    />
-
-    <!-- Sidebar de conversas -->
+    <!-- Sidebar de conversas (text sidebar 281px) -->
     <transition name="sidebar">
       <CChatConversationsMenu
         v-show="sidebarOpen"
         :open="sidebarOpen"
         :conversations="chat.sessions.value"
         :active-conversation-id="chat.activeConversationId.value"
-        class="z-20 flex-shrink-0 h-full"
-        :class="$q.screen.lt.md ? 'absolute inset-y-0 left-0' : 'relative'"
         @new-chat="chat.newConversation"
-        @select-conversation="(id) => onSelectConversation(id)"
+        @select-conversation="onSelectConversation"
       />
     </transition>
 
     <!-- Área principal -->
-    <div class="flex-1 flex flex-col min-w-0 relative h-full overflow-hidden">
-      <!-- Topbar da área de chat -->
-      <header
-        class="flex items-center gap-3 px-4 py-3 border-b border-[#30363D] bg-[#0D1117] flex-shrink-0"
-      >
-        <div class="flex-1 min-w-0">
-          <p
-            v-if="chat.hasActiveConversation.value"
-            class="text-sm font-medium text-white truncate"
-          >
-            {{ activeTitle }}
-          </p>
-          <p v-else class="text-sm text-gray-500">
-            Selecione ou inicie uma conversa
-          </p>
-        </div>
+    <div class="page-chat__main">
 
-        <c-button
-          icon="add"
-          color="dark"
-          class="rounded-lg text-sm"
-          unelevated
-          no-caps
-          dense
-          @click="chat.newConversation"
-        />
-      </header>
+      <!-- Header inline (não é q-header) -->
+      <CHeader @toggle:sidebar="sidebarOpen = !sidebarOpen" />
 
-      <!-- Mensagens ou Welcome -->
+      <!-- Conteúdo: loading / welcome / mensagens -->
       <div
         v-if="chat.isLoadingMessages.value"
-        class="flex justify-center items-center flex-1 min-h-0"
+        class="page-chat__loading"
       >
         <CSpinner size="4rem" />
       </div>
 
       <CChatWelcome
-        v-else-if="
-          !chat.hasActiveConversation.value || chat.messages.value.length === 0
-        "
-        class="flex-1 overflow-y-auto"
+        v-else-if="!chat.hasActiveConversation.value || chat.messages.value.length === 0"
+        class="page-chat__content"
         @select-prompt="onSelectPrompt"
       />
 
@@ -74,17 +40,13 @@
         ref="messageList"
         :messages="chat.messages.value"
         :is-typing="chat.isTyping.value"
-        class="flex-1 min-h-0"
+        class="page-chat__content"
       />
 
-      <!-- Input -->
+      <!-- Input sempre visível no rodapé -->
       <CChatInputArea
         :disabled="chat.isTyping.value"
-        :pending-files="chat.pendingFiles.value"
-        class="flex-shrink-0"
         @send="sendNewMessage"
-        @attach-files="chat.attachFiles"
-        @remove-file="chat.removeFile"
       />
     </div>
   </q-page>
@@ -93,7 +55,7 @@
 <script>
 import { useChat } from "@composables/useChat";
 import { useAuthStore } from "@stores/auth.store";
-import CButton from "@components/Button/CButton.vue";
+import CHeader from "@components/Header/CHeader.vue";
 import CChatConversationsMenu from "@components/Chat/CChatConversationsMenu.vue";
 import CChatWelcome from "@components/Chat/CChatWelcome.vue";
 import CChatMessageList from "@components/Chat/CChatMessageList.vue";
@@ -104,7 +66,7 @@ export default {
   name: "PageChat",
 
   components: {
-    CButton,
+    CHeader,
     CChatConversationsMenu,
     CChatWelcome,
     CChatMessageList,
@@ -114,7 +76,6 @@ export default {
 
   setup() {
     const authStore = useAuthStore();
-
     return {
       chat: useChat(),
       authStore,
@@ -128,13 +89,6 @@ export default {
   },
 
   computed: {
-    activeTitle() {
-      const conv = this.chat.conversations.value.find(
-        (c) => c.id === this.chat.activeConversationId.value,
-      );
-      return conv?.title || "Nova conversa";
-    },
-
     userId() {
       return this.authStore.user?.id;
     },
@@ -148,7 +102,6 @@ export default {
 
   mounted() {
     this.chat.selectedSession.value = null;
-
     this.onLoadSessions();
   },
 
@@ -161,11 +114,9 @@ export default {
 
     async onSelectConversation(id) {
       await this.chat.getMessagesSessions(id);
-
       this.$nextTick(() => {
         this.$refs.messageList?.scrollToBottom();
       });
-
       if (this.$q.screen.lt.md) {
         this.sidebarOpen = false;
       }
@@ -188,6 +139,39 @@ export default {
 </script>
 
 <style scoped>
+/* ── Root: flex row ocupando a tela toda ─────────── */
+.page-chat {
+  display: flex;
+  overflow: hidden;
+  background-color: var(--color-dark);
+}
+
+/* ── Coluna principal ────────────────────────────── */
+.page-chat__main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  overflow: hidden;
+}
+
+/* ── Área de conteúdo (welcome / mensagens) ──────── */
+.page-chat__content {
+  flex: 1;
+  overflow-y: auto;
+  min-height: 0;
+}
+
+/* ── Loading state ───────────────────────────────── */
+.page-chat__loading {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 0;
+}
+
+/* ── Animação da text sidebar ────────────────────── */
 .sidebar-enter-active,
 .sidebar-leave-active {
   transition:

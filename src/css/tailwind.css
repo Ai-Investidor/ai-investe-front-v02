@@ -44,6 +44,8 @@
   --color-dark-text-secondary: rgb(255 255 255 / 0.6);
   --color-dark-text-muted: rgb(255 255 255 / 0.43);
   --color-dark-text-placeholder: rgb(255 255 255 / 0.46);
+  --color-dark-text-hint: rgb(255 255 255 / 0.24);           /* hint do input controller */
+  --color-dark-text-hint-emphasis: rgb(255 255 255 / 0.40);  /* palavras destacadas no hint */
 
   /* ═══════════════════════════════════════════════════════════
      TEXT — Light Theme
@@ -98,6 +100,7 @@
   --color-surface: #ffffff;
   --color-surface-tooltip: #111d2d;
   --color-on-tooltip: #ffffff;
+  --color-card-overlay: rgba(17, 29, 45, 0.2); /* bg dos cards de sugestão (chat welcome) */
 
   /* ═══════════════════════════════════════════════════════════
      FONT FAMILIES
@@ -114,15 +117,17 @@
      FONT SIZES
      Quasar: $body-font-size → 14px | $button-font-size → 14px
   ═══════════════════════════════════════════════════════════ */
-  --font-size-xs: 0.75rem;
-  --font-size-sm: 0.875rem;
-  --font-size-base: 1rem;
-  --font-size-lg: 1.125rem;
-  --font-size-xl: 1.25rem;
-  --font-size-2xl: 1.5rem;
-  --font-size-3xl: 1.875rem;
-  --font-size-4xl: 2.25rem;
-  --font-size-5xl: 3rem;
+  --font-size-2xs: 0.6875rem;  /* 11px — timestamps, labels pequenos  */
+  --font-size-xs: 0.75rem;     /* 12px */
+  --font-size-sm: 0.875rem;    /* 14px */
+  --font-size-md: 0.9375rem;   /* 15px — labels de UI, nav items      */
+  --font-size-base: 1rem;      /* 16px */
+  --font-size-lg: 1.125rem;    /* 18px */
+  --font-size-xl: 1.25rem;     /* 20px */
+  --font-size-2xl: 1.5rem;     /* 24px */
+  --font-size-3xl: 1.875rem;   /* 30px */
+  --font-size-4xl: 2.25rem;    /* 36px */
+  --font-size-5xl: 3rem;       /* 48px */
 
   /* ═══════════════════════════════════════════════════════════
      LINE HEIGHTS
@@ -137,6 +142,14 @@
   --line-height-3xl: 2.25rem;
   --line-height-4xl: 2.5rem;
   --line-height-5xl: 3rem;
+
+  /* ═══════════════════════════════════════════════════════════
+     LETTER SPACING
+     --tracking-ui  : -0.09em — Inter body/UI (padrão do design)
+     --tracking-caps: +0.05em — uppercase labels e badges
+  ═══════════════════════════════════════════════════════════ */
+  --tracking-ui: -0.09em;
+  --tracking-caps: 0.05em;
 
   /* ═══════════════════════════════════════════════════════════
      FONT WEIGHTS
@@ -162,7 +175,7 @@
   --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
   --shadow-inner: inset 0 2px 4px 0 rgb(0 0 0 / 0.06);
 
-  /* ─── Quasar elevation aliases (shadow-1 → shadow-4) ──────── */
+  /* ─── Quasar elevation aliases (shadow-1 → shadow-4) ─────── */
   --shadow-elevation-1:
     0 1px 3px rgb(0 0 0 / 0.2), 0 1px 1px rgb(0 0 0 / 0.14), 0 2px 1px -1px rgb(0 0 0 / 0.12);
   --shadow-elevation-2:
@@ -184,6 +197,8 @@
   --radius-sm: 3px;
   --radius-base: 4px;
   --radius-md: 8px;
+  --radius-button: 7px;   /* botão "Novo Chat" e similares */
+  --radius-input: 13px;   /* campo de input do chat */
   --radius-xl: 12px;
   --radius-2xl: 16px;
   --radius-3xl: 24px;
@@ -307,5 +322,175 @@
     font-weight: var(--font-weight-extrabold) !important;
     line-height: 1 !important;
     letter-spacing: -0.03em !important;
+  }
+}
+
+/* ===================================================
+   DESIGN SYSTEM — Escala numerada (CLAUDE.md)
+   Mapeada diretamente dos Figma Text Styles do projeto.
+   Cada classe define: font-family, font-weight,
+   font-size, line-height e letter-spacing.
+   =================================================== */
+@layer components {
+
+  /* ── Display ─────────────────────────────────────
+     Bebas Neue — marca, splash screens, logotipos   */
+  .text-display-1 {
+    font-family: var(--font-family-display) !important; /* Bebas Neue */
+    font-size: var(--font-size-5xl) !important;         /* 48px       */
+    font-weight: var(--font-weight-regular) !important;
+    line-height: normal !important;
+    letter-spacing: 0 !important;
+  }
+
+  /* ── Headline 1–6 ────────────────────────────────
+     Hierarquia de títulos — hero, seções, modais    */
+  .text-headline-1 {
+    font-family: var(--font-family-sans) !important;
+    font-size: var(--font-size-5xl) !important;         /* 48px */
+    font-weight: var(--font-weight-extrabold) !important;
+    line-height: 1.05 !important;
+    letter-spacing: -0.03em !important;
+  }
+  .text-headline-2 {
+    font-family: var(--font-family-sans) !important;
+    font-size: var(--font-size-4xl) !important;         /* 36px */
+    font-weight: var(--font-weight-extrabold) !important;
+    line-height: 1.1 !important;
+    letter-spacing: -0.02em !important;
+  }
+  .text-headline-3 {
+    font-family: var(--font-family-sans) !important;
+    font-size: var(--font-size-3xl) !important;         /* 30px */
+    font-weight: var(--font-weight-extrabold) !important;
+    line-height: 1.1 !important;
+    letter-spacing: -0.02em !important;
+  }
+  .text-headline-4 {
+    font-family: var(--font-family-sans) !important;
+    font-size: var(--font-size-2xl) !important;         /* 24px */
+    font-weight: var(--font-weight-bold) !important;
+    line-height: 1.2 !important;
+    letter-spacing: -0.01em !important;
+  }
+  .text-headline-5 {
+    font-family: var(--font-family-sans) !important;
+    font-size: var(--font-size-xl) !important;          /* 20px */
+    font-weight: var(--font-weight-bold) !important;
+    line-height: 1.2 !important;
+    letter-spacing: -0.01em !important;
+  }
+  .text-headline-6 {
+    font-family: var(--font-family-sans) !important;
+    font-size: var(--font-size-lg) !important;          /* 18px */
+    font-weight: var(--font-weight-semibold) !important;
+    line-height: 1.3 !important;
+    letter-spacing: -0.01em !important;
+  }
+
+  /* ── Title 1–4 ───────────────────────────────────
+     Títulos de componentes, cards, seções de UI     */
+  .text-title-1 {
+    font-family: var(--font-family-sans) !important;
+    font-size: var(--font-size-base) !important;        /* 16px */
+    font-weight: var(--font-weight-semibold) !important;
+    line-height: 1.3 !important;
+    letter-spacing: var(--tracking-ui) !important;      /* -0.09em */
+  }
+  .text-title-2 {
+    font-family: var(--font-family-sans) !important;
+    font-size: var(--font-size-md) !important;          /* 15px */
+    font-weight: var(--font-weight-semibold) !important;
+    line-height: 1.3 !important;
+    letter-spacing: var(--tracking-ui) !important;
+  }
+  .text-title-3 {
+    font-family: var(--font-family-sans) !important;
+    font-size: var(--font-size-sm) !important;          /* 14px */
+    font-weight: var(--font-weight-semibold) !important;
+    line-height: 1.3 !important;
+    letter-spacing: var(--tracking-ui) !important;
+  }
+  .text-title-4 {
+    font-family: var(--font-family-sans) !important;
+    font-size: var(--font-size-xs) !important;          /* 12px */
+    font-weight: var(--font-weight-semibold) !important;
+    line-height: 1.3 !important;
+    letter-spacing: var(--tracking-ui) !important;
+  }
+
+  /* ── Paragraph 1–4 ───────────────────────────────
+     Corpo de texto, descrições, labels de UI        */
+  .text-paragraph-1 {
+    font-family: var(--font-family-sans) !important;
+    font-size: var(--font-size-base) !important;        /* 16px */
+    font-weight: var(--font-weight-medium) !important;
+    line-height: 1.5 !important;
+    letter-spacing: var(--tracking-ui) !important;
+  }
+  .text-paragraph-2 {
+    font-family: var(--font-family-sans) !important;
+    font-size: var(--font-size-md) !important;          /* 15px — labels, nav, placeholder */
+    font-weight: var(--font-weight-medium) !important;
+    line-height: 1.5 !important;
+    letter-spacing: var(--tracking-ui) !important;
+  }
+  .text-paragraph-3 {
+    font-family: var(--font-family-sans) !important;
+    font-size: var(--font-size-sm) !important;          /* 14px — descrições de cards */
+    font-weight: var(--font-weight-medium) !important;
+    line-height: 1.6 !important;
+    letter-spacing: var(--tracking-ui) !important;
+  }
+  .text-paragraph-4 {
+    font-family: var(--font-family-sans) !important;
+    font-size: var(--font-size-2xs) !important;         /* 11px — timestamps, meta info */
+    font-weight: var(--font-weight-medium) !important;
+    line-height: 1.4 !important;
+    letter-spacing: var(--tracking-ui) !important;
+  }
+
+  /* ── Welcome Screen ─────────────────────────────
+     Tipografias específicas da tela de boas-vindas  */
+  .text-welcome-heading {
+    font-family: var(--font-family-sans) !important;
+    font-size: 2.5rem !important;                             /* 40px */
+    font-weight: var(--font-weight-medium) !important;
+    line-height: 1.1 !important;
+    letter-spacing: var(--tracking-ui) !important;
+  }
+  .text-welcome-subtitle {
+    font-family: var(--font-family-sans) !important;
+    font-size: var(--font-size-xl) !important;                /* 20px */
+    font-weight: var(--font-weight-medium) !important;
+    line-height: 1.4 !important;
+    letter-spacing: var(--tracking-ui) !important;
+  }
+
+  /* ── Caps 1–3 ────────────────────────────────────
+     Rótulos em maiúsculas, badges, categorias       */
+  .text-caps-1 {
+    font-family: var(--font-family-sans) !important;
+    font-size: var(--font-size-xs) !important;          /* 12px */
+    font-weight: var(--font-weight-semibold) !important;
+    line-height: 1.2 !important;
+    letter-spacing: var(--tracking-caps) !important;    /* +0.05em */
+    text-transform: uppercase !important;
+  }
+  .text-caps-2 {
+    font-family: var(--font-family-sans) !important;
+    font-size: var(--font-size-2xs) !important;         /* 11px */
+    font-weight: var(--font-weight-semibold) !important;
+    line-height: 1.2 !important;
+    letter-spacing: var(--tracking-caps) !important;
+    text-transform: uppercase !important;
+  }
+  .text-caps-3 {
+    font-family: var(--font-family-sans) !important;
+    font-size: 0.625rem !important;                     /* 10px */
+    font-weight: var(--font-weight-medium) !important;
+    line-height: 1.2 !important;
+    letter-spacing: var(--tracking-caps) !important;
+    text-transform: uppercase !important;
   }
 }

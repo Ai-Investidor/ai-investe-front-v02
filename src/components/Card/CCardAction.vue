@@ -1,19 +1,11 @@
 <template>
-  <q-card flat bordered class="c-card-action" @click="$emit('click', $event)">
-    <q-card-section class="flex items-start gap-3 text-left">
-      <q-icon :name="icon" size="20px" class="flex-shrink-0 mt-0.5" />
-      <div>
-        <p
-          class="text-title-sm text-gray-200 group-hover:text-white transition-colors"
-        >
-          {{ title }}
-        </p>
-        <p class="text-paragraph-sm text-gray-500 mt-0.5 leading-relaxed">
-          {{ description }}
-        </p>
-      </div>
-    </q-card-section>
-  </q-card>
+  <button type="button" class="card-action" @click="$emit('click', $event)">
+    <q-icon :name="icon" size="16px" class="card-action__icon" aria-hidden="true" />
+    <div class="card-action__body">
+      <p class="card-action__title">{{ title }}</p>
+      <p class="card-action__description">{{ description }}</p>
+    </div>
+  </button>
 </template>
 
 <script>
@@ -39,19 +31,61 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-.c-card-action {
+<style scoped>
+/* ── Root ─────────────────────────────────────────── */
+.card-action {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 19px 21px;
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--color-border-dark);
+  background-color: var(--color-card-overlay);
   cursor: pointer;
-  border-radius: 0.75rem;
-  background-color: #161b22;
-  border-color: #30363d;
+  text-align: left;
+  width: 100%;
   transition:
-    border-color 0.2s ease,
-    background-color 0.2s ease;
+    background-color 0.18s ease,
+    border-color 0.18s ease;
+}
 
-  &:hover {
-    border-color: var(--q-primary);
-    background-color: #1c2128;
-  }
+.card-action:hover {
+  background-color: rgba(17, 29, 45, 0.4);
+  border-color: rgba(51, 150, 254, 0.3);
+}
+
+/* ── Icon ────────────────────────────────────────── */
+.card-action__icon {
+  color: var(--color-primary);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+/* ── Body ────────────────────────────────────────── */
+.card-action__body {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+/* ── Title ───────────────────────────────────────── */
+.card-action__title {
+  font-family: var(--font-family-sans);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  letter-spacing: var(--tracking-ui);
+  line-height: 1.3;
+  color: var(--color-dark-text);
+}
+
+/* ── Description ─────────────────────────────────── */
+.card-action__description {
+  font-family: var(--font-family-sans);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  letter-spacing: var(--tracking-ui);
+  line-height: 1.5;
+  color: var(--color-dark-text-secondary);
 }
 </style>

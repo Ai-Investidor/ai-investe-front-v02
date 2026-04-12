@@ -1,200 +1,85 @@
 <template>
-  <div
-    class="flex-shrink-0 border-t border-[#30363D] bg-[#0D1117] px-4 md:px-8 lg:px-16 py-4"
-  >
-    <div class="max-w-4xl mx-auto">
-      <!-- Preview de arquivos pendentes -->
-      <div v-if="pendingFiles.length > 0" class="flex flex-wrap gap-2 mb-3">
-        <div
-          v-for="(file, index) in pendingFiles"
-          :key="index"
-          class="flex items-center gap-2 bg-[#161B22] border border-[#30363D] rounded-lg px-3 py-2 text-xs text-gray-300"
-        >
-          <q-icon
-            :name="getFileIcon(file.type)"
-            size="14px"
-            class="text-primary flex-shrink-0"
-          />
-          <span class="max-w-[120px] truncate">{{ file.name }}</span>
-          <span class="text-gray-600 flex-shrink-0">{{
-            formatFileSize(file.size)
-          }}</span>
-          <c-button
-            flat
-            round
-            dense
-            size="xs"
-            icon="close"
-            class="ml-1 text-gray-600 hover:text-red-400 transition-colors flex-shrink-0"
-            :aria-label="`Remover ${file.name}`"
-            @click="$emit('remove-file', index)"
-          />
-        </div>
-      </div>
+  <div class="input-controller">
+    <!-- Campo de input -->
+    <div class="input-controller__field">
+      <textarea
+        ref="textareaRef"
+        v-model="message"
+        class="input-controller__textarea"
+        placeholder="Digite sua pergunta sobre investimentos, análise de ativos ou mercado financeiro . . ."
+        :disabled="disabled"
+        rows="1"
+        @keydown="handleKeyDown"
+        @input="handleInput"
+      />
 
-      <!-- Input area -->
-      <div
-        class="flex items-end gap-3 bg-[#161B22] border-2 border-[#30363D] rounded-2xl px-4 py-3 transition-all duration-200 focus-within:border-primary"
+      <!-- Botão enviar -->
+      <button
+        class="input-controller__send"
+        :class="{ 'input-controller__send--active': canSend }"
+        :disabled="disabled || !canSend"
+        aria-label="Enviar mensagem"
+        @click="handleSend"
       >
-        <!-- Botão de anexo com menu -->
-        <div class="flex-shrink-0 self-end mb-0.5">
-          <c-button
-            flat
-            round
-            dense
-            icon="add_circle_outline"
-            :disabled="disabled"
-            class="w-9 h-9 text-neutral-300 hover:text-primary!"
-            aria-label="Anexar arquivo"
-            @click="toggleAttachMenu"
+        <svg
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          aria-hidden="true"
+        >
+          <path
+            d="M22 2L11 13"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
           />
-
-          <q-menu
-            anchor="top left"
-            self="bottom left"
-            :offset="[0, 8]"
-            class="chat-attach-menu border border-[#30363D] rounded-xl!"
-            auto-close
-          >
-            <div class="bg-[#161B22] overflow-hidden shadow-xl min-w-[200px]">
-              <div class="px-3 py-2">
-                <span
-                  class="text-xs text-neutral-500 font-medium uppercase tracking-wider"
-                >
-                  Anexar
-                </span>
-              </div>
-
-              <q-separator class="my-1" color="neutral-500" />
-
-              <div class="py-1">
-                <c-button
-                  v-for="option in attachMenuOptions"
-                  :key="option.key"
-                  v-close-popup
-                  flat
-                  no-caps
-                  align="left"
-                  class="w-full text-paragraph-sm text-white hover:bg-[#21262D] px-4 py-3"
-                  @click="handleAttachOption(option)"
-                >
-                  <q-icon
-                    :name="option.icon"
-                    size="18px"
-                    class="text-primary flex-shrink-0 mr-3"
-                  />
-                  <div class="flex flex-col">
-                    <span class="font-medium">{{ option.label }}</span>
-                    <span class="text-xs text-gray-600">{{ option.hint }}</span>
-                  </div>
-                </c-button>
-              </div>
-            </div>
-          </q-menu>
-        </div>
-
-        <!-- Textarea -->
-        <textarea
-          ref="textareaRef"
-          v-model="message"
-          :placeholder="placeholder"
-          :disabled="disabled"
-          rows="1"
-          class="flex-1 bg-transparent text-white placeholder-gray-500 text-sm md:text-base resize-none outline-none leading-relaxed max-h-32 overflow-y-auto self-center"
-          @keydown="handleKeyDown"
-          @input="handleInput"
-        />
-
-        <!-- Botão de enviar -->
-        <c-button
-          :disabled="disabled || !canSend"
-          round
-          unelevated
-          icon="send"
-          :loading="disabled"
-          class="flex-shrink-0 w-10 h-10 self-end"
-          :class="
-            canSend
-              ? 'bg-gradient-to-br from-primary to-secondary text-primary! hover:shadow-lg'
-              : 'bg-[#21262D] text-neutral-300'
-          "
-          aria-label="Enviar mensagem"
-          @click="handleSend"
-        />
-      </div>
-
-      <p class="text-xs text-gray-600 text-center mt-4!">
-        Pressione
-        <kbd class="px-1 py-0.5 bg-[#21262D] rounded text-gray-500 text-xs"
-          >Enter</kbd
-        >
-        para enviar,
-        <kbd class="px-1 py-0.5 bg-[#21262D] rounded text-gray-500 text-xs"
-          >Shift+Enter</kbd
-        >
-        para nova linha
-      </p>
+          <path
+            d="M22 2L15 22L11 13L2 9L22 2Z"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </button>
     </div>
 
-    <!-- Input de arquivo oculto -->
-    <input
-      ref="fileInputRef"
-      type="file"
-      :accept="currentAccept"
-      multiple
-      class="hidden"
-      @change="handleFileChange"
-    />
+    <!-- Hint de atalhos -->
+    <p class="input-controller__hint">
+      Pressione
+      <span class="input-controller__hint-key">Enter</span>
+      para enviar,
+      <span class="input-controller__hint-key">Shift + Enter</span>
+      para pra nova linha
+    </p>
   </div>
 </template>
 
 <script>
-import CButton from "components/Button/CButton.vue";
-
 export default {
   name: "CChatInputArea",
 
-  components: {
-    CButton,
-  },
-
   props: {
-    placeholder: {
-      type: String,
-      default: "Pergunte sobre investimentos...",
-    },
     disabled: {
       type: Boolean,
       default: false,
     },
-    pendingFiles: {
-      type: Array,
-      default: () => [],
-    },
   },
 
-  emits: ["send", "attach-files", "remove-file"],
+  emits: ["send"],
 
   data() {
     return {
       message: "",
-      currentAccept: "*/*",
-      attachMenuOptions: [
-        {
-          isOpen: false,
-          key: "files",
-          label: "Enviar arquivos",
-          hint: "PDF, Excel, CSV, imagens...",
-          icon: "attach_file",
-          accept: ".pdf,.xlsx,.xls,.csv,.png,.jpg,.jpeg,.webp,.txt,.doc,.docx",
-        },
-      ],
     };
   },
 
   computed: {
     canSend() {
-      return this.message.trim().length > 0 || this.pendingFiles.length > 0;
+      return this.message.trim().length > 0;
     },
   },
 
@@ -209,27 +94,6 @@ export default {
   },
 
   methods: {
-    toggleAttachMenu() {
-      this.attachMenuOptions[0].isOpen = !this.attachMenuOptions[0].isOpen;
-      //this.$refs.attachMenuRef?.toggle(event);
-    },
-
-    handleAttachOption(option) {
-      this.currentAccept = option.accept ?? "*/*";
-      this.$refs.attachMenuRef?.hide();
-      this.$nextTick(() => {
-        this.$refs.fileInputRef?.click();
-      });
-    },
-
-    handleFileChange(event) {
-      const files = event.target.files;
-      if (!files || files.length === 0) return;
-      this.$emit("attach-files", Array.from(files));
-      // Limpa o input para permitir selecionar o mesmo arquivo novamente
-      event.target.value = "";
-    },
-
     handleInput() {
       const el = this.$refs.textareaRef;
       if (!el) return;
@@ -257,49 +121,105 @@ export default {
         }
       });
     },
-
-    getFileIcon(mimeType) {
-      if (!mimeType) return "insert_drive_file";
-      if (mimeType.startsWith("image/")) return "image";
-      if (mimeType === "application/pdf") return "picture_as_pdf";
-      if (
-        mimeType.includes("spreadsheet") ||
-        mimeType.includes("excel") ||
-        mimeType.includes("csv")
-      )
-        return "table_chart";
-      if (mimeType.includes("word") || mimeType.includes("document"))
-        return "description";
-      if (mimeType.startsWith("text/")) return "article";
-      return "insert_drive_file";
-    },
-
-    formatFileSize(bytes) {
-      if (!bytes) return "";
-      if (bytes < 1024) return `${bytes}B`;
-      if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)}KB`;
-      return `${(bytes / (1024 * 1024)).toFixed(1)}MB`;
-    },
   },
 };
 </script>
 
 <style scoped>
-textarea::-webkit-scrollbar {
-  width: 4px;
+/* ── Root ─────────────────────────────────────────── */
+.input-controller {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 25px 30px;
+  background-color: var(--color-dark);
+  flex-shrink: 0;
 }
 
-textarea::-webkit-scrollbar-track {
+/* ── Input field wrapper ──────────────────────────── */
+.input-controller__field {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  max-width: 900px;
+  background-color: var(--color-dark-card);
+  border-radius: var(--radius-input);
+  padding: 7px 15px;
+}
+
+/* ── Textarea ─────────────────────────────────────── */
+.input-controller__textarea {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  resize: none;
+  color: var(--color-dark-text);
+  font-family: var(--font-family-sans);
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-medium);
+  letter-spacing: var(--tracking-ui);
+  line-height: 1.5;
+  max-height: 128px;
+  overflow-y: auto;
+}
+
+.input-controller__textarea::placeholder {
+  color: var(--color-dark-text-placeholder);
+}
+
+.input-controller__textarea::-webkit-scrollbar {
+  width: 3px;
+}
+.input-controller__textarea::-webkit-scrollbar-track {
   background: transparent;
 }
-
-textarea::-webkit-scrollbar-thumb {
-  background: #30363d;
-  border-radius: 2px;
+.input-controller__textarea::-webkit-scrollbar-thumb {
+  background: var(--color-border-dark);
+  border-radius: var(--radius-full);
 }
 
-.chat-attach-menu {
-  background: transparent !important;
-  box-shadow: none !important;
+/* ── Send button ─────────────────────────────────── */
+.input-controller__send {
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  border-radius: var(--radius-full);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition:
+    background-color 0.18s ease,
+    opacity 0.18s ease;
+  background-color: var(--color-dark-elevated);
+  color: var(--color-dark-text-muted);
+}
+
+.input-controller__send--active {
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark2) 100%);
+  color: var(--color-dark-text);
+}
+
+.input-controller__send:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ── Hint ─────────────────────────────────────────── */
+.input-controller__hint {
+  font-family: var(--font-family-sans);
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-dark-text-hint);
+  text-align: center;
+  white-space: nowrap;
+}
+
+.input-controller__hint-key {
+  color: var(--color-dark-text-hint-emphasis);
 }
 </style>
