@@ -1,7 +1,5 @@
 <template>
-  <q-layout view="lhh Lpr lff">
-    <c-sidebar />
-
+  <q-layout view="hHh lpR lFf">
     <q-page-container>
       <router-view />
     </q-page-container>
@@ -9,13 +7,7 @@
 </template>
 
 <script>
-import CSidebar from "@components/Sidebar/CSidebar.vue";
-
 export default {
   name: "MainLayout",
-
-  components: {
-    CSidebar,
-  },
 };
 </script>

@@ -3,7 +3,10 @@
     :style-fn="(offset) => ({ height: `calc(100vh - ${offset}px)`, minHeight: '0' })"
     class="page-chat"
   >
-    <!-- Sidebar de conversas (text sidebar 281px) -->
+    <!-- Coluna 1: icon sidebar (75px, sempre visível) -->
+    <CSidebar />
+
+    <!-- Coluna 2: text sidebar (281px, togglável) -->
     <transition name="sidebar">
       <CChatConversationsMenu
         v-show="sidebarOpen"
@@ -15,7 +18,7 @@
       />
     </transition>
 
-    <!-- Área principal -->
+    <!-- Coluna 3: área principal -->
     <div class="page-chat__main">
 
       <!-- Header inline (não é q-header) -->
@@ -55,6 +58,7 @@
 <script>
 import { useChat } from "@composables/useChat";
 import { useAuthStore } from "@stores/auth.store";
+import CSidebar from "@components/Sidebar/CSidebar.vue";
 import CHeader from "@components/Header/CHeader.vue";
 import CChatConversationsMenu from "@components/Chat/CChatConversationsMenu.vue";
 import CChatWelcome from "@components/Chat/CChatWelcome.vue";
@@ -66,6 +70,7 @@ export default {
   name: "PageChat",
 
   components: {
+    CSidebar,
     CHeader,
     CChatConversationsMenu,
     CChatWelcome,
@@ -139,14 +144,15 @@ export default {
 </script>
 
 <style scoped>
-/* ── Root: flex row ocupando a tela toda ─────────── */
+/* ── Root: flex row cobrindo a tela inteira ──────── */
 .page-chat {
   display: flex;
+  flex-direction: row;
   overflow: hidden;
   background-color: var(--color-dark);
 }
 
-/* ── Coluna principal ────────────────────────────── */
+/* ── Coluna principal (header + conteúdo + input) ── */
 .page-chat__main {
   flex: 1;
   display: flex;
