@@ -134,6 +134,7 @@ export default {
   gap: 16px;
   padding: 25px 30px;
   background-color: var(--color-dark);
+  border-top: 1px solid var(--color-border-dark);
   flex-shrink: 0;
 }
 
@@ -200,7 +201,11 @@ export default {
 }
 
 .input-controller__send--active {
-  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark2) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--color-primary) 0%,
+    var(--color-primary-dark2) 100%
+  );
   color: var(--color-dark-text);
 }
 

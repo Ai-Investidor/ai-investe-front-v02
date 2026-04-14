@@ -1,8 +1,5 @@
 <template>
-  <aside
-    v-show="open"
-    class="conversations-menu"
-  >
+  <aside v-show="open" class="conversations-menu">
     <!-- Header: Ai.invest — chat -->
     <div class="conversations-menu__header">
       <span class="conversations-menu__brand">Ai.invest</span>
@@ -22,13 +19,8 @@
     </div>
 
     <!-- Lista de conversas -->
-    <div
-      ref="conversationsList"
-      class="conversations-menu__list"
-    >
-      <p class="conversations-menu__list-label">
-        Conversas recentes
-      </p>
+    <div ref="conversationsList" class="conversations-menu__list">
+      <p class="conversations-menu__list-label">Conversas recentes</p>
 
       <button
         v-for="conversation in conversations"
@@ -133,7 +125,7 @@ export default {
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 21px 30px;
+  padding: 23px 30px;
   border-bottom: 1px solid var(--color-border-dark);
   flex-shrink: 0;
 }
@@ -155,7 +147,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 14px 30px;
+  padding: 10px 30px;
   border-bottom: 1px solid var(--color-border-dark);
   flex-shrink: 0;
 }
@@ -166,7 +158,7 @@ export default {
   align-items: center;
   justify-content: center;
   gap: 10px;
-  padding: 12px 23px;
+  padding: 6px 16px !important;
   border-radius: var(--radius-button);
   border: 1px solid rgba(51, 150, 254, 0.35);
   background: linear-gradient(
@@ -186,10 +178,15 @@ export default {
 }
 
 .conversations-menu__new-chat-icon {
-  font-size: var(--font-size-xl);
-  font-weight: var(--font-weight-light);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: var(--font-size-xl) !important;
+  font-weight: var(--font-weight-light) !important;
   line-height: 1;
   flex-shrink: 0;
+
+  max-height: 24px !important;
 }
 
 .conversations-menu__new-chat-label {
@@ -280,17 +277,5 @@ export default {
   font-weight: var(--font-weight-medium);
   letter-spacing: var(--tracking-ui);
   color: var(--color-dark-text-secondary);
-}
-
-/* ── Scrollbar ───────────────────────────────────── */
-.conversations-menu__list::-webkit-scrollbar {
-  width: 3px;
-}
-.conversations-menu__list::-webkit-scrollbar-track {
-  background: transparent;
-}
-.conversations-menu__list::-webkit-scrollbar-thumb {
-  background: var(--color-border-dark);
-  border-radius: var(--radius-full);
 }
 </style>

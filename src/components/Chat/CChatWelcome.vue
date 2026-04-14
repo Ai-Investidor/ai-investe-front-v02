@@ -6,8 +6,8 @@
     <!-- Ícone central -->
     <div class="welcome__icon">
       <q-icon
-        name="svguse:icons/icons.svg#icon-logo"
-        size="32px"
+        name="svguse:icons/icons.svg#icon-log"
+        size="64px"
         color="white"
       />
     </div>
@@ -18,7 +18,8 @@
     <!-- Subtítulo -->
     <p class="welcome__subtitle">
       Sou seu assistente especializado em análise financeira e investimentos.
-      Posso ajudar com análise de ativos, tendências de mercado e estratégias de investimento
+      Posso ajudar com análise de ativos, tendências de mercado e estratégias de
+      investimento
     </p>
 
     <!-- Grid de cards de sugestão -->
@@ -27,6 +28,7 @@
         v-for="prompt in prompts"
         :key="prompt.id"
         :icon="prompt.icon"
+        :icon-color="prompt.color"
         :title="prompt.title"
         :description="prompt.description"
         @click="$emit('select-prompt', prompt.text)"
@@ -54,14 +56,16 @@ export default {
           id: 1,
           icon: "trending_up",
           title: "Análise Fundamentalista",
+          color: "blue",
           description:
-            "Faça uma análise fundamentalista completa da Apple com base em noticias sobre a ação",
-          text: "Faça uma análise fundamentalista completa da Apple com base em noticias sobre a ação",
+            "Faça análise fundamentalista da Apple baseada em notícias",
+          text: "Faça análise fundamentalista da Apple baseada em notícias",
         },
         {
           id: 2,
           icon: "bar_chart",
           title: "Comparação de ETFs",
+          color: "green",
           description:
             "Compare o desempenho de ETFs de tecnologia nos últimos 5 anos",
           text: "Compare o desempenho de ETFs de tecnologia nos últimos 5 anos",
@@ -70,16 +74,16 @@ export default {
           id: 3,
           icon: "pie_chart",
           title: "Diversificação de Portfolio",
-          description:
-            "Como posso diversificar um portfolio de R$ 100.000?",
+          color: "red",
+          description: "Como posso diversificar um portfolio de R$ 100.000?",
           text: "Como posso diversificar um portfolio de R$ 100.000?",
         },
         {
           id: 4,
           icon: "savings",
           title: "Análise de Dividend Yield",
-          description:
-            "Melhores ações com dividend yield acima de 6%",
+          color: "blue",
+          description: "Melhores ações com dividend yield acima de 6%",
           text: "Quais são as melhores ações com dividend yield acima de 6%?",
         },
       ],
@@ -108,13 +112,14 @@ export default {
   top: -10%;
   left: 50%;
   transform: translateX(-50%);
-  width: 1200px;
-  height: 700px;
+  width: 80vw;
+  height: 80vh;
   background: radial-gradient(
-    ellipse at center,
-    rgba(51, 150, 254, 0.08) 0%,
-    transparent 65%
+    50% 50% at 50% 50%,
+    rgba(51, 150, 254, 0.34) 0%,
+    rgba(2, 12, 22, 0.34) 100%
   );
+
   pointer-events: none;
   z-index: 0;
 }
@@ -123,15 +128,10 @@ export default {
 .welcome__icon {
   position: relative;
   z-index: 1;
-  width: 64px;
-  height: 64px;
-  border-radius: var(--radius-xl);
-  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark2) 100%);
   display: flex;
   align-items: center;
   justify-content: center;
   margin-bottom: 24px;
-  box-shadow: 0 0 32px rgba(51, 150, 254, 0.35);
   flex-shrink: 0;
 }
 
@@ -140,12 +140,12 @@ export default {
   position: relative;
   z-index: 1;
   font-family: var(--font-family-sans);
-  font-size: 2.5rem; /* 40px — especificado no Figma */
+  font-size: 2.5rem !important; /* 40px — especificado no Figma */
   font-weight: var(--font-weight-medium);
   line-height: 1.1;
   letter-spacing: var(--tracking-ui);
   color: var(--color-dark-text);
-  margin-bottom: 16px;
+  margin-bottom: 16px !important;
 }
 
 /* ── Subtítulo ───────────────────────────────────── */
@@ -153,13 +153,13 @@ export default {
   position: relative;
   z-index: 1;
   font-family: var(--font-family-sans);
-  font-size: var(--font-size-xl); /* 20px */
+  font-size: var(--font-size-xl) !important; /* 20px */
   font-weight: var(--font-weight-medium);
   line-height: 1.4;
   letter-spacing: var(--tracking-ui);
   color: var(--color-dark-text-muted); /* opacity ~0.43 */
-  max-width: 673px;
-  margin-bottom: 40px;
+  max-width: 736px;
+  margin-bottom: 40px !important;
 }
 
 /* ── Cards grid ──────────────────────────────────── */
@@ -168,8 +168,8 @@ export default {
   z-index: 1;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
+  gap: 1.4rem;
   width: 100%;
-  max-width: 666px;
+  max-width: 44rem;
 }
 </style>
