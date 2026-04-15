@@ -1,12 +1,12 @@
 <template>
   <aside
-    class="w-80 bg-[#161B22] border-r border-[#30363D] flex flex-col flex-shrink-0"
+    class="flex flex-col shrink-0 w-80 bg-chat-surface border-r border-chat-border"
   >
     <!-- Botão Novo Chat -->
     <div class="p-4">
       <button
         @click="$emit('new-chat')"
-        class="w-full bg-primary hover:bg-primary-dark text-white font-medium py-3 px-4 rounded-xl flex items-center justify-center space-x-2 transition-colors duration-200 shadow-sm"
+        class="flex items-center justify-center gap-2 w-full py-3 px-4 bg-primary text-white font-medium rounded-xl shadow-sm transition-colors duration-200 hover:bg-primary-dark"
       >
         <svg
           class="w-5 h-5"
@@ -28,19 +28,19 @@
     <!-- Conversas Recentes -->
     <div class="flex-1 overflow-y-auto px-4 pb-4">
       <h3
-        class="text-sm font-medium text-gray-400 uppercase tracking-wider mb-3 px-2"
+        class="text-caps-1 text-dark-text-muted mb-3 px-2"
       >
         Conversas recentes
       </h3>
-      <div class="space-y-1">
+      <div class="flex flex-col gap-1">
         <button
           v-for="conversation in conversations"
           :key="conversation.id"
           @click="$emit('select-conversation', conversation.id)"
-          class="w-full text-left px-3 py-2.5 rounded-lg hover:bg-[#21262D] transition-colors duration-150 flex items-start space-x-3 group"
+          class="flex items-start gap-3 w-full text-left px-3 py-2.5 rounded-md transition-colors duration-150 group hover:bg-chat-hover"
         >
           <svg
-            class="w-5 h-5 text-gray-500 flex-shrink-0 mt-0.5"
+            class="shrink-0 w-5 h-5 mt-0.5 text-dark-text-hint-emphasis"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -53,10 +53,10 @@
             ></path>
           </svg>
           <div class="flex-1 min-w-0">
-            <div class="text-sm text-gray-300 truncate leading-tight">
+            <div class="text-paragraph-3 text-dark-text-secondary truncate">
               {{ conversation.title }}
             </div>
-            <div class="text-xs text-gray-500 mt-1">
+            <div class="text-paragraph-4 text-dark-text-hint-emphasis mt-1">
               {{ formatForDisplay(conversation.timestamp) }}
             </div>
           </div>
@@ -65,11 +65,11 @@
     </div>
 
     <!-- Configurações e Perfil -->
-    <div class="border-t border-[#30363D] p-4 space-y-3 flex-shrink-0">
+    <div class="flex flex-col gap-3 shrink-0 border-t border-chat-border p-4">
       <!-- Toggle de Tema -->
       <div class="flex items-center justify-between px-2 py-1.5">
         <svg
-          class="w-5 h-5 text-gray-400 flex-shrink-0"
+          class="shrink-0 w-5 h-5 text-dark-text-muted"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -84,7 +84,7 @@
         <button
           @click="$emit('toggle-theme')"
           class="relative w-14 h-7 rounded-full transition-all duration-200 focus:outline-none"
-          :class="isDark ? 'bg-primary' : 'bg-[#21262D]'"
+          :class="isDark ? 'bg-primary' : 'bg-chat-hover'"
         >
           <div
             class="absolute top-1 w-5 h-5 bg-white rounded-full transition-transform duration-200 shadow-sm"
@@ -92,7 +92,7 @@
           ></div>
         </button>
         <svg
-          class="w-5 h-5 text-gray-400 flex-shrink-0"
+          class="shrink-0 w-5 h-5 text-dark-text-muted"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -108,10 +108,10 @@
 
       <!-- Configurações -->
       <button
-        class="w-full text-left px-2 py-2 rounded-lg hover:bg-[#21262D] transition-colors duration-150 flex items-center space-x-3 text-gray-400 hover:text-gray-300"
+        class="flex items-center gap-3 w-full text-left px-2 py-2 rounded-md text-dark-text-muted transition-colors duration-150 hover:bg-chat-hover hover:text-dark-text-secondary"
       >
         <svg
-          class="w-5 h-5 flex-shrink-0"
+          class="shrink-0 w-5 h-5"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -129,14 +129,14 @@
             d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
           ></path>
         </svg>
-        <span class="text-sm">Configurações</span>
+        <span class="text-paragraph-3">Configurações</span>
       </button>
 
       <!-- Perfil do Usuário -->
       <div class="px-2 py-2">
-        <div class="flex items-center space-x-3">
+        <div class="flex items-center gap-3">
           <div
-            class="w-8 h-8 bg-primary rounded-full flex items-center justify-center flex-shrink-0"
+            class="flex items-center justify-center shrink-0 w-8 h-8 bg-primary rounded-full"
           >
             <svg
               class="w-5 h-5 text-white"
@@ -153,10 +153,10 @@
             </svg>
           </div>
           <div class="flex-1 min-w-0">
-            <div class="text-sm text-gray-300 font-medium truncate">
+            <div class="text-paragraph-3 text-dark-text-secondary truncate">
               {{ user?.name || "Usuário" }}
             </div>
-            <div class="text-xs text-gray-500 truncate">
+            <div class="text-paragraph-4 text-dark-text-hint-emphasis truncate">
               {{ user?.email || "user@email.com" }}
             </div>
           </div>

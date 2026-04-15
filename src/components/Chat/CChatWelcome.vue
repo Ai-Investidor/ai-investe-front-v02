@@ -1,10 +1,12 @@
 <template>
-  <div class="welcome">
+  <div
+    class="relative flex-1 flex flex-col items-center justify-center py-12 px-6 text-center overflow-hidden"
+  >
     <!-- Glow de fundo -->
-    <div class="welcome__bg-glow" aria-hidden="true" />
+    <div class="welcome-glow" aria-hidden="true" />
 
     <!-- Ícone central -->
-    <div class="welcome__icon">
+    <div class="relative z-1 flex items-center justify-center mb-6 shrink-0">
       <q-icon
         name="svguse:icons/icons.svg#icon-log"
         size="64px"
@@ -13,17 +15,21 @@
     </div>
 
     <!-- Título principal -->
-    <h1 class="welcome__title">Como posso te ajudar hoje?</h1>
+    <h1 class="relative z-1 text-welcome-heading text-dark-text !mb-4">
+      Como posso te ajudar hoje?
+    </h1>
 
     <!-- Subtítulo -->
-    <p class="welcome__subtitle">
+    <p
+      class="relative z-1 text-welcome-subtitle text-dark-text-muted max-w-[46rem] !mb-10"
+    >
       Sou seu assistente especializado em análise financeira e investimentos.
       Posso ajudar com análise de ativos, tendências de mercado e estratégias de
       investimento
     </p>
 
     <!-- Grid de cards de sugestão -->
-    <div class="welcome__cards">
+    <div class="relative z-1 grid grid-cols-2 gap-6 w-full max-w-[44rem]">
       <c-card-action
         v-for="prompt in prompts"
         :key="prompt.id"
@@ -91,85 +97,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-/* ── Root ─────────────────────────────────────────── */
-.welcome {
-  position: relative;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 48px 24px;
-  text-align: center;
-  overflow: hidden;
-}
-
-/* ── Background glow ─────────────────────────────── */
-.welcome__bg-glow {
-  position: absolute;
-  top: -10%;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 100vw;
-  height: 100vh;
-  background: radial-gradient(
-    30% 50% at 50% 50%,
-    rgba(51, 150, 254, 0.34) 0%,
-    rgba(2, 12, 22, 0.34) 100%
-  );
-
-  pointer-events: none;
-  z-index: 0;
-}
-
-/* ── Ícone ────────────────────────────────────────── */
-.welcome__icon {
-  position: relative;
-  z-index: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 24px;
-  flex-shrink: 0;
-}
-
-/* ── Título ──────────────────────────────────────── */
-.welcome__title {
-  position: relative;
-  z-index: 1;
-  font-family: var(--font-family-sans);
-  font-size: 2.5rem !important; /* 40px — especificado no Figma */
-  font-weight: var(--font-weight-medium);
-  line-height: 1.1;
-  letter-spacing: var(--tracking-ui);
-  color: var(--color-dark-text);
-  margin-bottom: 16px !important;
-}
-
-/* ── Subtítulo ───────────────────────────────────── */
-.welcome__subtitle {
-  position: relative;
-  z-index: 1;
-  font-family: var(--font-family-sans);
-  font-size: var(--font-size-xl) !important; /* 20px */
-  font-weight: var(--font-weight-medium);
-  line-height: 1.4;
-  letter-spacing: var(--tracking-ui);
-  color: var(--color-dark-text-muted); /* opacity ~0.43 */
-  max-width: 736px;
-  margin-bottom: 40px !important;
-}
-
-/* ── Cards grid ──────────────────────────────────── */
-.welcome__cards {
-  position: relative;
-  z-index: 1;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1.4rem;
-  width: 100%;
-  max-width: 44rem;
-}
-</style>
