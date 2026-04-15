@@ -1,9 +1,11 @@
 <template>
-  <aside class="icon-sidebar">
+  <aside class="flex flex-col shrink-0 w-[75px] h-full bg-dark-card border-r border-border-dark overflow-hidden">
 
     <!-- Logo -->
-    <div class="icon-sidebar__logo">
-      <div class="icon-sidebar__logo-icon">
+    <div class="flex items-center justify-center shrink-0 py-[21px]">
+      <div
+        class="flex items-center justify-center shrink-0 size-10 rounded-md bg-linear-to-br from-primary to-primary-dark2 shadow-[0_0_16px_rgba(51,150,254,0.28)]"
+      >
         <q-icon
           name="svguse:icons/icons.svg#icon-logo"
           size="20px"
@@ -13,13 +15,13 @@
     </div>
 
     <!-- Navegação principal -->
-    <nav class="icon-sidebar__nav">
+    <nav class="flex flex-col items-center shrink-0 gap-[34px] py-[14px] border-y border-border-dark">
       <button
         v-for="item in navItems"
         :key="item.key"
         type="button"
-        class="icon-sidebar__nav-item"
-        :class="{ 'icon-sidebar__nav-item--active': isActive(item) }"
+        class="sidebar-btn"
+        :class="{ 'sidebar-btn--active': isActive(item) }"
         :aria-label="item.label"
         @click="navigate(item)"
       >
@@ -28,7 +30,7 @@
           anchor="center right"
           self="center left"
           :offset="[12, 0]"
-          class="icon-sidebar__tooltip"
+          class="sidebar-tooltip"
         >
           {{ item.label }}
         </q-tooltip>
@@ -36,9 +38,9 @@
     </nav>
 
     <!-- Controles secundários -->
-    <div class="icon-sidebar__secondary">
+    <div class="flex flex-col items-center shrink-0 gap-[34px] pt-[34px]">
       <button
-        class="icon-sidebar__control"
+        class="sidebar-btn"
         aria-label="Notificações"
       >
         <q-icon name="notifications_none" size="20px" />
@@ -46,14 +48,14 @@
           anchor="center right"
           self="center left"
           :offset="[12, 0]"
-          class="icon-sidebar__tooltip"
+          class="sidebar-tooltip"
         >
           Notificações
         </q-tooltip>
       </button>
 
       <button
-        class="icon-sidebar__control"
+        class="sidebar-btn"
         aria-label="Configurações"
         @click="navigate({ route: '/configuracoes' })"
       >
@@ -62,7 +64,7 @@
           anchor="center right"
           self="center left"
           :offset="[12, 0]"
-          class="icon-sidebar__tooltip"
+          class="sidebar-tooltip"
         >
           Configurações
         </q-tooltip>
@@ -70,9 +72,9 @@
     </div>
 
     <!-- Rodapé: logout -->
-    <div class="icon-sidebar__footer">
+    <div class="flex flex-col items-center shrink-0 py-[14px] mt-auto border-t border-border-dark">
       <button
-        class="icon-sidebar__control"
+        class="sidebar-btn"
         aria-label="Sair"
         @click="onLogout"
       >
@@ -81,7 +83,7 @@
           anchor="center right"
           self="center left"
           :offset="[12, 0]"
-          class="icon-sidebar__tooltip"
+          class="sidebar-tooltip"
         >
           Sair
         </q-tooltip>
@@ -142,132 +144,31 @@ export default {
 </script>
 
 <style scoped>
-/* ── Root ─────────────────────────────────────────── */
-.icon-sidebar {
-  width: 75px;
-  flex-shrink: 0;
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  background-color: var(--color-dark-card);
-  border-right: 1px solid var(--color-border-dark);
-  overflow: hidden;
+@reference "../../css/tailwind.css";
+
+/* ── Sidebar button (nav items + controls) ───────── */
+.sidebar-btn {
+  @apply flex items-center justify-center shrink-0 size-10
+         bg-transparent text-dark-text-muted
+         rounded-md border-none cursor-pointer;
+  transition: background-color 0.18s ease, color 0.18s ease;
 }
 
-/* ── Logo ────────────────────────────────────────── */
-.icon-sidebar__logo {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 21px 0;
-  flex-shrink: 0;
+.sidebar-btn:not(.sidebar-btn--active):hover {
+  @apply bg-white/[0.07] text-dark-text-secondary;
 }
 
-.icon-sidebar__logo-icon {
-  width: 40px;
-  height: 40px;
-  border-radius: var(--radius-md);
-  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark2) 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 0 16px rgba(51, 150, 254, 0.28);
-  flex-shrink: 0;
+.sidebar-btn--active {
+  @apply bg-linear-to-br from-primary to-primary-dark2 text-dark-text;
 }
 
-/* ── Nav ─────────────────────────────────────────── */
-.icon-sidebar__nav {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 34px;
-  padding: 14px 0;
-  border-top: 1px solid var(--color-border-dark);
-  border-bottom: 1px solid var(--color-border-dark);
-  flex-shrink: 0;
-}
-
-.icon-sidebar__nav-item {
-  width: 40px;
-  height: 40px;
-  border-radius: var(--radius-md);
-  border: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  background: transparent;
-  color: var(--color-dark-text-muted);
-  transition:
-    background-color 0.18s ease,
-    color 0.18s ease;
-  flex-shrink: 0;
-}
-
-.icon-sidebar__nav-item:hover {
-  background-color: rgba(255, 255, 255, 0.07);
-  color: var(--color-dark-text-secondary);
-}
-
-.icon-sidebar__nav-item--active {
-  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark2) 100%);
-  color: var(--color-dark-text);
-}
-
-.icon-sidebar__nav-item--active:hover {
+.sidebar-btn--active:hover {
   opacity: 0.9;
 }
 
-/* ── Secondary controls ──────────────────────────── */
-.icon-sidebar__secondary {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 34px;
-  padding: 34px 0 0;
-  flex-shrink: 0;
-}
-
-/* ── Footer ──────────────────────────────────────── */
-.icon-sidebar__footer {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 14px 0;
-  border-top: 1px solid var(--color-border-dark);
-  margin-top: auto;
-  flex-shrink: 0;
-}
-
-/* ── Control buttons (notif, settings, logout) ───── */
-.icon-sidebar__control {
-  width: 40px;
-  height: 40px;
-  border-radius: var(--radius-md);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  color: var(--color-dark-text-muted);
-  background: transparent;
-  border: none;
-  transition:
-    background-color 0.18s ease,
-    color 0.18s ease;
-}
-
-.icon-sidebar__control:hover {
-  background-color: rgba(255, 255, 255, 0.07);
-  color: var(--color-dark-text-secondary);
-}
-
-/* ── Tooltip override ────────────────────────────── */
-:deep(.icon-sidebar__tooltip) {
-  font-size: var(--font-size-xs);
-  background-color: var(--color-dark-card);
-  color: var(--color-dark-text);
-  border: 1px solid var(--color-border-dark);
-  border-radius: var(--radius-md);
+/* ── Tooltip (Quasar portal — needs :deep) ───────── */
+:deep(.sidebar-tooltip) {
+  @apply text-xs bg-dark-card text-dark-text border border-border-dark rounded-md;
   padding: 5px 10px;
 }
 </style>

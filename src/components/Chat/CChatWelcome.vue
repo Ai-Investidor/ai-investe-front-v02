@@ -112,10 +112,10 @@ export default {
   top: -10%;
   left: 50%;
   transform: translateX(-50%);
-  width: 80vw;
-  height: 80vh;
+  width: 100vw;
+  height: 100vh;
   background: radial-gradient(
-    50% 50% at 50% 50%,
+    30% 50% at 50% 50%,
     rgba(51, 150, 254, 0.34) 0%,
     rgba(2, 12, 22, 0.34) 100%
   );
