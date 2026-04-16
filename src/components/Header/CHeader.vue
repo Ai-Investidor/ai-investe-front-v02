@@ -1,21 +1,12 @@
 <template>
-  <header class="app-header">
+  <q-header class="app-header">
     <div class="app-header__inner">
-
-      <!-- Esquerda: toggle da sidebar de texto + brand -->
-      <div class="app-header__left">
-        <button class="app-header__toggle" aria-label="Alternar sidebar" @click="onToggle">
-          <svg width="20" height="18" viewBox="0 0 20 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <rect x="0.75" y="0.75" width="18.5" height="16.5" rx="2.25" stroke="currentColor" stroke-width="1.5"/>
-            <line x1="6.5" y1="0.75" x2="6.5" y2="17.25" stroke="currentColor" stroke-width="1.5"/>
-          </svg>
-        </button>
-        <span class="app-header__brand">AI.INVEST</span>
-      </div>
+      <span class="text-title-3 text-white">
+        {{ nameCurrentRoute }}
+      </span>
 
       <!-- Direita: ações + info do usuário -->
       <div class="app-header__right">
-
         <!-- Notificações -->
         <button class="app-header__action" aria-label="Notificações">
           <q-icon name="notifications_none" size="20px" />
@@ -30,9 +21,12 @@
           :aria-label="$q.dark.isActive ? 'Modo claro' : 'Modo escuro'"
           @click="$q.dark.toggle()"
         >
-          <q-icon :name="$q.dark.isActive ? 'light_mode' : 'dark_mode'" size="18px" />
+          <q-icon
+            :name="$q.dark.isActive ? 'light_mode' : 'dark_mode'"
+            size="18px"
+          />
           <q-tooltip anchor="bottom middle" self="top middle" :offset="[0, 6]">
-            {{ $q.dark.isActive ? 'Modo claro' : 'Modo escuro' }}
+            {{ $q.dark.isActive ? "Modo claro" : "Modo escuro" }}
           </q-tooltip>
         </button>
 
@@ -45,22 +39,28 @@
               :alt="userDisplayName"
               class="app-header__avatar-img"
             />
-            <span v-else class="app-header__avatar-initials">{{ userInitials }}</span>
+            <span v-else class="app-header__avatar-initials">{{
+              userInitials
+            }}</span>
           </div>
           <div class="app-header__user-info">
             <span class="app-header__user-name">{{ userDisplayName }}</span>
             <span class="app-header__user-role">PRO INVESTING</span>
           </div>
-          <q-icon name="keyboard_arrow_down" size="20px" class="app-header__chevron" />
+          <q-icon
+            name="keyboard_arrow_down"
+            size="20px"
+            class="app-header__chevron"
+          />
         </div>
       </div>
-
     </div>
-  </header>
+  </q-header>
 </template>
 
 <script>
 import { useAuthStore } from "@stores/auth.store";
+import { useRouter } from "vue-router";
 
 export default {
   name: "CHeader",
@@ -75,7 +75,11 @@ export default {
 
     userDisplayName() {
       const authStore = useAuthStore();
-      return (authStore.userFullName || authStore.userEmail || "USER NAME").toUpperCase();
+      return (
+        authStore.userFullName ||
+        authStore.userEmail ||
+        "USER NAME"
+      ).toUpperCase();
     },
 
     userInitials() {
@@ -89,6 +93,12 @@ export default {
           .join("")
           .toUpperCase() || "U"
       );
+    },
+
+    nameCurrentRoute() {
+      const router = useRouter();
+
+      return router.currentRoute.value?.meta?.label || "Dashboard";
     },
   },
 
@@ -107,7 +117,7 @@ export default {
   align-items: stretch;
   background-color: var(--color-dark-card);
   border-bottom: 1px solid var(--color-border-dark);
-  height: 68px;
+  height: 83px;
   flex-shrink: 0;
 }
 
@@ -214,7 +224,11 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark2) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--color-primary) 0%,
+    var(--color-primary-dark2) 100%
+  );
 }
 
 .app-header__avatar-img {

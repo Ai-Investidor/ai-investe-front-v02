@@ -1,8 +1,8 @@
 <template>
-  <div class="relative flex-1 min-h-0 flex flex-col">
+  <div class="relative flex-1! min-h-0! flex! flex-col!">
     <div
       ref="listRef"
-      class="flex-1 min-h-0 overflow-y-auto px-4 md:px-8 lg:px-16 py-6"
+      class="flex-1 min-h-0! overflow-y-auto! px-4 md:px-8 lg:px-16 py-6"
       @scroll="onScroll"
     >
       <CChatMessage
@@ -84,7 +84,8 @@ export default {
 
       clearTimeout(this.scrollEndTimer);
       this.scrollEndTimer = setTimeout(() => {
-        const distanceFromBottom = el.scrollHeight - el.scrollTop - el.clientHeight;
+        const distanceFromBottom =
+          el.scrollHeight - el.scrollTop - el.clientHeight;
         this.showScrollButton = distanceFromBottom > 120;
       }, 150);
     },

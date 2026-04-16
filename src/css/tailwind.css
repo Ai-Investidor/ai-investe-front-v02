@@ -536,6 +536,23 @@
 }
 
 /* ===================================================
+   NEW CHAT BUTTON — Gradient background
+   Gradiente linear com ângulo específico (-7.59deg)
+   usando a cor primary em diferentes opacidades.
+   Extraído porque gradientes com ângulo e stops
+   customizados não se expressam em utilities inline.
+   =================================================== */
+@layer components {
+  .btn-new-chat-gradient {
+    background: linear-gradient(
+      -7.59deg,
+      rgb(from var(--color-primary) r g b / 0.05) 1%,
+      rgb(from var(--color-primary) r g b / 0.45) 100%
+    );
+  }
+}
+
+/* ===================================================
    WELCOME — Background glow
    Radial-gradient decorativo com cores derivadas de
    --color-primary (34%) e --color-dark (34%).

@@ -27,9 +27,7 @@
 
     <!-- Conversas Recentes -->
     <div class="flex-1 overflow-y-auto px-4 pb-4">
-      <h3
-        class="text-caps-1 text-dark-text-muted mb-3 px-2"
-      >
+      <h3 class="text-caps-1 text-dark-text-muted mb-3 px-2">
         Conversas recentes
       </h3>
       <div class="flex flex-col gap-1">

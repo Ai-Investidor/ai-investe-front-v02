@@ -1,96 +1,100 @@
 <template>
-  <aside class="flex flex-col shrink-0 w-[75px] h-full bg-dark-card border-r border-border-dark overflow-hidden">
+  <q-drawer
+    show-if-above
+    :width="70"
+    class="h-full bg-dark-card border-r border-border-dark overflow-hidden"
+  >
+    <div class="flex flex-col h-full">
+      <!-- Logo -->
+      <div class="flex items-center justify-center shrink-0 py-[21px]">
+        <div
+          class="flex items-center justify-center shrink-0 size-10 rounded-md bg-linear-to-br from-primary to-primary-dark2 shadow-[0_0_16px_rgba(51,150,254,0.28)]"
+        >
+          <q-icon
+            name="svguse:icons/icons.svg#icon-logo"
+            size="20px"
+            color="white"
+          />
+        </div>
+      </div>
 
-    <!-- Logo -->
-    <div class="flex items-center justify-center shrink-0 py-[21px]">
-      <div
-        class="flex items-center justify-center shrink-0 size-10 rounded-md bg-linear-to-br from-primary to-primary-dark2 shadow-[0_0_16px_rgba(51,150,254,0.28)]"
+      <!-- Navegação principal -->
+      <nav
+        class="flex flex-col items-center shrink-0 gap-8 py-4 border-y border-border-dark"
       >
-        <q-icon
-          name="svguse:icons/icons.svg#icon-logo"
-          size="20px"
-          color="white"
-        />
+        <button
+          v-for="item in navItems"
+          :key="item.key"
+          type="button"
+          class="sidebar-btn"
+          :class="{ 'sidebar-btn--active': isActive(item) }"
+          :aria-label="item.label"
+          @click="navigate(item)"
+        >
+          <q-icon :name="item.icon" size="20px" />
+          <q-tooltip
+            anchor="center right"
+            self="center left"
+            :offset="[12, 0]"
+            class="sidebar-tooltip"
+          >
+            {{ item.label }}
+          </q-tooltip>
+        </button>
+      </nav>
+
+      <!-- Controles secundários -->
+      <div
+        class="flex flex-col items-center shrink-0 gap-8 py-4 border-b border-border-dark"
+      >
+        <button class="sidebar-btn" aria-label="Notificações">
+          <q-icon name="notifications_none" size="20px" />
+          <q-tooltip
+            anchor="center right"
+            self="center left"
+            :offset="[12, 0]"
+            class="sidebar-tooltip"
+          >
+            Notificações
+          </q-tooltip>
+        </button>
+
+        <button
+          class="sidebar-btn"
+          aria-label="Configurações"
+          @click="navigate({ route: '/configuracoes' })"
+        >
+          <q-icon name="settings" size="20px" />
+          <q-tooltip
+            anchor="center right"
+            self="center left"
+            :offset="[12, 0]"
+            class="sidebar-tooltip"
+          >
+            Configurações
+          </q-tooltip>
+        </button>
+      </div>
+
+      <!-- Spacer -->
+      <div class="flex-1" />
+
+      <!-- Rodapé: logout -->
+      <div class="flex items-center justify-center shrink-0 py-4">
+        <button class="sidebar-btn" aria-label="Sair" @click="onLogout">
+          <q-icon name="logout" size="20px" />
+          <q-tooltip
+            anchor="center right"
+            self="center left"
+            :offset="[12, 0]"
+            class="sidebar-tooltip"
+          >
+            Sair
+          </q-tooltip>
+        </button>
       </div>
     </div>
-
-    <!-- Navegação principal -->
-    <nav class="flex flex-col items-center shrink-0 gap-[34px] py-[14px] border-y border-border-dark">
-      <button
-        v-for="item in navItems"
-        :key="item.key"
-        type="button"
-        class="sidebar-btn"
-        :class="{ 'sidebar-btn--active': isActive(item) }"
-        :aria-label="item.label"
-        @click="navigate(item)"
-      >
-        <q-icon :name="item.icon" size="20px" />
-        <q-tooltip
-          anchor="center right"
-          self="center left"
-          :offset="[12, 0]"
-          class="sidebar-tooltip"
-        >
-          {{ item.label }}
-        </q-tooltip>
-      </button>
-    </nav>
-
-    <!-- Controles secundários -->
-    <div class="flex flex-col items-center shrink-0 gap-[34px] pt-[34px]">
-      <button
-        class="sidebar-btn"
-        aria-label="Notificações"
-      >
-        <q-icon name="notifications_none" size="20px" />
-        <q-tooltip
-          anchor="center right"
-          self="center left"
-          :offset="[12, 0]"
-          class="sidebar-tooltip"
-        >
-          Notificações
-        </q-tooltip>
-      </button>
-
-      <button
-        class="sidebar-btn"
-        aria-label="Configurações"
-        @click="navigate({ route: '/configuracoes' })"
-      >
-        <q-icon name="settings" size="20px" />
-        <q-tooltip
-          anchor="center right"
-          self="center left"
-          :offset="[12, 0]"
-          class="sidebar-tooltip"
-        >
-          Configurações
-        </q-tooltip>
-      </button>
-    </div>
-
-    <!-- Rodapé: logout -->
-    <div class="flex flex-col items-center shrink-0 py-[14px] mt-auto border-t border-border-dark">
-      <button
-        class="sidebar-btn"
-        aria-label="Sair"
-        @click="onLogout"
-      >
-        <q-icon name="logout" size="20px" />
-        <q-tooltip
-          anchor="center right"
-          self="center left"
-          :offset="[12, 0]"
-          class="sidebar-tooltip"
-        >
-          Sair
-        </q-tooltip>
-      </button>
-    </div>
-
-  </aside>
+  </q-drawer>
 </template>
 
 <script>
@@ -151,7 +155,9 @@ export default {
   @apply flex items-center justify-center shrink-0 size-10
          bg-transparent text-dark-text-muted
          rounded-md border-none cursor-pointer;
-  transition: background-color 0.18s ease, color 0.18s ease;
+  transition:
+    background-color 0.18s ease,
+    color 0.18s ease;
 }
 
 .sidebar-btn:not(.sidebar-btn--active):hover {

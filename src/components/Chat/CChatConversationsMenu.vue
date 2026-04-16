@@ -1,41 +1,49 @@
 <template>
-  <aside v-show="open" class="conversations-menu">
-    <!-- Header: Ai.invest — chat -->
-    <div class="conversations-menu__header">
-      <span class="conversations-menu__brand">Ai.invest</span>
-      <span class="conversations-menu__brand-sep"> — </span>
-      <span class="conversations-menu__brand-page">chat</span>
-    </div>
-
+  <aside
+    v-show="open"
+    class="flex flex-col shrink-0 h-full min-h-0 w-full max-w-64! bg-dark-card border-r border-border-dark overflow-hidden"
+  >
     <!-- Botão Novo Chat -->
-    <div class="conversations-menu__new-chat-wrapper">
+    <div
+      class="flex items-center justify-center py-4 px-7 border-b border-border-dark shrink-0"
+    >
       <button
-        class="conversations-menu__new-chat-btn"
+        class="btn-new-chat-gradient flex items-center justify-center gap-2.5 w-full py-1.5 px-4 rounded-button border border-primary/35 text-dark-text cursor-pointer transition duration-200 hover:opacity-85"
         @click="$emit('new-chat')"
       >
-        <span class="conversations-menu__new-chat-icon">+</span>
-        <span class="conversations-menu__new-chat-label">Novo Chat</span>
+        <span
+          class="flex justify-center items-center text-xl font-light leading-none shrink-0 max-h-6"
+          >+</span
+        >
+        <span class="text-xl font-regular tracking-ui whitespace-nowrap"
+          >Novo Chat</span
+        >
       </button>
     </div>
 
     <!-- Lista de conversas -->
-    <div ref="conversationsList" class="conversations-menu__list">
-      <p class="conversations-menu__list-label">Conversas recentes</p>
+    <div
+      ref="conversationsList"
+      class="flex! flex-col! flex-nowrap! min-h-0 overflow-y-scroll! gap-0.5 py-3.5 px-4"
+    >
+      <p class="text-paragraph-2 text-dark-text mb-3.5! shrink-0">
+        Conversas recentes
+      </p>
 
       <button
         v-for="conversation in conversations"
         :key="conversation.id"
         type="button"
-        class="conversations-menu__item"
+        class="flex items-center gap-2.5 w-full p-2 rounded-button border-0 cursor-pointer text-left text-dark-text transition-colors duration-200 shrink-0 hover:bg-dark-elevated"
         :class="{
-          'conversations-menu__item--active':
+          'bg-dark-elevated ring-inset ring-1 ring-white/10':
             conversation.session_id === activeConversationId,
         }"
         :aria-label="`Abrir conversa: ${conversation.title || 'Nova Conversa'}`"
         @click="$emit('select-conversation', conversation.session_id)"
       >
         <svg
-          class="conversations-menu__item-icon"
+          class="size-[18px] shrink-0 text-dark-text-secondary"
           viewBox="0 0 24 24"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
@@ -50,11 +58,11 @@
           />
         </svg>
 
-        <div class="conversations-menu__item-text">
-          <p class="conversations-menu__item-title">
+        <div class="flex flex-col items-start gap-0.5 min-w-0 h-full">
+          <p class="text-paragraph-2 text-dark-text truncate max-w-[180px]">
             {{ conversation.title ?? "Nova Conversa" }}
           </p>
-          <p class="conversations-menu__item-date">
+          <p class="text-paragraph-4 text-dark-text-secondary">
             {{
               conversation.created_at
                 ? formatDateBR(conversation.created_at)
@@ -108,174 +116,12 @@ export default {
 </script>
 
 <style scoped>
-/* ── Root ─────────────────────────────────────────── */
-.conversations-menu {
-  width: 281px;
-  flex-shrink: 0;
+aside {
   display: flex;
   flex-direction: column;
+  flex-wrap: nowrap;
   height: 100%;
-  background-color: var(--color-dark-card);
-  border-right: 1px solid var(--color-border-dark);
+  min-height: 0;
   overflow: hidden;
-}
-
-/* ── Header: brand ───────────────────────────────── */
-.conversations-menu__header {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 23px 30px;
-  border-bottom: 1px solid var(--color-border-dark);
-  flex-shrink: 0;
-}
-
-.conversations-menu__brand,
-.conversations-menu__brand-sep,
-.conversations-menu__brand-page {
-  font-family: var(--font-family-display);
-  font-size: var(--font-size-2xl);
-  font-weight: var(--font-weight-regular);
-  line-height: normal;
-  letter-spacing: 0;
-  color: var(--color-dark-text);
-  white-space: nowrap;
-}
-
-/* ── New Chat button ─────────────────────────────── */
-.conversations-menu__new-chat-wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 10px 30px;
-  border-bottom: 1px solid var(--color-border-dark);
-  flex-shrink: 0;
-}
-
-.conversations-menu__new-chat-btn {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  padding: 6px 16px !important;
-  border-radius: var(--radius-button);
-  border: 1px solid rgba(51, 150, 254, 0.35);
-  background: linear-gradient(
-    -7.59deg,
-    rgba(50, 149, 255, 0.05) 1%,
-    rgba(50, 149, 255, 0.45) 100%
-  );
-  color: var(--color-dark-text);
-  cursor: pointer;
-  transition:
-    background-color 0.18s ease,
-    opacity 0.18s ease;
-}
-
-.conversations-menu__new-chat-btn:hover {
-  opacity: 0.85;
-}
-
-.conversations-menu__new-chat-icon {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: var(--font-size-xl) !important;
-  font-weight: var(--font-weight-light) !important;
-  line-height: 1;
-  flex-shrink: 0;
-
-  max-height: 24px !important;
-}
-
-.conversations-menu__new-chat-label {
-  font-family: var(--font-family-sans);
-  font-size: var(--font-size-xl);
-  font-weight: var(--font-weight-regular);
-  letter-spacing: var(--tracking-ui);
-  white-space: nowrap;
-}
-
-/* ── Conversations list ──────────────────────────── */
-.conversations-menu__list {
-  flex: 1;
-  overflow-y: auto;
-  overflow-x: hidden;
-  padding: 14px 30px;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-.conversations-menu__list-label {
-  font-family: var(--font-family-sans);
-  font-size: var(--font-size-md);
-  font-weight: var(--font-weight-medium);
-  letter-spacing: var(--tracking-ui);
-  color: var(--color-dark-text);
-  margin-bottom: 8px;
-  flex-shrink: 0;
-}
-
-/* ── Conversation item ───────────────────────────── */
-.conversations-menu__item {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 8px;
-  border-radius: var(--radius-button);
-  border: none;
-  background: transparent;
-  cursor: pointer;
-  text-align: left;
-  color: var(--color-dark-text);
-  transition: background-color 0.18s ease;
-  flex-shrink: 0;
-}
-
-.conversations-menu__item:hover {
-  background-color: var(--color-dark-elevated);
-}
-
-.conversations-menu__item--active {
-  background-color: var(--color-dark-elevated);
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
-}
-
-.conversations-menu__item-icon {
-  width: 18px;
-  height: 18px;
-  flex-shrink: 0;
-  color: var(--color-dark-text-secondary);
-}
-
-.conversations-menu__item-text {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 2px;
-  min-width: 0;
-}
-
-.conversations-menu__item-title {
-  font-family: var(--font-family-sans);
-  font-size: var(--font-size-md);
-  font-weight: var(--font-weight-medium);
-  letter-spacing: var(--tracking-ui);
-  color: var(--color-dark-text);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 180px;
-}
-
-.conversations-menu__item-date {
-  font-family: var(--font-family-sans);
-  font-size: var(--font-size-2xs);
-  font-weight: var(--font-weight-medium);
-  letter-spacing: var(--tracking-ui);
-  color: var(--color-dark-text-secondary);
 }
 </style>

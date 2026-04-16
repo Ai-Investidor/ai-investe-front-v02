@@ -5,10 +5,6 @@
     "
     class="flex flex-row overflow-hidden bg-dark"
   >
-    <!-- Coluna 1: icon sidebar (75px, sempre visível) -->
-    <CSidebar />
-
-    <!-- Coluna 2: text sidebar (281px, togglável) -->
     <transition name="sidebar">
       <CChatConversationsMenu
         v-show="sidebarOpen"
@@ -21,14 +17,12 @@
     </transition>
 
     <!-- Coluna 3: área principal -->
-    <div class="flex-1 flex flex-col min-w-0 overflow-hidden">
-      <!-- Header inline (não é q-header) -->
-      <CHeader @toggle:sidebar="sidebarOpen = !sidebarOpen" />
 
+    <div class="chat-container-content flex-1 min-w-0">
       <!-- Conteúdo: loading / welcome / mensagens -->
       <div
         v-if="chat.isLoadingMessages.value"
-        class="flex-1 flex items-center justify-center min-h-0"
+        class="chat-area-content flex items-center justify-center"
       >
         <CSpinner size="4rem" />
       </div>
@@ -37,20 +31,25 @@
         v-else-if="
           !chat.hasActiveConversation.value || chat.messages.value.length === 0
         "
-        class="flex-1 overflow-y-auto min-h-0"
+        class="chat-area-content overflow-y-auto"
         @select-prompt="onSelectPrompt"
       />
 
-      <CChatMessageList
-        v-else
-        ref="messageList"
-        :messages="chat.messages.value"
-        :is-typing="chat.isTyping.value"
-        class="flex-1 overflow-y-auto min-h-0"
-      />
+      <div v-else class="chat-area-content flex! flex-col overflow-y-scroll!">
+        <CChatMessageList
+          ref="messageList"
+          :messages="chat.messages.value"
+          :is-typing="chat.isTyping.value"
+        />
+      </div>
 
       <!-- Input sempre visível no rodapé -->
-      <CChatInputArea :disabled="chat.isTyping.value" @send="sendNewMessage" />
+      <div class="chat-area-input">
+        <CChatInputArea
+          :disabled="chat.isTyping.value"
+          @send="sendNewMessage"
+        />
+      </div>
     </div>
   </q-page>
 </template>
@@ -58,8 +57,6 @@
 <script>
 import { useChat } from "@composables/useChat";
 import { useAuthStore } from "@stores/auth.store";
-import CSidebar from "@components/Sidebar/CSidebar.vue";
-import CHeader from "@components/Header/CHeader.vue";
 import CChatConversationsMenu from "@components/Chat/CChatConversationsMenu.vue";
 import CChatWelcome from "@components/Chat/CChatWelcome.vue";
 import CChatMessageList from "@components/Chat/CChatMessageList.vue";
@@ -70,8 +67,6 @@ export default {
   name: "PageChat",
 
   components: {
-    CSidebar,
-    CHeader,
     CChatConversationsMenu,
     CChatWelcome,
     CChatMessageList,
@@ -156,5 +151,29 @@ export default {
 .sidebar-leave-to {
   transform: translateX(-100%);
   opacity: 0;
+}
+
+.chat-container-content {
+  display: grid;
+  grid-template-rows: [content] 1fr [input] auto;
+  grid-template-columns: 1fr;
+
+  height: 100%;
+  overflow: hidden;
+}
+
+.chat-area-content {
+  width: 100%;
+
+  grid-row: content;
+
+  overflow-y: auto;
+
+  min-height: 0;
+}
+
+.chat-area-input {
+  grid-row: input;
+  min-height: 0;
 }
 </style>
