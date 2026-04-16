@@ -3,9 +3,20 @@
     class="flex items-stretch shrink-0 h-20.75 bg-dark-card! border-b border-border-dark"
   >
     <div class="flex items-center justify-between w-full px-7.5 max-sm:px-4">
-      <span class="text-title-3 text-white">
-        {{ nameCurrentRoute }}
-      </span>
+      <div class="flex items-center gap-3 min-w-0">
+        <button
+          v-if="$q.screen.lt.md"
+          type="button"
+          class="flex items-center justify-center shrink-0 size-10 text-dark-text-secondary bg-transparent border-none rounded-md cursor-pointer transition-colors hover:bg-white/7 hover:text-dark-text"
+          aria-label="Abrir menu"
+          @click="onOpenSidebar"
+        >
+          <q-icon name="menu" size="22px" />
+        </button>
+        <span class="text-title-3 text-white truncate">
+          {{ nameCurrentRoute }}
+        </span>
+      </div>
 
       <!-- Direita: ações + info do usuário -->
       <div class="flex items-center gap-1">
@@ -82,12 +93,17 @@
 
 <script>
 import { useAuthStore } from "@stores/auth.store";
+import { useUiStore } from "@stores/ui.store";
 import { useRouter } from "vue-router";
 
 export default {
   name: "CHeader",
 
   emits: ["toggle:sidebar"],
+
+  setup() {
+    return { uiStore: useUiStore() };
+  },
 
   computed: {
     userAvatar() {
@@ -127,6 +143,10 @@ export default {
   methods: {
     onToggle() {
       this.$emit("toggle:sidebar");
+    },
+
+    onOpenSidebar() {
+      this.uiStore.openMainSidebar();
     },
   },
 };

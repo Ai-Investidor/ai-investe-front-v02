@@ -1,7 +1,9 @@
 <template>
   <q-drawer
+    v-model="isOpen"
     show-if-above
     :width="70"
+    :breakpoint="1023"
     class="h-full bg-dark-card border-r border-border-dark overflow-hidden"
   >
     <div class="flex flex-col h-full">
@@ -103,9 +105,14 @@
 
 <script>
 import useAuth from "@composables/useAuth";
+import { useUiStore } from "@stores/ui.store";
 
 export default {
   name: "CSidebar",
+
+  setup() {
+    return { uiStore: useUiStore() };
+  },
 
   data() {
     return {
@@ -132,6 +139,17 @@ export default {
     };
   },
 
+  computed: {
+    isOpen: {
+      get() {
+        return this.uiStore.sidebarOpen;
+      },
+      set(value) {
+        this.uiStore.setMainSidebarOpen(value);
+      },
+    },
+  },
+
   methods: {
     isActive(item) {
       return this.$route.path === item.route;
@@ -140,6 +158,9 @@ export default {
     navigate(item) {
       if (item.route && this.$route.path !== item.route) {
         this.$router.push(item.route);
+      }
+      if (this.$q.screen.lt.md) {
+        this.uiStore.closeMainSidebar();
       }
     },
 

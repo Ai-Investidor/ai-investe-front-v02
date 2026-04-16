@@ -77,6 +77,7 @@
 <script>
 import { useChat } from "@composables/useChat";
 import { useAuthStore } from "@stores/auth.store";
+import { useUiStore } from "@stores/ui.store";
 import CChatConversationsMenu from "@components/Chat/CChatConversationsMenu.vue";
 import CChatWelcome from "@components/Chat/CChatWelcome.vue";
 import CChatMessageList from "@components/Chat/CChatMessageList.vue";
@@ -96,15 +97,11 @@ export default {
 
   setup() {
     const authStore = useAuthStore();
+    const uiStore = useUiStore();
     return {
       chat: useChat(),
       authStore,
-    };
-  },
-
-  data() {
-    return {
-      sidebarOpen: true,
+      uiStore,
     };
   },
 
@@ -116,18 +113,24 @@ export default {
     userId() {
       return this.authStore.user?.id;
     },
-  },
 
-  watch: {
-    isMobile(mobile) {
-      this.sidebarOpen = !mobile;
+    sidebarOpen: {
+      get() {
+        return this.uiStore.chatSidebarOpen;
+      },
+      set(value) {
+        this.uiStore.setChatSidebarOpen(value);
+      },
     },
   },
 
-  created() {
-    if (this.isMobile) {
-      this.sidebarOpen = false;
-    }
+  watch: {
+    isMobile: {
+      immediate: true,
+      handler(mobile) {
+        this.uiStore.setChatSidebarOpen(!mobile);
+      },
+    },
   },
 
   mounted() {
