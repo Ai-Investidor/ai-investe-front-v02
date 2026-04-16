@@ -574,3 +574,23 @@
   pointer-events: none;
   z-index: 0;
 }
+
+/* ===================================================
+   AUTH — Entrance animation
+   Fade-up reutilizado em Login, Register, ForgotPassword.
+   Extraído porque @keyframes não se expressa inline.
+   =================================================== */
+@theme {
+  --animate-fade-up: fade-up 0.35s cubic-bezier(0.25, 0.8, 0.5, 1) both;
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

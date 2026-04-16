@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-shrink-0 h-full">
+  <div class="flex shrink-0 h-full">
     <ChatIconMenu
       :activeRoute="activeRoute"
       :isDark="isDark"
@@ -20,11 +20,11 @@
 </template>
 
 <script>
-import ChatIconMenu from '@components/ChatIconMenu.vue'
-import ChatConversationsMenu from '@components/ChatConversationsMenu.vue'
+import ChatIconMenu from "@components/ChatIconMenu.vue";
+import ChatConversationsMenu from "@components/ChatConversationsMenu.vue";
 
 export default {
-  name: 'CChatSideMenu',
+  name: "CChatSideMenu",
 
   components: {
     ChatIconMenu,
@@ -38,7 +38,7 @@ export default {
     },
     activeRoute: {
       type: String,
-      default: 'chat',
+      default: "chat",
     },
     isDark: {
       type: Boolean,
@@ -54,6 +54,13 @@ export default {
     },
   },
 
-  emits: ['toggle-theme', 'open-settings', 'open-profile', 'new-chat', 'select-conversation', 'navigate'],
-}
+  emits: [
+    "toggle-theme",
+    "open-settings",
+    "open-profile",
+    "new-chat",
+    "select-conversation",
+    "navigate",
+  ],
+};
 </script>
