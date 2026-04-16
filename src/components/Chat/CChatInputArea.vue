@@ -1,11 +1,10 @@
 <template>
   <div
-    class="flex flex-col items-center gap-4 py-6 px-7.5 bg-dark border-t border-border-dark shrink-0"
+    class="flex flex-col items-center gap-4 py-6 px-7.5 max-sm:px-2 bg-dark! border-t border-border-dark shrink-0"
   >
     <!-- Campo de input -->
     <div
-      class="flex items-center gap-3 w-full max-w-[900px] bg-dark-card border-2 rounded-input py-2 px-4"
-      :class="canSend ? 'border-primary ' : 'border-primary-dark'"
+      class="flex items-center gap-3 w-full max-w-225 bg-dark-card! rounded-input py-2 px-4"
     >
       <textarea
         ref="textareaRef"

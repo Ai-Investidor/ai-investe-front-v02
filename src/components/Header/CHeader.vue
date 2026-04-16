@@ -11,6 +11,7 @@
       <div class="flex items-center gap-1">
         <!-- Notificações -->
         <button
+          v-if="$q.screen.gt.sm"
           class="relative flex items-center justify-center size-9 text-dark-text-secondary cursor-pointer rounded-md transition-colors hover:bg-white/7 hover:text-dark-text"
           aria-label="Notificações"
         >
@@ -22,6 +23,7 @@
 
         <!-- Alternar tema -->
         <button
+          v-if="$q.screen.gt.sm"
           class="relative flex items-center justify-center size-9 text-dark-text-secondary cursor-pointer rounded-md transition-colors hover:bg-white/7 hover:text-dark-text"
           :aria-label="$q.dark.isActive ? 'Modo claro' : 'Modo escuro'"
           @click="$q.dark.toggle()"
@@ -57,7 +59,7 @@
           </div>
           <div class="flex flex-col items-start gap-0.5 max-sm:hidden">
             <span
-              class="font-display text-2xl leading-normal font-regular text-dark-text whitespace-nowrap"
+              class="font-display text-2xl leading-normal font-regular text-dark-text truncate max-w-40 max-sm:max-w-20"
             >
               {{ userDisplayName }}
             </span>

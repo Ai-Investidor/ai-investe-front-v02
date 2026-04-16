@@ -81,7 +81,11 @@
 
       <!-- Rodapé: logout -->
       <div class="flex items-center justify-center shrink-0 py-4">
-        <button class="sidebar-btn" aria-label="Sair" @click="onLogout">
+        <button
+          class="sidebar-btn hover:text-error!"
+          aria-label="Sair"
+          @click="onLogout"
+        >
           <q-icon name="logout" size="20px" />
           <q-tooltip
             anchor="center right"

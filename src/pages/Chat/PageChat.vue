@@ -3,22 +3,42 @@
     :style-fn="
       (offset) => ({ height: `calc(100vh - ${offset}px)`, minHeight: '0' })
     "
-    class="flex flex-row overflow-hidden bg-dark"
+    class="relative flex flex-row overflow-hidden bg-dark"
   >
+    <!-- Backdrop mobile -->
+    <transition name="fade">
+      <div
+        v-if="isMobile && sidebarOpen"
+        class="absolute inset-0 bg-black/50 z-40"
+        @click="sidebarOpen = false"
+      />
+    </transition>
+
     <transition name="sidebar">
       <CChatConversationsMenu
         v-show="sidebarOpen"
         :open="sidebarOpen"
+        :class="{ 'absolute! inset-y-0 left-0 z-50': isMobile }"
         :conversations="chat.sessions.value"
         :active-conversation-id="chat.activeConversationId.value"
-        @new-chat="chat.newConversation"
+        @new-chat="openNewChat"
         @select-conversation="onSelectConversation"
       />
     </transition>
 
     <!-- Coluna 3: área principal -->
 
-    <div class="chat-container-content flex-1 min-w-0">
+    <div class="chat-container-content relative flex-1 min-w-0">
+      <!-- Botão toggle sidebar (mobile) -->
+      <button
+        v-if="isMobile && !sidebarOpen"
+        class="absolute top-4 left-4 z-10 flex items-center justify-center size-10 rounded-button bg-dark-card border border-border-dark text-dark-text cursor-pointer transition-opacity duration-200 hover:opacity-80"
+        aria-label="Abrir conversas"
+        @click="sidebarOpen = true"
+      >
+        <q-icon name="chat_bubble" size="20px" />
+      </button>
+
       <!-- Conteúdo: loading / welcome / mensagens -->
       <div
         v-if="chat.isLoadingMessages.value"
@@ -89,13 +109,23 @@ export default {
   },
 
   computed: {
+    isMobile() {
+      return this.$q.screen.lt.md;
+    },
+
     userId() {
       return this.authStore.user?.id;
     },
   },
 
+  watch: {
+    isMobile(mobile) {
+      this.sidebarOpen = !mobile;
+    },
+  },
+
   created() {
-    if (this.$q.screen.lt.md) {
+    if (this.isMobile) {
       this.sidebarOpen = false;
     }
   },
@@ -117,9 +147,7 @@ export default {
       this.$nextTick(() => {
         this.$refs.messageList?.scrollToBottom();
       });
-      if (this.$q.screen.lt.md) {
-        this.sidebarOpen = false;
-      }
+      this.closeSidebar();
     },
 
     async onSelectPrompt(text) {
@@ -133,6 +161,17 @@ export default {
     async sendNewMessage(text) {
       await this.chat.sendMessage(text);
       this.onLoadSessions();
+    },
+
+    openNewChat() {
+      this.chat.newConversation();
+      this.closeSidebar();
+    },
+
+    closeSidebar() {
+      if (this.isMobile) {
+        this.sidebarOpen = false;
+      }
     },
   },
 };
@@ -150,6 +189,17 @@ export default {
 .sidebar-enter-from,
 .sidebar-leave-to {
   transform: translateX(-100%);
+  opacity: 0;
+}
+
+/* ── Backdrop fade ──────────────────────────────── */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.2s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
   opacity: 0;
 }
 

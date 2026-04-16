@@ -1,9 +1,7 @@
 <template>
   <div
-    class="relative flex-1 flex flex-col items-center justify-center py-12 px-6 text-center overflow-hidden"
+    class="welcome-glow-bg relative flex-1 flex flex-col flex-nowrap! items-center max-sm:items-start justify-center py-12 max-sm:pt-120 px-6 text-center overflow-x-hidden overflow-y-scroll"
   >
-    <!-- Glow de fundo -->
-    <div class="welcome-glow" aria-hidden="true" />
 
     <!-- Ícone central -->
     <div class="relative z-1 flex items-center justify-center mb-6 shrink-0">
@@ -15,7 +13,7 @@
     </div>
 
     <!-- Título principal -->
-    <h1 class="relative z-1 text-welcome-heading text-dark-text !mb-4">
+    <h1 class="relative z-1 text-welcome-heading text-dark-text mb-4!">
       Como posso te ajudar hoje?
     </h1>
 
@@ -29,7 +27,9 @@
     </p>
 
     <!-- Grid de cards de sugestão -->
-    <div class="relative z-1 grid grid-cols-2 gap-6 w-full max-w-[44rem]">
+    <div
+      class="relative z-1 grid grid-cols-2 max-sm:grid-cols-1 gap-6 w-full max-w-176"
+    >
       <c-card-action
         v-for="prompt in prompts"
         :key="prompt.id"
