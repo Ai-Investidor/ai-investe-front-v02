@@ -1,14 +1,19 @@
 <template>
-  <q-header class="app-header">
-    <div class="app-header__inner">
+  <q-header
+    class="flex items-stretch shrink-0 h-20.75 bg-dark-card! border-b border-border-dark"
+  >
+    <div class="flex items-center justify-between w-full px-7.5 max-sm:px-4">
       <span class="text-title-3 text-white">
         {{ nameCurrentRoute }}
       </span>
 
       <!-- Direita: ações + info do usuário -->
-      <div class="app-header__right">
+      <div class="flex items-center gap-1">
         <!-- Notificações -->
-        <button class="app-header__action" aria-label="Notificações">
+        <button
+          class="relative flex items-center justify-center size-9 text-dark-text-secondary cursor-pointer rounded-md transition-colors hover:bg-white/7 hover:text-dark-text"
+          aria-label="Notificações"
+        >
           <q-icon name="notifications_none" size="20px" />
           <q-tooltip anchor="bottom middle" self="top middle" :offset="[0, 6]">
             Notificações
@@ -17,7 +22,7 @@
 
         <!-- Alternar tema -->
         <button
-          class="app-header__action"
+          class="relative flex items-center justify-center size-9 text-dark-text-secondary cursor-pointer rounded-md transition-colors hover:bg-white/7 hover:text-dark-text"
           :aria-label="$q.dark.isActive ? 'Modo claro' : 'Modo escuro'"
           @click="$q.dark.toggle()"
         >
@@ -31,26 +36,41 @@
         </button>
 
         <!-- Seção do usuário -->
-        <div class="app-header__user">
-          <div class="app-header__avatar">
+        <div
+          class="flex items-center gap-2.5 px-3.5 border-l border-border-dark cursor-pointer transition-opacity hover:opacity-85"
+        >
+          <div
+            class="flex items-center justify-center shrink-0 size-10 overflow-hidden rounded-full bg-linear-to-br from-primary to-primary-dark2"
+          >
             <img
               v-if="userAvatar"
               :src="userAvatar"
               :alt="userDisplayName"
-              class="app-header__avatar-img"
+              class="size-full object-cover"
             />
-            <span v-else class="app-header__avatar-initials">{{
-              userInitials
-            }}</span>
+            <span
+              v-else
+              class="text-sm font-bold leading-none text-dark-text select-none"
+            >
+              {{ userInitials }}
+            </span>
           </div>
-          <div class="app-header__user-info">
-            <span class="app-header__user-name">{{ userDisplayName }}</span>
-            <span class="app-header__user-role">PRO INVESTING</span>
+          <div class="flex flex-col items-start gap-0.5 max-sm:hidden">
+            <span
+              class="font-display text-2xl leading-normal font-regular text-dark-text whitespace-nowrap"
+            >
+              {{ userDisplayName }}
+            </span>
+            <span
+              class="font-display text-2xs leading-normal font-regular text-dark-text-secondary whitespace-nowrap"
+            >
+              PRO INVESTING
+            </span>
           </div>
           <q-icon
             name="keyboard_arrow_down"
             size="20px"
-            class="app-header__chevron"
+            class="text-dark-text-muted shrink-0 max-sm:hidden"
           />
         </div>
       </div>
@@ -110,193 +130,4 @@ export default {
 };
 </script>
 
-<style scoped>
-/* ── Root ─────────────────────────────────────────── */
-.app-header {
-  display: flex;
-  align-items: stretch;
-  background-color: var(--color-dark-card);
-  border-bottom: 1px solid var(--color-border-dark);
-  height: 83px;
-  flex-shrink: 0;
-}
-
-.app-header__inner {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  padding: 0 30px;
-}
-
-/* ── Left ─────────────────────────────────────────── */
-.app-header__left {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.app-header__toggle {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
-  border: none;
-  background: transparent;
-  color: var(--color-dark-text-secondary);
-  cursor: pointer;
-  border-radius: var(--radius-md);
-  flex-shrink: 0;
-  transition:
-    background-color var(--transition-hover),
-    color var(--transition-hover);
-}
-
-.app-header__toggle:hover {
-  background-color: rgba(255, 255, 255, 0.07);
-  color: var(--color-dark-text);
-}
-
-.app-header__brand {
-  font-family: var(--font-family-display);
-  font-size: var(--font-size-2xl);
-  font-weight: var(--font-weight-regular);
-  line-height: normal;
-  letter-spacing: 0;
-  color: var(--color-dark-text);
-  white-space: nowrap;
-  user-select: none;
-}
-
-/* ── Right ────────────────────────────────────────── */
-.app-header__right {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-
-/* ── Action buttons ──────────────────────────────── */
-.app-header__action {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 36px;
-  height: 36px;
-  border: none;
-  background: transparent;
-  color: var(--color-dark-text-secondary);
-  cursor: pointer;
-  border-radius: var(--radius-md);
-  transition:
-    background-color var(--transition-hover),
-    color var(--transition-hover);
-}
-
-.app-header__action:hover {
-  background-color: rgba(255, 255, 255, 0.07);
-  color: var(--color-dark-text);
-}
-
-/* ── User section ─────────────────────────────────── */
-.app-header__user {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 0 14px;
-  border-left: 1px solid var(--color-border-dark);
-  cursor: pointer;
-  transition: opacity var(--transition-hover);
-}
-
-.app-header__user:hover {
-  opacity: 0.85;
-}
-
-/* Avatar */
-.app-header__avatar {
-  width: 40px;
-  height: 40px;
-  border-radius: var(--radius-full);
-  overflow: hidden;
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(
-    135deg,
-    var(--color-primary) 0%,
-    var(--color-primary-dark2) 100%
-  );
-}
-
-.app-header__avatar-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.app-header__avatar-initials {
-  color: var(--color-dark-text);
-  font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-bold);
-  line-height: 1;
-  user-select: none;
-}
-
-/* User info */
-.app-header__user-info {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 2px;
-}
-
-.app-header__user-name {
-  font-family: var(--font-family-display);
-  font-size: var(--font-size-2xl);
-  font-weight: var(--font-weight-regular);
-  line-height: normal;
-  letter-spacing: 0;
-  color: var(--color-dark-text);
-  white-space: nowrap;
-}
-
-.app-header__user-role {
-  font-family: var(--font-family-display);
-  font-size: var(--font-size-2xs);
-  font-weight: var(--font-weight-regular);
-  line-height: normal;
-  letter-spacing: 0;
-  color: var(--color-dark-text-secondary);
-  white-space: nowrap;
-}
-
-.app-header__chevron {
-  color: var(--color-dark-text-muted);
-  flex-shrink: 0;
-}
-
-/* ── Tooltip override ────────────────────────────── */
-:deep(.q-tooltip) {
-  font-size: var(--font-size-xs);
-  background-color: var(--color-dark-card);
-  color: var(--color-dark-text);
-  border: 1px solid var(--color-border-dark);
-  border-radius: var(--radius-md);
-  padding: 5px 10px;
-}
-
-/* ── Responsive ──────────────────────────────────── */
-@media (max-width: 600px) {
-  .app-header__user-info,
-  .app-header__chevron {
-    display: none;
-  }
-
-  .app-header__inner {
-    padding: 0 16px;
-  }
-}
-</style>
+<style scoped></style>
