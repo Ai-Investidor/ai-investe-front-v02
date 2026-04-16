@@ -1,11 +1,15 @@
 <template>
-  <div class="input-controller">
+  <div
+    class="flex flex-col items-center gap-4 py-6 px-7.5 bg-dark border-t border-border-dark shrink-0"
+  >
     <!-- Campo de input -->
-    <div class="input-controller__field">
+    <div
+      class="flex items-center gap-3 w-full max-w-[900px] bg-dark-card border-2 border-primary-dark rounded-input py-2 px-4"
+    >
       <textarea
         ref="textareaRef"
         v-model="message"
-        class="input-controller__textarea"
+        class="flex-1 bg-transparent border-none outline-none resize-none text-dark-text text-paragraph-2 max-h-32 overflow-y-auto placeholder:text-dark-text-placeholder"
         placeholder="Digite sua pergunta sobre investimentos, análise de ativos ou mercado financeiro . . ."
         :disabled="disabled"
         rows="1"
@@ -15,8 +19,12 @@
 
       <!-- Botão enviar -->
       <button
-        class="input-controller__send"
-        :class="{ 'input-controller__send--active': canSend }"
+        class="flex items-center justify-center size-10 shrink-0 rounded-full border-none cursor-pointer transition-[background-color,opacity] duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+        :class="
+          canSend
+            ? 'bg-linear-to-br from-primary to-primary-dark2 text-dark-text'
+            : 'bg-dark-elevated text-dark-text-muted'
+        "
         :disabled="disabled || !canSend"
         aria-label="Enviar mensagem"
         @click="handleSend"
@@ -48,11 +56,13 @@
     </div>
 
     <!-- Hint de atalhos -->
-    <p class="input-controller__hint">
+    <p
+      class="text-paragraph-2 text-dark-text-hint text-center whitespace-nowrap"
+    >
       Pressione
-      <span class="input-controller__hint-key">Enter</span>
+      <span class="text-dark-text-hint-emphasis">Enter</span>
       para enviar,
-      <span class="input-controller__hint-key">Shift + Enter</span>
+      <span class="text-dark-text-hint-emphasis">Shift + Enter</span>
       para pra nova linha
     </p>
   </div>
@@ -124,107 +134,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-/* ── Root ─────────────────────────────────────────── */
-.input-controller {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 16px;
-  padding: 25px 30px;
-  background-color: var(--color-dark);
-  border-top: 1px solid var(--color-border-dark);
-  flex-shrink: 0;
-}
-
-/* ── Input field wrapper ──────────────────────────── */
-.input-controller__field {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  width: 100%;
-  max-width: 900px;
-  background-color: var(--color-dark-card);
-  border-radius: var(--radius-input);
-  padding: 7px 15px;
-}
-
-/* ── Textarea ─────────────────────────────────────── */
-.input-controller__textarea {
-  flex: 1;
-  background: transparent;
-  border: none;
-  outline: none;
-  resize: none;
-  color: var(--color-dark-text);
-  font-family: var(--font-family-sans);
-  font-size: var(--font-size-md);
-  font-weight: var(--font-weight-medium);
-  letter-spacing: var(--tracking-ui);
-  line-height: 1.5;
-  max-height: 128px;
-  overflow-y: auto;
-}
-
-.input-controller__textarea::placeholder {
-  color: var(--color-dark-text-placeholder);
-}
-
-.input-controller__textarea::-webkit-scrollbar {
-  width: 3px;
-}
-.input-controller__textarea::-webkit-scrollbar-track {
-  background: transparent;
-}
-.input-controller__textarea::-webkit-scrollbar-thumb {
-  background: var(--color-border-dark);
-  border-radius: var(--radius-full);
-}
-
-/* ── Send button ─────────────────────────────────── */
-.input-controller__send {
-  width: 40px;
-  height: 40px;
-  flex-shrink: 0;
-  border-radius: var(--radius-full);
-  border: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition:
-    background-color 0.18s ease,
-    opacity 0.18s ease;
-  background-color: var(--color-dark-elevated);
-  color: var(--color-dark-text-muted);
-}
-
-.input-controller__send--active {
-  background: linear-gradient(
-    135deg,
-    var(--color-primary) 0%,
-    var(--color-primary-dark2) 100%
-  );
-  color: var(--color-dark-text);
-}
-
-.input-controller__send:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-/* ── Hint ─────────────────────────────────────────── */
-.input-controller__hint {
-  font-family: var(--font-family-sans);
-  font-size: var(--font-size-md);
-  font-weight: var(--font-weight-medium);
-  color: var(--color-dark-text-hint);
-  text-align: center;
-  white-space: nowrap;
-}
-
-.input-controller__hint-key {
-  color: var(--color-dark-text-hint-emphasis);
-}
-</style>
