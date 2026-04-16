@@ -113,25 +113,4 @@ export default {
 .fade-leave-to {
   opacity: 0;
 }
-
-div {
-  scroll-behavior: smooth;
-}
-
-::-webkit-scrollbar {
-  width: 6px;
-}
-
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #30363d;
-  border-radius: 3px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #484f58;
-}
 </style>
