@@ -1,9 +1,9 @@
 <template>
-  <div class="register-form">
+  <div class="flex flex-col gap-6 animate-fade-up">
     <!-- Heading -->
-    <div class="register-form__header">
-      <h1 class="text-title-xl register-form__title">Crie sua conta</h1>
-      <p class="text-paragraph-md register-form__subtitle">
+    <div class="flex flex-col gap-2">
+      <h1 class="text-title-xl text-primary-dark">Crie sua conta</h1>
+      <p class="text-paragraph-md text-light-text-secondary">
         Comece gratuitamente. Não é necessário cartão de crédito.
       </p>
     </div>
@@ -13,13 +13,13 @@
       unelevated
       outline
       no-caps
-      class="register-form__google-btn"
+      class="w-full h-11 !border-border-light !text-light-text transition-colors hover:!bg-neutral-100 hover:!border-neutral-300"
       aria-label="Cadastrar com o Google"
       :loading="loading"
       @click="handleGoogleRegister"
     >
       <template #default>
-        <div class="register-form__google-btn-inner">
+        <div class="flex items-center justify-center gap-2.5 w-full">
           <q-icon name="svguse:icons/icons.svg#icon-google" size="18px" />
           <span class="text-paragraph-md">Continuar com o Google</span>
         </div>
@@ -27,16 +27,16 @@
     </c-button>
 
     <!-- Divider -->
-    <div class="register-form__divider" aria-hidden="true">
-      <span class="register-form__divider-line"></span>
-      <span class="text-paragraph-sm register-form__divider-text">ou</span>
-      <span class="register-form__divider-line"></span>
+    <div class="flex items-center gap-3" aria-hidden="true">
+      <span class="flex-1 h-px bg-border-light"></span>
+      <span class="text-paragraph-sm shrink-0 text-light-text-secondary whitespace-nowrap">ou</span>
+      <span class="flex-1 h-px bg-border-light"></span>
     </div>
 
     <!-- Form -->
     <q-form
       ref="registerForm"
-      class="register-form__fields"
+      class="flex flex-col gap-4"
       @submit.prevent="handleRegister"
       greedy
     >
@@ -48,7 +48,7 @@
         label="Nome completo"
         autocomplete="name"
         aria-label="Nome completo"
-        class="register-form__input"
+        class="w-full"
         :rules="nameRules"
         lazy-rules
       />
@@ -62,7 +62,7 @@
         autocomplete="email"
         inputmode="email"
         aria-label="E-mail"
-        class="register-form__input"
+        class="w-full"
         :rules="emailRules"
         lazy-rules
       />
@@ -80,14 +80,14 @@
         fill-mask
         unmasked-value
         hint="(11) 91234-5678"
-        class="register-form__input"
+        class="w-full"
         :rules="phoneRules"
         lazy-rules
         @update:model-value="updatePhoneMask"
       />
 
       <!-- Password row: two fields side by side on desktop -->
-      <div class="register-form__password-row">
+      <div class="flex flex-col gap-4 min-[480px]:flex-row min-[480px]:gap-3">
         <c-input
           v-model="password"
           outlined
@@ -96,14 +96,14 @@
           label="Senha"
           autocomplete="new-password"
           aria-label="Senha"
-          class="register-form__input"
+          class="w-full min-[480px]:flex-1 min-[480px]:min-w-0"
           :rules="passwordRules"
           lazy-rules
         >
           <template #append>
             <q-icon
               :name="showPassword ? 'visibility_off' : 'visibility'"
-              class="register-form__password-toggle"
+              class="cursor-pointer text-light-text-secondary transition-colors hover:text-primary"
               :aria-label="showPassword ? 'Ocultar senha' : 'Mostrar senha'"
               role="button"
               tabindex="0"
@@ -121,14 +121,14 @@
           label="Confirmar senha"
           autocomplete="new-password"
           aria-label="Confirmar senha"
-          class="register-form__input"
+          class="w-full min-[480px]:flex-1 min-[480px]:min-w-0"
           :rules="confirmPasswordRules"
           lazy-rules
         >
           <template #append>
             <q-icon
               :name="showConfirmPassword ? 'visibility_off' : 'visibility'"
-              class="register-form__password-toggle"
+              class="cursor-pointer text-light-text-secondary transition-colors hover:text-primary"
               :aria-label="
                 showConfirmPassword
                   ? 'Ocultar confirmação de senha'
@@ -144,17 +144,17 @@
       </div>
 
       <!-- Terms note -->
-      <p class="text-paragraph-sm register-form__terms">
+      <p class="text-paragraph-sm -mt-1 text-light-text-secondary">
         Ao criar sua conta você concorda com nossos
         <router-link
           to="/termos"
-          class="register-form__link register-form__link--emphasis"
+          class="font-semibold text-primary no-underline transition-colors hover:text-primary-dark"
           >Termos de Uso</router-link
         >
         e
         <router-link
           to="/privacidade"
-          class="register-form__link register-form__link--emphasis"
+          class="font-semibold text-primary no-underline transition-colors hover:text-primary-dark"
           >Política de Privacidade</router-link
         >.
       </p>
@@ -168,16 +168,16 @@
         :loading="loading"
         label="Criar conta grátis"
         aria-label="Criar conta grátis"
-        class="register-form__submit-btn"
+        class="w-full h-11 mt-1"
       />
     </q-form>
 
     <!-- Login link -->
-    <p class="text-paragraph-sm register-form__login">
+    <p class="text-paragraph-sm text-center text-light-text-secondary">
       Já tem uma conta?
       <router-link
         to="/login"
-        class="register-form__link register-form__link--emphasis"
+        class="font-semibold text-primary no-underline transition-colors hover:text-primary-dark"
       >
         Fazer login
       </router-link>
@@ -267,162 +267,3 @@ export default {
 };
 </script>
 
-<style scoped>
-/* ── Form root ───────────────────────────────────── */
-.register-form {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-  animation: registerFadeUp 0.35s cubic-bezier(0.25, 0.8, 0.5, 1) both;
-}
-
-@keyframes registerFadeUp {
-  from {
-    opacity: 0;
-    transform: translateY(16px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* ── Header ──────────────────────────────────────── */
-.register-form__header {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.register-form__title {
-  color: var(--color-primary-dark);
-}
-
-.register-form__subtitle {
-  color: var(--color-light-text-secondary);
-}
-
-/* ── Google button ───────────────────────────────── */
-.register-form__google-btn {
-  width: 100%;
-  border-color: var(--color-border-light) !important;
-  color: var(--color-light-text) !important;
-  height: 44px;
-  transition:
-    background-color var(--transition-hover),
-    border-color var(--transition-hover);
-}
-
-.register-form__google-btn:hover {
-  background-color: var(--color-neutral-100) !important;
-  border-color: var(--color-neutral-300) !important;
-}
-
-.register-form__google-btn-inner {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  width: 100%;
-}
-
-/* ── Divider ─────────────────────────────────────── */
-.register-form__divider {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.register-form__divider-line {
-  flex: 1;
-  height: 1px;
-  background-color: var(--color-border-light);
-}
-
-.register-form__divider-text {
-  color: var(--color-light-text-secondary);
-  white-space: nowrap;
-  flex-shrink: 0;
-}
-
-/* ── Fields ──────────────────────────────────────── */
-.register-form__fields {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.register-form__input {
-  width: 100%;
-}
-
-/* ── Password row ────────────────────────────────── */
-.register-form__password-row {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-@media (min-width: 480px) {
-  .register-form__password-row {
-    flex-direction: row;
-    gap: 12px;
-  }
-
-  .register-form__password-row .register-form__input {
-    flex: 1;
-    min-width: 0;
-  }
-}
-
-/* ── Password toggle ─────────────────────────────── */
-.register-form__password-toggle {
-  cursor: pointer;
-  color: var(--color-light-text-secondary);
-  transition: color var(--transition-hover);
-}
-
-.register-form__password-toggle:hover {
-  color: var(--color-primary);
-}
-
-/* ── Terms ───────────────────────────────────────── */
-.register-form__terms {
-  color: var(--color-light-text-secondary);
-  line-height: 1.5;
-  margin-top: -4px;
-}
-
-/* ── Submit button ───────────────────────────────── */
-.register-form__submit-btn {
-  width: 100%;
-  height: 44px;
-  margin-top: 4px;
-}
-
-/* ── Links ───────────────────────────────────────── */
-.register-form__link {
-  color: var(--color-light-text-secondary);
-  text-decoration: none;
-  transition: color var(--transition-hover);
-}
-
-.register-form__link:hover {
-  color: var(--color-primary);
-}
-
-.register-form__link--emphasis {
-  color: var(--color-primary);
-  font-weight: 600;
-}
-
-.register-form__link--emphasis:hover {
-  color: var(--color-primary-dark);
-}
-
-/* ── Login ───────────────────────────────────────── */
-.register-form__login {
-  text-align: center;
-  color: var(--color-light-text-secondary);
-}
-</style>
