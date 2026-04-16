@@ -4,7 +4,8 @@
   >
     <!-- Campo de input -->
     <div
-      class="flex items-center gap-3 w-full max-w-[900px] bg-dark-card border-2 border-primary-dark rounded-input py-2 px-4"
+      class="flex items-center gap-3 w-full max-w-[900px] bg-dark-card border-2 rounded-input py-2 px-4"
+      :class="canSend ? 'border-primary ' : 'border-primary-dark'"
     >
       <textarea
         ref="textareaRef"
