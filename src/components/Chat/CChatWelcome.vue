@@ -88,5 +88,18 @@ export default {
       ],
     };
   },
+
+  mounted() {
+    const refHeader = document.getElementsByTagName("header")[0];
+    const isMobile = this.$q.screen.lt.sm;
+
+    if (refHeader && isMobile) {
+      const headerHeight = refHeader.offsetHeight;
+      const welcomeContainer = this.$el;
+      welcomeContainer.style.paddingTop = `${headerHeight * 6}px`;
+
+      console.log(welcomeContainer.style.paddingTop);
+    }
+  },
 };
 </script>
