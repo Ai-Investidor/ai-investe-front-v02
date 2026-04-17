@@ -67,7 +67,10 @@
       <div class="chat-area-input">
         <CChatInputArea
           :disabled="chat.isTyping.value"
+          :pending-files="chat.pendingFiles.value"
           @send="sendNewMessage"
+          @attach="onAttachFiles"
+          @remove-file="onRemoveFile"
         />
       </div>
     </div>
@@ -164,6 +167,14 @@ export default {
     async sendNewMessage(text) {
       await this.chat.sendMessage(text);
       this.onLoadSessions();
+    },
+
+    onAttachFiles(files) {
+      this.chat.attachFiles(files);
+    },
+
+    onRemoveFile(index) {
+      this.chat.removeFile(index);
     },
 
     openNewChat() {
