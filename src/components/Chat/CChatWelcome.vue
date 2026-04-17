@@ -1,41 +1,42 @@
 <template>
   <div
-    class="flex-1 flex flex-col items-center justify-center px-6 py-12 text-center"
+    class="welcome-glow-bg relative flex-1 flex flex-col flex-nowrap! items-center max-sm:items-start justify-center py-12 px-6 text-center overflow-x-hidden overflow-y-scroll"
   >
-    <!-- Ícone principal -->
-    <div
-      class="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center mb-6 shadow-lg shadow-primary/20"
-    >
-      <svg
-        class="w-8 h-8 text-white"
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-      >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"
-        />
-      </svg>
+
+    <!-- Ícone central -->
+    <div class="relative z-1 flex items-center justify-center mb-6 shrink-0">
+      <q-icon
+        name="svguse:icons/icons.svg#icon-log"
+        size="64px"
+        color="white"
+      />
     </div>
 
-    <h1 class="text-headline-md text-white mb-4!">Como posso ajudar?</h1>
-    <p class="text-paragraph-md text-gray-400 max-w-md mb-10!">
-      Sou seu assistente de investimentos com IA. Pergunte sobre estratégias,
-      análise de ativos, planejamento financeiro e muito mais.
+    <!-- Título principal -->
+    <h1 class="relative z-1 text-welcome-heading text-dark-text mb-4!">
+      Como posso te ajudar hoje?
+    </h1>
+
+    <!-- Subtítulo -->
+    <p
+      class="relative z-1 text-welcome-subtitle text-dark-text-muted max-w-[46rem] !mb-10"
+    >
+      Sou seu assistente especializado em análise financeira e investimentos.
+      Posso ajudar com análise de ativos, tendências de mercado e estratégias de
+      investimento
     </p>
 
-    <!-- Cards de sugestão -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full max-w-4xl">
+    <!-- Grid de cards de sugestão -->
+    <div
+      class="relative z-1 grid grid-cols-2 max-sm:grid-cols-1 gap-6 w-full max-w-176"
+    >
       <c-card-action
         v-for="prompt in prompts"
         :key="prompt.id"
         :icon="prompt.icon"
+        :icon-color="prompt.color"
         :title="prompt.title"
         :description="prompt.description"
-        class="group"
         @click="$emit('select-prompt', prompt.text)"
       />
     </div>
@@ -43,7 +44,7 @@
 </template>
 
 <script>
-import CCardAction from "components/Card/CCardAction.vue";
+import CCardAction from "@components/Card/CCardAction.vue";
 
 export default {
   name: "CChatWelcome",
@@ -59,31 +60,37 @@ export default {
       prompts: [
         {
           id: 1,
-          icon: "svguse:icons/icons.svg#icone-dolar",
-          title: "Como diversificar minha carteira?",
-          description: "Estratégias de alocação para reduzir risco",
-          text: "Como devo diversificar minha carteira de investimentos?",
+          icon: "trending_up",
+          title: "Análise Fundamentalista",
+          color: "blue",
+          description:
+            "Faça análise fundamentalista da Apple baseada em notícias",
+          text: "Faça análise fundamentalista da Apple baseada em notícias",
         },
         {
           id: 2,
-          icon: "svguse:icons/icons.svg#icon-pizza",
-          title: "Tesouro Direto ou CDB?",
-          description: "Compare as opções de renda fixa disponíveis",
-          text: "Qual a diferença entre Tesouro Direto e CDB? Qual é melhor para mim?",
+          icon: "bar_chart",
+          title: "Comparação de ETFs",
+          color: "green",
+          description:
+            "Compare o desempenho de ETFs de tecnologia nos últimos 5 anos",
+          text: "Compare o desempenho de ETFs de tecnologia nos últimos 5 anos",
         },
         {
           id: 3,
-          icon: "svguse:icons/icons.svg#icon-grafico",
-          title: "Começar na renda variável",
-          description: "Primeiros passos para investir em ações",
-          text: "Como começar a investir em ações sendo iniciante?",
+          icon: "pie_chart",
+          title: "Diversificação de Portfolio",
+          color: "red",
+          description: "Como posso diversificar um portfolio de R$ 100.000?",
+          text: "Como posso diversificar um portfolio de R$ 100.000?",
         },
         {
           id: 4,
-          icon: "svguse:icons/icons.svg#icon-vetor",
-          title: "Fundos Imobiliários (FIIs)",
-          description: "Entenda como funcionam e como escolher",
-          text: "Como funcionam os Fundos de Investimento Imobiliário (FIIs)?",
+          icon: "savings",
+          title: "Análise de Dividend Yield",
+          color: "blue",
+          description: "Melhores ações com dividend yield acima de 6%",
+          text: "Quais são as melhores ações com dividend yield acima de 6%?",
         },
       ],
     };

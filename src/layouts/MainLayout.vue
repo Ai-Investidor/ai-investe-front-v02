@@ -1,13 +1,8 @@
 <template>
-  <q-layout view="lHh Lpr lFf">
-    <c-header :sidebar-mini="sidebarMini" @toggle:sidebar="onToggleSidebar" />
+  <q-layout view="LHH Lpp lFf">
+    <CHeader />
 
-    <c-sidebar
-      :open="sidebarOpen"
-      :mini="sidebarMini"
-      @update:open="sidebarOpen = $event"
-      @update:mini="sidebarMini = $event"
-    />
+    <CSidebar />
 
     <q-page-container>
       <router-view />
@@ -21,27 +16,9 @@ import CSidebar from "src/components/Sidebar/CSidebar.vue";
 
 export default {
   name: "MainLayout",
-
   components: {
     CHeader,
     CSidebar,
-  },
-
-  data() {
-    return {
-      sidebarOpen: true,
-      sidebarMini: true,
-    };
-  },
-
-  methods: {
-    onToggleSidebar() {
-      if (this.$q.screen.gt.sm) {
-        this.sidebarMini = !this.sidebarMini;
-      } else {
-        this.sidebarOpen = !this.sidebarOpen;
-      }
-    },
   },
 };
 </script>

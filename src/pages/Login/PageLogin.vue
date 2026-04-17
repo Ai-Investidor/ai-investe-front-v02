@@ -1,9 +1,9 @@
 <template>
-  <div class="login-form">
+  <div class="flex flex-col gap-6 animate-fade-up">
     <!-- Heading -->
-    <div class="login-form__header">
-      <h1 class="text-title-xl login-form__title">Bem-vindo de volta</h1>
-      <p class="text-paragraph-md login-form__subtitle">
+    <div class="flex flex-col gap-2">
+      <h1 class="text-title-xl text-primary-dark">Bem-vindo de volta</h1>
+      <p class="text-paragraph-md text-light-text-secondary">
         Acesse sua conta para continuar investindo com inteligência.
       </p>
     </div>
@@ -13,13 +13,13 @@
       unelevated
       outline
       no-caps
-      class="login-form__google-btn"
+      class="w-full h-11 !border-border-light !text-light-text transition-colors hover:!bg-neutral-100 hover:!border-neutral-300"
       aria-label="Fazer login com o Google"
       :loading="loadingGoogle"
       @click="handleGoogleLogin"
     >
       <template #default>
-        <div class="login-form__google-btn-inner">
+        <div class="flex items-center justify-center gap-2.5 w-full">
           <q-icon name="svguse:icons/icons.svg#icon-google" size="18px" />
           <span class="text-paragraph-md">Continuar com o Google</span>
         </div>
@@ -27,16 +27,16 @@
     </c-button>
 
     <!-- Divider -->
-    <div class="login-form__divider" aria-hidden="true">
-      <span class="login-form__divider-line"></span>
-      <span class="text-paragraph-sm login-form__divider-text">ou</span>
-      <span class="login-form__divider-line"></span>
+    <div class="flex items-center gap-3" aria-hidden="true">
+      <span class="flex-1 h-px bg-border-light"></span>
+      <span class="text-paragraph-sm shrink-0 text-light-text-secondary whitespace-nowrap">ou</span>
+      <span class="flex-1 h-px bg-border-light"></span>
     </div>
 
     <!-- Form -->
     <q-form
       ref="loginForm"
-      class="login-form__fields"
+      class="flex flex-col gap-4"
       @submit.prevent="handleLogin"
       greedy
     >
@@ -49,7 +49,7 @@
         autocomplete="email"
         inputmode="email"
         aria-label="E-mail"
-        class="login-form__input"
+        class="w-full"
         :rules="emailRules"
         lazy-rules
       />
@@ -62,14 +62,14 @@
         label="Senha"
         autocomplete="current-password"
         aria-label="Senha"
-        class="login-form__input"
+        class="w-full"
         :rules="passwordRules"
         lazy-rules
       >
         <template #append>
           <q-icon
             :name="showPassword ? 'visibility_off' : 'visibility'"
-            class="login-form__password-toggle"
+            class="cursor-pointer text-light-text-secondary transition-colors hover:text-primary"
             :aria-label="showPassword ? 'Ocultar senha' : 'Mostrar senha'"
             role="button"
             tabindex="0"
@@ -80,10 +80,10 @@
       </c-input>
 
       <!-- Forgot password -->
-      <div class="login-form__forgot">
+      <div class="flex justify-end -mt-2">
         <router-link
           to="/esqueceu-senha"
-          class="login-form__link text-paragraph-sm"
+          class="text-paragraph-sm text-light-text-secondary no-underline transition-colors hover:text-primary"
         >
           Esqueceu sua senha?
         </router-link>
@@ -96,18 +96,18 @@
         no-caps
         color="primary"
         :loading="loading"
-        class="login-form__submit-btn"
+        class="w-full h-11 mt-2"
         label="Entrar"
         aria-label="Entrar na conta"
       />
     </q-form>
 
     <!-- Register link -->
-    <p class="text-paragraph-sm login-form__register">
+    <p class="text-paragraph-sm text-center text-light-text-secondary">
       Não tem uma conta?
       <router-link
         to="/cadastro"
-        class="login-form__link login-form__link--emphasis"
+        class="font-semibold text-primary no-underline transition-colors hover:text-primary-dark"
       >
         Criar conta grátis
       </router-link>
@@ -169,143 +169,3 @@ export default {
 };
 </script>
 
-<style scoped>
-/* ── Form root ───────────────────────────────────── */
-.login-form {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-  animation: loginFadeUp 0.35s cubic-bezier(0.25, 0.8, 0.5, 1) both;
-}
-
-@keyframes loginFadeUp {
-  from {
-    opacity: 0;
-    transform: translateY(16px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* ── Header ──────────────────────────────────────── */
-.login-form__header {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.login-form__title {
-  color: var(--color-primary-dark);
-}
-
-.login-form__subtitle {
-  color: var(--color-light-text-secondary);
-}
-
-/* ── Google button ───────────────────────────────── */
-.login-form__google-btn {
-  width: 100%;
-  border-color: var(--color-border-light) !important;
-  color: var(--color-light-text) !important;
-  height: 44px;
-  transition:
-    background-color var(--transition-hover),
-    border-color var(--transition-hover);
-}
-
-.login-form__google-btn:hover {
-  background-color: var(--color-neutral-100) !important;
-  border-color: var(--color-neutral-300) !important;
-}
-
-.login-form__google-btn-inner {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  width: 100%;
-}
-
-/* ── Divider ─────────────────────────────────────── */
-.login-form__divider {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.login-form__divider-line {
-  flex: 1;
-  height: 1px;
-  background-color: var(--color-border-light);
-}
-
-.login-form__divider-text {
-  color: var(--color-light-text-secondary);
-  white-space: nowrap;
-  flex-shrink: 0;
-}
-
-/* ── Fields ──────────────────────────────────────── */
-.login-form__fields {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.login-form__input {
-  width: 100%;
-}
-
-/* ── Password toggle ─────────────────────────────── */
-.login-form__password-toggle {
-  cursor: pointer;
-  color: var(--color-light-text-secondary);
-  transition: color var(--transition-hover);
-}
-
-.login-form__password-toggle:hover {
-  color: var(--color-primary);
-}
-
-/* ── Forgot password ─────────────────────────────── */
-.login-form__forgot {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: -8px;
-}
-
-/* ── Submit button ───────────────────────────────── */
-.login-form__submit-btn {
-  width: 100%;
-  height: 44px;
-  margin-top: 8px;
-}
-
-/* ── Links ───────────────────────────────────────── */
-.login-form__link {
-  color: var(--color-light-text-secondary);
-  text-decoration: none;
-  transition: color var(--transition-hover);
-}
-
-.login-form__link:hover {
-  color: var(--color-primary);
-}
-
-.login-form__link--emphasis {
-  color: var(--color-primary);
-  font-weight: 600;
-}
-
-.login-form__link--emphasis:hover {
-  color: var(--color-primary-dark);
-}
-
-/* ── Register ────────────────────────────────────── */
-.login-form__register {
-  text-align: center;
-  color: var(--color-light-text-secondary);
-}
-</style>
