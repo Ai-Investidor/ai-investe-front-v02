@@ -2,7 +2,6 @@
   <div
     class="welcome-glow-bg relative flex-1 flex flex-col flex-nowrap! items-center max-sm:items-start justify-center py-12 px-6 text-center overflow-x-hidden overflow-y-scroll"
   >
-
     <!-- Ícone central -->
     <div class="relative z-1 flex items-center justify-center mb-6 shrink-0">
       <q-icon
@@ -94,6 +93,19 @@ export default {
         },
       ],
     };
+  },
+
+  mounted() {
+    const refHeader = document.getElementsByTagName("header")[0];
+    const isMobile = this.$q.screen.lt.sm;
+
+    if (refHeader && isMobile) {
+      const headerHeight = refHeader.offsetHeight;
+      const welcomeContainer = this.$el;
+      welcomeContainer.style.paddingTop = `${headerHeight * 6}px`;
+
+      console.log(welcomeContainer.style.paddingTop);
+    }
   },
 };
 </script>
