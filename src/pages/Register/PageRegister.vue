@@ -76,14 +76,13 @@
         autocomplete="tel"
         inputmode="tel"
         aria-label="Telefone"
-        :mask="phoneMask"
+        mask="(##) #####-####"
         fill-mask
         unmasked-value
         hint="(11) 91234-5678"
         class="w-full"
         :rules="phoneRules"
         lazy-rules
-        @update:model-value="updatePhoneMask"
       />
 
       <!-- Password row: two fields side by side on desktop -->
@@ -219,7 +218,6 @@ export default {
       confirmPassword: "",
       showPassword: false,
       showConfirmPassword: false,
-      phoneMask: "(##) #####-####",
       nameRules,
       emailRules,
       phoneRules,
@@ -255,13 +253,6 @@ export default {
 
     async handleGoogleRegister() {
       await this.auth.loginWithGoogle();
-    },
-
-    updatePhoneMask(val) {
-      // Troca a máscara dinamicamente: celular (9 dígitos) ou fixo (8 dígitos)
-      // val já vem sem máscara por causa de unmasked-value
-      this.phoneMask =
-        val && val.length > 10 ? "(##) #####-####" : "(##) ####-####";
     },
   },
 };

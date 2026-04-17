@@ -1,6 +1,6 @@
 <template>
   <div
-    class="welcome-glow-bg relative flex-1 flex flex-col flex-nowrap! items-center max-sm:items-start justify-center py-12 max-sm:pt-120 px-6 text-center overflow-x-hidden overflow-y-scroll"
+    class="welcome-glow-bg relative flex-1 flex flex-col flex-nowrap! items-center max-sm:items-start justify-center py-12 px-6 text-center overflow-x-hidden overflow-y-scroll"
   >
 
     <!-- Ícone central -->

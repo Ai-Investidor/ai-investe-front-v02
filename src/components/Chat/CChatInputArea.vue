@@ -1,35 +1,15 @@
 <template>
   <div
-    class="flex flex-col items-center gap-4 py-6 px-7.5 max-sm:px-2 bg-dark! border-t border-border-dark shrink-0"
+    class="flex flex-col items-center gap-4 py-6 px-7.5 max-sm:px-2 bg-dark! border-t border-border-dark shrink-0 w-full min-w-0"
   >
     <!-- Wrapper: chips + input -->
-    <div class="flex flex-col gap-2 w-full max-w-225">
-      <!-- Chips de arquivos anexados -->
-      <ul
+    <div class="flex flex-col gap-2 w-full min-w-0 max-w-225">
+      <!-- Carousel de arquivos anexados -->
+      <CChatAttachedFiles
         v-if="pendingFiles.length > 0"
-        class="flex flex-wrap gap-2 px-2 list-none m-0 p-0"
-      >
-        <li
-          v-for="(file, index) in pendingFiles"
-          :key="`${file.name}-${file.size}-${index}`"
-          class="flex items-center gap-2 py-1 pl-3 pr-1.5 bg-dark-card rounded-button text-dark-text text-paragraph-3 border border-border-dark"
-        >
-          <q-icon
-            name="description"
-            size="16px"
-            class="text-dark-text-muted shrink-0"
-          />
-          <span class="truncate max-w-40">{{ file.name }}</span>
-          <button
-            type="button"
-            class="flex items-center justify-center size-5 shrink-0 bg-transparent border-none rounded-full cursor-pointer text-dark-text-muted transition-colors hover:bg-white/10 hover:text-dark-text"
-            :aria-label="`Remover ${file.name}`"
-            @click="handleRemoveFile(index)"
-          >
-            <q-icon name="close" size="14px" />
-          </button>
-        </li>
-      </ul>
+        :files="pendingFiles"
+        @remove="handleRemoveFile"
+      />
 
       <!-- Campo de input -->
       <div
@@ -117,8 +97,14 @@
 </template>
 
 <script>
+import CChatAttachedFiles from "@components/Chat/CChatAttachedFiles.vue";
+
 export default {
   name: "CChatInputArea",
+
+  components: {
+    CChatAttachedFiles,
+  },
 
   props: {
     disabled: {

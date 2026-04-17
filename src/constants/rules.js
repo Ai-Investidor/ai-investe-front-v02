@@ -45,7 +45,8 @@ export const nameRules = [
 
 export const phoneRules = [
   required("Telefone é obrigatório"),
-  minLength(10, "Telefone inválido"),
+  (v) => (v && v.length === 11) || "Telefone deve ter 11 dígitos (DDD + 9 dígitos)",
+  (v) => (v && v.charAt(2) === "9") || "Celular deve começar com 9 após o DDD",
 ];
 
 // ── Factories (dependem de outro valor) ───────────────────────────────────────

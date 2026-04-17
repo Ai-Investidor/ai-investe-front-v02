@@ -220,7 +220,7 @@ export default {
 .chat-container-content {
   display: grid;
   grid-template-rows: [content] 1fr [input] auto;
-  grid-template-columns: 1fr;
+  grid-template-columns: minmax(0, 1fr);
 
   height: 100%;
   overflow: hidden;
@@ -234,10 +234,12 @@ export default {
   overflow-y: auto;
 
   min-height: 0;
+  min-width: 0;
 }
 
 .chat-area-input {
   grid-row: input;
   min-height: 0;
+  min-width: 0;
 }
 </style>
