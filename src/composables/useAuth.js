@@ -2,6 +2,7 @@ import { useAuthStore } from "@stores/auth.store";
 import { useAuthService } from "@services/auth.service";
 import { NotifySuccess, NotifyError } from "boot/notify";
 import { useRouter } from "vue-router";
+import { Logger } from "src/boot/logger";
 
 export default function useAuth() {
   const store = useAuthStore();
@@ -128,6 +129,7 @@ export default function useAuth() {
       const { error } = await authService.logout();
 
       if (error) {
+        Logger.error(error);
         NotifyError("Erro ao encerrar a sessão. Tente novamente.");
         return false;
       }

@@ -1,54 +1,43 @@
 <template>
-  <q-header class="app-header">
-    <div class="app-header__inner">
-      <!-- Left: toggle + page title -->
-      <div class="app-header__left">
-        <!--
-            <button class="app-header__toggle" aria-label="Alternar sidebar" @click="onToggle">
-            <q-icon name="menu" size="20px" />
-            </button>
-        -->
-        <div class="app-header__breadcrumb">
-          <span class="app-header__page-title text-title-sm">{{
-            currentPageTitle
-          }}</span>
-          <span class="app-header__page-date text-paragraph-sm">{{
-            currentDate
-          }}</span>
-        </div>
+  <q-header
+    class="flex items-stretch shrink-0 h-20.75 bg-dark-card! border-b border-border-dark"
+  >
+    <div class="flex items-center justify-between w-full px-7.5 max-sm:px-4">
+      <div class="flex items-center gap-3 min-w-0">
+        <button
+          v-if="$q.screen.lt.md"
+          type="button"
+          class="flex items-center justify-center shrink-0 size-10 text-dark-text-secondary bg-transparent border-none rounded-md cursor-pointer transition-colors hover:bg-white/7 hover:text-dark-text"
+          aria-label="Abrir menu"
+          @click="onOpenSidebar"
+        >
+          <q-icon name="menu" size="22px" />
+        </button>
+        <span class="text-title-3 text-white truncate">
+          {{ nameCurrentRoute }}
+        </span>
       </div>
 
-      <!-- Right: search + actions + user -->
-      <div class="app-header__right">
-        <!-- Search -->
-        <!--
-        <div class="app-header__search">
-          <q-icon name="search" size="16px" class="app-header__search-icon" />
-          <input
-            v-model="searchQuery"
-            class="app-header__search-input text-paragraph-sm"
-            placeholder="Buscar ativos, notícias..."
-            aria-label="Buscar"
-          />
-          <span class="app-header__search-kbd">⌘K</span>
-        </div>
-
-        -->
-
-        <!-- Notifications -->
-        <button class="app-header__action" aria-label="Notificações">
+      <!-- Direita: ações + info do usuário -->
+      <div class="flex items-center gap-1">
+        <!-- Notificações -->
+        <button
+          v-if="$q.screen.gt.sm"
+          class="relative flex items-center justify-center size-9 text-dark-text-secondary cursor-pointer rounded-md transition-colors hover:bg-white/7 hover:text-dark-text"
+          aria-label="Notificações"
+        >
           <q-icon name="notifications_none" size="20px" />
-          <span class="app-header__action-badge">3</span>
-          <q-tooltip anchor="bottom middle" self="top middle" :offset="[0, 6]"
-            >Notificações</q-tooltip
-          >
+          <q-tooltip anchor="bottom middle" self="top middle" :offset="[0, 6]">
+            Notificações
+          </q-tooltip>
         </button>
 
-        <!-- Theme toggle -->
+        <!-- Alternar tema -->
         <button
-          class="app-header__action"
-          aria-label="Alternar tema"
-          @click="onToggleDark"
+          v-if="$q.screen.gt.sm"
+          class="relative flex items-center justify-center size-9 text-dark-text-secondary cursor-pointer rounded-md transition-colors hover:bg-white/7 hover:text-dark-text"
+          :aria-label="$q.dark.isActive ? 'Modo claro' : 'Modo escuro'"
+          @click="$q.dark.toggle()"
         >
           <q-icon
             :name="$q.dark.isActive ? 'light_mode' : 'dark_mode'"
@@ -59,26 +48,42 @@
           </q-tooltip>
         </button>
 
-        <!-- Divider -->
-        <div class="app-header__divider" />
-
-        <!-- User profile -->
-        <div class="app-header__user">
-          <div class="app-header__avatar">
-            <span class="text-paragraph-sm">JD</span>
+        <!-- Seção do usuário -->
+        <div
+          class="flex items-center gap-2.5 px-3.5 border-l border-border-dark cursor-pointer transition-opacity hover:opacity-85"
+        >
+          <div
+            class="flex items-center justify-center shrink-0 size-10 overflow-hidden rounded-full bg-linear-to-br from-primary to-primary-dark2"
+          >
+            <img
+              v-if="userAvatar"
+              :src="userAvatar"
+              :alt="userDisplayName"
+              class="size-full object-cover"
+            />
+            <span
+              v-else
+              class="text-sm font-bold leading-none text-dark-text select-none"
+            >
+              {{ userInitials }}
+            </span>
           </div>
-          <div class="app-header__user-info">
-            <span class="app-header__user-name text-paragraph-sm"
-              >Jefferson Dev</span
+          <div class="flex flex-col items-start gap-0.5 max-sm:hidden">
+            <span
+              class="font-display text-2xl leading-normal font-regular text-dark-text truncate max-w-40 max-sm:max-w-20"
             >
-            <span class="app-header__user-role text-paragraph-sm"
-              >Pro Investor</span
+              {{ userDisplayName }}
+            </span>
+            <span
+              class="font-display text-2xs leading-normal font-regular text-dark-text-secondary whitespace-nowrap"
             >
+              PRO INVESTING
+            </span>
           </div>
           <q-icon
             name="keyboard_arrow_down"
-            size="16px"
-            class="app-header__chevron"
+            size="20px"
+            class="text-dark-text-muted shrink-0 max-sm:hidden"
           />
         </div>
       </div>
@@ -87,45 +92,51 @@
 </template>
 
 <script>
+import { useAuthStore } from "@stores/auth.store";
+import { useUiStore } from "@stores/ui.store";
+import { useRouter } from "vue-router";
+
 export default {
   name: "CHeader",
 
-  props: {
-    sidebarMini: {
-      type: Boolean,
-      default: false,
-    },
-  },
-
   emits: ["toggle:sidebar"],
 
-  data() {
-    return {
-      searchQuery: "",
-    };
+  setup() {
+    return { uiStore: useUiStore() };
   },
 
   computed: {
-    currentPageTitle() {
-      const titles = {
-        "/": "Dashboard",
-        "/portfolio": "Portfólio",
-        "/mercados": "Mercados",
-        "/ia-chat": "IA Chat",
-        "/analises": "Análises",
-        "/alertas": "Alertas",
-        "/configuracoes": "Configurações",
-      };
-      return titles[this.$route.path] || "Dashboard";
+    userAvatar() {
+      const authStore = useAuthStore();
+      return authStore.userAvatar || "";
     },
 
-    currentDate() {
-      return new Date().toLocaleDateString("pt-BR", {
-        weekday: "long",
-        day: "numeric",
-        month: "long",
-        year: "numeric",
-      });
+    userDisplayName() {
+      const authStore = useAuthStore();
+      return (
+        authStore.userFullName ||
+        authStore.userEmail ||
+        "USER NAME"
+      ).toUpperCase();
+    },
+
+    userInitials() {
+      const authStore = useAuthStore();
+      const name = authStore.userFullName || authStore.userEmail || "";
+      return (
+        name
+          .split(" ")
+          .slice(0, 2)
+          .map((n) => n[0])
+          .join("")
+          .toUpperCase() || "U"
+      );
+    },
+
+    nameCurrentRoute() {
+      const router = useRouter();
+
+      return router.currentRoute.value?.meta?.label || "Dashboard";
     },
   },
 
@@ -134,257 +145,11 @@ export default {
       this.$emit("toggle:sidebar");
     },
 
-    onToggleDark() {
-      this.$q.dark.toggle();
+    onOpenSidebar() {
+      this.uiStore.openMainSidebar();
     },
   },
 };
 </script>
 
-<style scoped>
-/* ── Root ────────────────────────────────────────── */
-.app-header {
-  height: 4.8rem;
-  background-color: #111d2d;
-  border-bottom: 1px solid rgba(51, 150, 254, 0.13);
-  box-shadow: none !important;
-}
-
-.app-header__inner {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  height: 100%;
-  padding: 0 24px;
-  gap: 16px;
-}
-
-/* ── Left ────────────────────────────────────────── */
-.app-header__left {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  min-width: 0;
-}
-
-.app-header__toggle {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 36px;
-  height: 36px;
-  border-radius: 8px;
-  border: none;
-  background: transparent;
-  color: rgba(255, 255, 255, 0.55);
-  cursor: pointer;
-  flex-shrink: 0;
-  transition:
-    background-color 0.2s,
-    color 0.2s;
-}
-
-.app-header__toggle:hover {
-  background-color: rgba(255, 255, 255, 0.07);
-  color: rgba(255, 255, 255, 0.9);
-}
-
-.app-header__breadcrumb {
-  display: flex;
-  flex-direction: column;
-  gap: 1px;
-  min-width: 0;
-}
-
-.app-header__page-title {
-  color: #ffffff;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.app-header__page-date {
-  color: rgba(255, 255, 255, 0.38);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  text-transform: capitalize;
-}
-
-/* ── Right ───────────────────────────────────────── */
-.app-header__right {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-shrink: 0;
-}
-
-/* ── Search ──────────────────────────────────────── */
-.app-header__search {
-  display: none;
-  align-items: center;
-  gap: 8px;
-  background-color: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(51, 150, 254, 0.12);
-  border-radius: 10px;
-  padding: 0 12px;
-  height: 36px;
-  width: 240px;
-  transition:
-    border-color 0.2s,
-    background-color 0.2s;
-  cursor: text;
-}
-
-.app-header__search:focus-within {
-  background-color: rgba(51, 150, 254, 0.08);
-  border-color: rgba(51, 150, 254, 0.35);
-}
-
-.app-header__search-icon {
-  color: rgba(255, 255, 255, 0.35);
-  flex-shrink: 0;
-}
-
-.app-header__search-input {
-  flex: 1;
-  background: transparent;
-  border: none;
-  outline: none;
-  color: rgba(255, 255, 255, 0.85);
-  min-width: 0;
-}
-
-.app-header__search-input::placeholder {
-  color: rgba(255, 255, 255, 0.32);
-}
-
-.app-header__search-kbd {
-  font-size: 0.65rem;
-  color: rgba(255, 255, 255, 0.25);
-  background-color: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 4px;
-  padding: 1px 5px;
-  white-space: nowrap;
-  flex-shrink: 0;
-}
-
-/* ── Action buttons ──────────────────────────────── */
-.app-header__action {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 36px;
-  height: 36px;
-  border-radius: 8px;
-  border: none;
-  background: transparent;
-  color: rgba(255, 255, 255, 0.55);
-  cursor: pointer;
-  transition:
-    background-color 0.2s,
-    color 0.2s;
-}
-
-.app-header__action:hover {
-  background-color: rgba(255, 255, 255, 0.07);
-  color: rgba(255, 255, 255, 0.9);
-}
-
-.app-header__action-badge {
-  position: absolute;
-  top: 4px;
-  right: 4px;
-  min-width: 16px;
-  height: 16px;
-  border-radius: 99px;
-  background-color: #3396fe;
-  color: #ffffff;
-  font-size: 0.625rem;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0 3px;
-  border: 1.5px solid #111d2d;
-  line-height: 1;
-}
-
-/* ── Divider ─────────────────────────────────────── */
-.app-header__divider {
-  width: 1px;
-  height: 24px;
-  background-color: rgba(51, 150, 254, 0.15);
-  margin: 0 4px;
-}
-
-/* ── User profile ────────────────────────────────── */
-.app-header__user {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 6px 10px;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-
-.app-header__user:hover {
-  background-color: rgba(255, 255, 255, 0.06);
-}
-
-.app-header__avatar {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #3396fe 0%, #0c376c 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  color: #ffffff;
-  font-weight: 700;
-  box-shadow: 0 0 0 2px rgba(51, 150, 254, 0.25);
-}
-
-.app-header__user-info {
-  display: none;
-  flex-direction: column;
-  gap: 1px;
-}
-
-.app-header__user-name {
-  color: rgba(255, 255, 255, 0.9);
-  font-weight: 500;
-  white-space: nowrap;
-}
-
-.app-header__user-role {
-  color: rgba(255, 255, 255, 0.38);
-  white-space: nowrap;
-}
-
-.app-header__chevron {
-  color: rgba(255, 255, 255, 0.35);
-  display: none;
-}
-
-/* ── Responsive ──────────────────────────────────── */
-@media (min-width: 600px) {
-  .app-header__search {
-    display: flex;
-  }
-}
-
-@media (min-width: 1024px) {
-  .app-header__user-info {
-    display: flex;
-  }
-
-  .app-header__chevron {
-    display: block;
-  }
-}
-</style>
+<style scoped></style>

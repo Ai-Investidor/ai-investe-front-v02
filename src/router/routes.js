@@ -8,7 +8,11 @@ const routes = [
         redirect: "/ia-chat",
         component: () => import("pages/IndexPage.vue"),
       },
-      { path: "ia-chat", component: () => import("pages/Chat/PageChat.vue") },
+      {
+        path: "ia-chat",
+        component: () => import("pages/Chat/PageChat.vue"),
+        meta: { label: "IA Chat" },
+      },
     ],
   },
 

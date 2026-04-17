@@ -1,62 +1,48 @@
 <template>
   <q-page
-    :style-fn="(offset) => ({ height: `calc(100vh - ${offset}px)` })"
-    class="flex overflow-hidden bg-[#0D1117] h-full"
+    :style-fn="
+      (offset) => ({ height: `calc(100vh - ${offset}px)`, minHeight: '0' })
+    "
+    class="relative flex flex-row overflow-hidden bg-dark"
   >
-    <!-- Overlay mobile para fechar sidebar -->
-    <div
-      v-if="sidebarOpen && $q.screen.lt.md"
-      class="fixed inset-0 bg-black/50 z-10"
-      @click="sidebarOpen = false"
-    />
+    <!-- Backdrop mobile -->
+    <transition name="fade">
+      <div
+        v-if="isMobile && sidebarOpen"
+        class="absolute inset-0 bg-black/50 z-40"
+        @click="sidebarOpen = false"
+      />
+    </transition>
 
-    <!-- Sidebar de conversas -->
     <transition name="sidebar">
       <CChatConversationsMenu
         v-show="sidebarOpen"
         :open="sidebarOpen"
+        :class="{ 'absolute! inset-y-0 left-0 z-50': isMobile }"
         :conversations="chat.sessions.value"
         :active-conversation-id="chat.activeConversationId.value"
-        class="z-20 flex-shrink-0 h-full"
-        :class="$q.screen.lt.md ? 'absolute inset-y-0 left-0' : 'relative'"
-        @new-chat="chat.newConversation"
-        @select-conversation="(id) => onSelectConversation(id)"
+        @new-chat="openNewChat"
+        @select-conversation="onSelectConversation"
       />
     </transition>
 
-    <!-- Área principal -->
-    <div class="flex-1 flex flex-col min-w-0 relative h-full overflow-hidden">
-      <!-- Topbar da área de chat -->
-      <header
-        class="flex items-center gap-3 px-4 py-3 border-b border-[#30363D] bg-[#0D1117] flex-shrink-0"
+    <!-- Coluna 3: área principal -->
+
+    <div class="chat-container-content relative flex-1 min-w-0">
+      <!-- Botão toggle sidebar (mobile) -->
+      <button
+        v-if="isMobile && !sidebarOpen"
+        class="absolute top-4 left-4 z-10 flex items-center justify-center size-10 rounded-button bg-dark-card border border-border-dark text-dark-text cursor-pointer transition-opacity duration-200 hover:opacity-80"
+        aria-label="Abrir conversas"
+        @click="sidebarOpen = true"
       >
-        <div class="flex-1 min-w-0">
-          <p
-            v-if="chat.hasActiveConversation.value"
-            class="text-sm font-medium text-white truncate"
-          >
-            {{ activeTitle }}
-          </p>
-          <p v-else class="text-sm text-gray-500">
-            Selecione ou inicie uma conversa
-          </p>
-        </div>
+        <q-icon name="chat_bubble" size="20px" />
+      </button>
 
-        <c-button
-          icon="add"
-          color="dark"
-          class="rounded-lg text-sm"
-          unelevated
-          no-caps
-          dense
-          @click="chat.newConversation"
-        />
-      </header>
-
-      <!-- Mensagens ou Welcome -->
+      <!-- Conteúdo: loading / welcome / mensagens -->
       <div
         v-if="chat.isLoadingMessages.value"
-        class="flex justify-center items-center flex-1 min-h-0"
+        class="chat-area-content flex items-center justify-center"
       >
         <CSpinner size="4rem" />
       </div>
@@ -65,27 +51,28 @@
         v-else-if="
           !chat.hasActiveConversation.value || chat.messages.value.length === 0
         "
-        class="flex-1 overflow-y-auto"
+        class="chat-area-content overflow-y-auto"
         @select-prompt="onSelectPrompt"
       />
 
-      <CChatMessageList
-        v-else
-        ref="messageList"
-        :messages="chat.messages.value"
-        :is-typing="chat.isTyping.value"
-        class="flex-1 min-h-0"
-      />
+      <div v-else class="chat-area-content flex! flex-col overflow-y-scroll!">
+        <CChatMessageList
+          ref="messageList"
+          :messages="chat.messages.value"
+          :is-typing="chat.isTyping.value"
+        />
+      </div>
 
-      <!-- Input -->
-      <CChatInputArea
-        :disabled="chat.isTyping.value"
-        :pending-files="chat.pendingFiles.value"
-        class="flex-shrink-0"
-        @send="sendNewMessage"
-        @attach-files="chat.attachFiles"
-        @remove-file="chat.removeFile"
-      />
+      <!-- Input sempre visível no rodapé -->
+      <div class="chat-area-input">
+        <CChatInputArea
+          :disabled="chat.isTyping.value"
+          :pending-files="chat.pendingFiles.value"
+          @send="sendNewMessage"
+          @attach="onAttachFiles"
+          @remove-file="onRemoveFile"
+        />
+      </div>
     </div>
   </q-page>
 </template>
@@ -93,7 +80,7 @@
 <script>
 import { useChat } from "@composables/useChat";
 import { useAuthStore } from "@stores/auth.store";
-import CButton from "@components/Button/CButton.vue";
+import { useUiStore } from "@stores/ui.store";
 import CChatConversationsMenu from "@components/Chat/CChatConversationsMenu.vue";
 import CChatWelcome from "@components/Chat/CChatWelcome.vue";
 import CChatMessageList from "@components/Chat/CChatMessageList.vue";
@@ -104,7 +91,6 @@ export default {
   name: "PageChat",
 
   components: {
-    CButton,
     CChatConversationsMenu,
     CChatWelcome,
     CChatMessageList,
@@ -114,41 +100,44 @@ export default {
 
   setup() {
     const authStore = useAuthStore();
-
+    const uiStore = useUiStore();
     return {
       chat: useChat(),
       authStore,
-    };
-  },
-
-  data() {
-    return {
-      sidebarOpen: true,
+      uiStore,
     };
   },
 
   computed: {
-    activeTitle() {
-      const conv = this.chat.conversations.value.find(
-        (c) => c.id === this.chat.activeConversationId.value,
-      );
-      return conv?.title || "Nova conversa";
+    isMobile() {
+      return this.$q.screen.lt.md;
     },
 
     userId() {
       return this.authStore.user?.id;
     },
+
+    sidebarOpen: {
+      get() {
+        return this.uiStore.chatSidebarOpen;
+      },
+      set(value) {
+        this.uiStore.setChatSidebarOpen(value);
+      },
+    },
   },
 
-  created() {
-    if (this.$q.screen.lt.md) {
-      this.sidebarOpen = false;
-    }
+  watch: {
+    isMobile: {
+      immediate: true,
+      handler(mobile) {
+        this.uiStore.setChatSidebarOpen(!mobile);
+      },
+    },
   },
 
   mounted() {
     this.chat.selectedSession.value = null;
-
     this.onLoadSessions();
   },
 
@@ -161,14 +150,10 @@ export default {
 
     async onSelectConversation(id) {
       await this.chat.getMessagesSessions(id);
-
       this.$nextTick(() => {
         this.$refs.messageList?.scrollToBottom();
       });
-
-      if (this.$q.screen.lt.md) {
-        this.sidebarOpen = false;
-      }
+      this.closeSidebar();
     },
 
     async onSelectPrompt(text) {
@@ -183,11 +168,31 @@ export default {
       await this.chat.sendMessage(text);
       this.onLoadSessions();
     },
+
+    onAttachFiles(files) {
+      this.chat.attachFiles(files);
+    },
+
+    onRemoveFile(index) {
+      this.chat.removeFile(index);
+    },
+
+    openNewChat() {
+      this.chat.newConversation();
+      this.closeSidebar();
+    },
+
+    closeSidebar() {
+      if (this.isMobile) {
+        this.sidebarOpen = false;
+      }
+    },
   },
 };
 </script>
 
 <style scoped>
+/* ── Animação da text sidebar ────────────────────── */
 .sidebar-enter-active,
 .sidebar-leave-active {
   transition:
@@ -199,5 +204,42 @@ export default {
 .sidebar-leave-to {
   transform: translateX(-100%);
   opacity: 0;
+}
+
+/* ── Backdrop fade ──────────────────────────────── */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.2s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+.chat-container-content {
+  display: grid;
+  grid-template-rows: [content] 1fr [input] auto;
+  grid-template-columns: minmax(0, 1fr);
+
+  height: 100%;
+  overflow: hidden;
+}
+
+.chat-area-content {
+  width: 100%;
+
+  grid-row: content;
+
+  overflow-y: auto;
+
+  min-height: 0;
+  min-width: 0;
+}
+
+.chat-area-input {
+  grid-row: input;
+  min-height: 0;
+  min-width: 0;
 }
 </style>
