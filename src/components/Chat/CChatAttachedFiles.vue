@@ -14,7 +14,7 @@
       class="!w-auto"
     >
       <div
-        class="flex items-center gap-2 py-1 pl-3 pr-1.5 bg-dark-card rounded-button text-dark-text text-paragraph-3 border border-border-dark"
+        class="flex items-center gap-2 py-1 pl-3 pr-1.5 bg-dark-card rounded-button text-dark-text text-paragraph-3 border border-border-dark transition-colors group hover:border-primary/40 cursor-pointer"
       >
         <q-icon
           name="description"
@@ -24,7 +24,7 @@
         <span class="truncate max-w-40">{{ file.name }}</span>
         <button
           type="button"
-          class="flex items-center justify-center size-5 shrink-0 bg-transparent border-none rounded-full cursor-pointer text-dark-text-muted transition-colors hover:bg-white/10 hover:text-dark-text"
+          class="flex items-center justify-center size-5 shrink-0 bg-transparent border-none rounded-full cursor-pointer text-dark-text-muted transition-colors hover:text-error hover:bg-error/15"
           :aria-label="`Remover ${file.name}`"
           @click="onRemove(index)"
         >
