@@ -113,3 +113,5 @@ test-results/
 .vscode
 docs
 CLAUDE.md
+.mcp.json
+*mcp.json
