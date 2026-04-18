@@ -1,19 +1,29 @@
 <template>
-  <q-card flat bordered class="c-card-action" @click="$emit('click', $event)">
-    <q-card-section class="flex items-start gap-3 text-left">
-      <q-icon :name="icon" size="20px" class="flex-shrink-0 mt-0.5" />
-      <div>
+  <button
+    type="button"
+    class="flex! items-start gap-2.5 p-5 rounded-xl h-min w-full cursor-pointer text-left card-action-glass"
+    @click="$emit('click', $event)"
+  >
+    <q-icon
+      :name="icon"
+      :color="iconColor"
+      size="20px"
+      class="shrink-0 !mt-0.5"
+      aria-hidden="true"
+    />
+
+    <div>
+      <div class="flex items-center gap-2">
         <p
-          class="text-title-sm text-gray-200 group-hover:text-white transition-colors"
+          class="text-base font-medium tracking-ui leading-[1.3] text-dark-text"
         >
           {{ title }}
         </p>
-        <p class="text-paragraph-sm text-gray-500 mt-0.5 leading-relaxed">
-          {{ description }}
-        </p>
       </div>
-    </q-card-section>
-  </q-card>
+
+      <p class="text-paragraph-3 text-dark-text-muted">{{ description }}</p>
+    </div>
+  </button>
 </template>
 
 <script>
@@ -33,25 +43,12 @@ export default {
       type: String,
       default: "",
     },
+    iconColor: {
+      type: String,
+      default: "var(--color-primary)",
+    },
   },
 
   emits: ["click"],
 };
 </script>
-
-<style lang="scss" scoped>
-.c-card-action {
-  cursor: pointer;
-  border-radius: 0.75rem;
-  background-color: #161b22;
-  border-color: #30363d;
-  transition:
-    border-color 0.2s ease,
-    background-color 0.2s ease;
-
-  &:hover {
-    border-color: var(--q-primary);
-    background-color: #1c2128;
-  }
-}
-</style>

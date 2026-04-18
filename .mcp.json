@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "chrome-devtools": {
+      "command": "bunx",
+      "args": ["chrome-devtools-mcp@latest"]
+    },
+    "figma": {
+      "url": "http://127.0.0.1:3845/mcp",
+      "type": "http"
+    },
+    "gsap-master": {
+      "command": "bunx",
+      "args": ["-y", "@vinhnguyen/gsap-mcp"]
+    }
+  }
+}

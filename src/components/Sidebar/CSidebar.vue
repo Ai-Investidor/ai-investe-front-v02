@@ -2,60 +2,39 @@
   <q-drawer
     v-model="isOpen"
     show-if-above
-    :mini="isMini"
-    :width="240"
-    :mini-width="64"
-    class="app-sidebar"
-    @mouseenter="hovered = true"
-    @mouseleave="hovered = false"
+    :width="70"
+    :breakpoint="1023"
+    class="h-full bg-dark-card border-r border-border-dark overflow-hidden"
   >
-    <!-- Logo -->
-    <div class="sidebar-logo" :class="{ 'sidebar-logo--mini': isMini }">
-      <div class="sidebar-logo__icon">
-        <q-icon
-          name="svguse:icons/icons.svg#icon-logo"
-          size="20px"
-          color="white"
-        />
+    <div class="flex flex-col h-full">
+      <!-- Logo -->
+      <div class="flex items-center justify-center shrink-0 py-[21px]">
+        <div
+          class="flex items-center justify-center shrink-0 size-10 rounded-md bg-linear-to-br from-primary to-primary-dark2 shadow-[0_0_16px_rgba(51,150,254,0.28)]"
+        >
+          <q-icon
+            name="svguse:icons/icons.svg#icon-logo"
+            size="20px"
+            color="white"
+          />
+        </div>
       </div>
-      <span v-if="!isMini" class="sidebar-logo__name text-title-sm"
-        >AI.INVEST</span
+
+      <!-- Navegação principal -->
+      <nav
+        class="flex flex-col items-center shrink-0 gap-8 py-4 border-y border-border-dark"
       >
-    </div>
-
-    <!-- Scroll area -->
-    <div
-      class="sidebar-body"
-      :class="{ 'sidebar-body--animating': isAnimating }"
-    >
-      <!-- Main navigation -->
-      <nav class="sidebar-nav">
-        <div
-          v-for="item in NavigationSideMenuMain"
+        <button
+          v-for="item in navItems"
           :key="item.key"
-          class="sidebar-nav__item"
-          :class="{
-            'sidebar-nav__item--active': isActive(item),
-            'sidebar-nav__item--highlight': item.highlight && !isActive(item),
-            'sidebar-nav__item--mini': isMini,
-          }"
+          type="button"
+          class="sidebar-btn"
+          :class="{ 'sidebar-btn--active': isActive(item) }"
+          :aria-label="item.label"
           @click="navigate(item)"
         >
-          <div class="sidebar-nav__icon-wrap">
-            <q-icon :name="item.icon" size="20px" />
-            <span v-if="isMini && item.badge" class="sidebar-nav__dot" />
-          </div>
-
-          <span v-if="!isMini" class="sidebar-nav__label text-paragraph-md">
-            {{ item.label }}
-          </span>
-
-          <span v-if="!isMini && item.badge" class="sidebar-nav__badge">
-            {{ item.badge }}
-          </span>
-
+          <q-icon :name="item.icon" size="20px" />
           <q-tooltip
-            v-if="isMini"
             anchor="center right"
             self="center left"
             :offset="[12, 0]"
@@ -63,146 +42,111 @@
           >
             {{ item.label }}
           </q-tooltip>
-        </div>
+        </button>
       </nav>
 
-      <!-- Section label -->
-      <div v-if="!isMini" class="sidebar-section-label text-paragraph-sm">
-        Conta
-      </div>
-
-      <!-- Bottom navigation -->
-      <nav class="sidebar-nav">
-        <div
-          v-for="item in NavigationSideMenuBottom"
-          :key="item.key"
-          class="sidebar-nav__item"
-          :class="{
-            'sidebar-nav__item--active': isActive(item),
-            'sidebar-nav__item--mini': isMini,
-          }"
-          @click="navigate(item)"
-        >
-          <div class="sidebar-nav__icon-wrap">
-            <q-icon :name="item.icon" size="20px" />
-            <span
-              v-if="isMini && item.badge"
-              class="sidebar-nav__dot sidebar-nav__dot--accent"
-            />
-          </div>
-
-          <span v-if="!isMini" class="sidebar-nav__label text-paragraph-md">
-            {{ item.label }}
-          </span>
-
-          <span
-            v-if="!isMini && item.badge"
-            class="sidebar-nav__badge sidebar-nav__badge--neutral"
-          >
-            {{ item.badge }}
-          </span>
-
-          <q-tooltip
-            v-if="isMini"
-            anchor="center right"
-            self="center left"
-            :offset="[12, 0]"
-            class="sidebar-tooltip"
-          >
-            {{ item.label }}
-          </q-tooltip>
-        </div>
-      </nav>
-    </div>
-
-    <!-- Footer: logout -->
-    <div
-      class="sidebar-footer"
-      :class="{
-        'sidebar-footer--mini': isMini,
-        'sidebar-body--animating': isAnimating,
-      }"
-    >
-      <div class="sidebar-divider" />
+      <!-- Controles secundários -->
       <div
-        class="sidebar-nav__item sidebar-nav__item--logout"
-        :class="{ 'sidebar-nav__item--mini': isMini }"
-        @click="onLogout"
+        class="flex flex-col items-center shrink-0 gap-8 py-4 border-b border-border-dark"
       >
-        <div class="sidebar-nav__icon-wrap">
+        <button class="sidebar-btn" aria-label="Notificações">
+          <q-icon name="notifications_none" size="20px" />
+          <q-tooltip
+            anchor="center right"
+            self="center left"
+            :offset="[12, 0]"
+            class="sidebar-tooltip"
+          >
+            Notificações
+          </q-tooltip>
+        </button>
+
+        <button
+          class="sidebar-btn"
+          aria-label="Configurações"
+          @click="navigate({ route: '/configuracoes' })"
+        >
+          <q-icon name="settings" size="20px" />
+          <q-tooltip
+            anchor="center right"
+            self="center left"
+            :offset="[12, 0]"
+            class="sidebar-tooltip"
+          >
+            Configurações
+          </q-tooltip>
+        </button>
+      </div>
+
+      <!-- Spacer -->
+      <div class="flex-1" />
+
+      <!-- Rodapé: logout -->
+      <div class="flex items-center justify-center shrink-0 py-4">
+        <button
+          class="sidebar-btn hover:text-error!"
+          aria-label="Sair"
+          @click="onLogout"
+        >
           <q-icon name="logout" size="20px" />
-        </div>
-        <span v-if="!isMini" class="sidebar-nav__label text-paragraph-md"
-          >Sair</span
-        >
-        <q-tooltip
-          v-if="isMini"
-          anchor="center right"
-          self="center left"
-          :offset="[12, 0]"
-          class="sidebar-tooltip"
-        >
-          Sair
-        </q-tooltip>
+          <q-tooltip
+            anchor="center right"
+            self="center left"
+            :offset="[12, 0]"
+            class="sidebar-tooltip"
+          >
+            Sair
+          </q-tooltip>
+        </button>
       </div>
     </div>
   </q-drawer>
 </template>
 
 <script>
-import {
-  NavigationSideMenuMain,
-  NavigationSideMenuBottom,
-} from "@constants/menus";
 import useAuth from "@composables/useAuth";
+import { useUiStore } from "@stores/ui.store";
 
 export default {
   name: "CSidebar",
 
-  props: {
-    open: {
-      type: Boolean,
-      default: false,
-    },
-    mini: {
-      type: Boolean,
-      default: false,
-    },
+  setup() {
+    return { uiStore: useUiStore() };
   },
-
-  emits: ["update:open", "update:mini"],
 
   data() {
     return {
-      NavigationSideMenuMain,
-      NavigationSideMenuBottom,
-      hovered: false,
-      isAnimating: false,
+      navItems: [
+        {
+          key: "ia-chat",
+          label: "IA Chat",
+          icon: "forum",
+          route: "/ia-chat",
+        },
+        {
+          key: "portfolio",
+          label: "Portfólio",
+          icon: "account_balance_wallet",
+          route: "/portfolio",
+        },
+        {
+          key: "analytics",
+          label: "Análises",
+          icon: "show_chart",
+          route: "/analises",
+        },
+      ],
     };
-  },
-
-  watch: {
-    hovered() {
-      this.isAnimating = true;
-      clearTimeout(this._animatingTimer);
-      this._animatingTimer = setTimeout(() => {
-        this.isAnimating = false;
-      }, 350);
-    },
   },
 
   computed: {
     isOpen: {
       get() {
-        return this.open;
+        return this.uiStore.sidebarOpen;
       },
-      set(val) {
-        this.$emit("update:open", val);
+      set(value) {
+        this.uiStore.setMainSidebarOpen(value);
       },
-    },
-
-    isMini() {
-      return this.mini && !this.hovered;
     },
   },
 
@@ -212,8 +156,11 @@ export default {
     },
 
     navigate(item) {
-      if (this.$route.path !== item.route) {
+      if (item.route && this.$route.path !== item.route) {
         this.$router.push(item.route);
+      }
+      if (this.$q.screen.lt.md) {
+        this.uiStore.closeMainSidebar();
       }
     },
 
@@ -226,231 +173,33 @@ export default {
 </script>
 
 <style scoped>
-/* ── Drawer override ─────────────────────────────── */
-:deep(.q-drawer) {
-  background-color: #020c16;
-  border-right: 1px solid rgba(51, 150, 254, 0.13) !important;
-  display: flex;
-  flex-direction: column;
-}
+@reference "../../css/tailwind.css";
 
-:deep(.q-drawer__content) {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  overflow: hidden;
-}
-
-/* ── Logo ────────────────────────────────────────── */
-.sidebar-logo {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  height: 4.8rem;
-  padding: 0 20px;
-  flex-shrink: 0;
-  border-bottom: 1px solid rgba(51, 150, 254, 0.1);
-  transition: padding 0.25s cubic-bezier(0.25, 0.8, 0.5, 1);
-}
-
-.sidebar-logo--mini {
-  justify-content: center;
-  padding: 0;
-}
-
-.sidebar-logo__icon {
-  width: 32px;
-  height: 32px;
-  background: linear-gradient(135deg, #3396fe 0%, #0c376c 100%);
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  box-shadow: 0 0 16px rgba(51, 150, 254, 0.28);
-}
-
-.sidebar-logo__name {
-  color: #ffffff;
-  font-weight: 800;
-  letter-spacing: -0.02em;
-  white-space: nowrap;
-}
-
-/* ── Body (scrollable center) ────────────────────── */
-.sidebar-body {
-  flex: 1;
-  overflow-y: auto;
-  overflow-x: hidden;
-  padding: 16px 8px;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  scrollbar-width: none;
-}
-
-.sidebar-body::-webkit-scrollbar {
-  display: none;
-}
-
-.sidebar-body--animating,
-.sidebar-body--animating * {
-  pointer-events: none !important;
-}
-
-/* ── Section label ───────────────────────────────── */
-.sidebar-section-label {
-  color: rgba(255, 255, 255, 0.25);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  padding: 16px 12px 6px;
-  font-size: 0.65rem;
-  font-weight: 600;
-}
-
-/* ── Nav group ───────────────────────────────────── */
-.sidebar-nav {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-/* ── Nav item ────────────────────────────────────── */
-.sidebar-nav__item {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 0 12px;
-  height: 44px;
-  border-radius: 8px;
-  cursor: pointer;
-  position: relative;
-  border-left: 3px solid transparent;
-  color: rgba(255, 255, 255, 0.5);
+/* ── Sidebar button (nav items + controls) ───────── */
+.sidebar-btn {
+  @apply flex items-center justify-center shrink-0 size-10
+         bg-transparent text-dark-text-muted
+         rounded-md border-none cursor-pointer;
   transition:
     background-color 0.18s ease,
-    color 0.18s ease,
-    border-color 0.18s ease;
-  user-select: none;
+    color 0.18s ease;
 }
 
-.sidebar-nav__item:hover {
-  background-color: rgba(255, 255, 255, 0.05);
-  color: rgba(255, 255, 255, 0.85);
+.sidebar-btn:not(.sidebar-btn--active):hover {
+  @apply bg-white/[0.07] text-dark-text-secondary;
 }
 
-.sidebar-nav__item--active {
-  background-color: rgba(51, 150, 254, 0.12);
-  color: #3396fe;
-  border-left-color: #3396fe;
+.sidebar-btn--active {
+  @apply bg-linear-to-br from-primary to-primary-dark2 text-dark-text;
 }
 
-.sidebar-nav__item--active:hover {
-  background-color: rgba(51, 150, 254, 0.16);
-  color: #3396fe;
+.sidebar-btn--active:hover {
+  opacity: 0.9;
 }
 
-.sidebar-nav__item--highlight {
-  color: rgba(255, 255, 255, 0.75);
-}
-
-.sidebar-nav__item--mini {
-  justify-content: center;
-  padding: 0;
-  border-left: none;
-  border-radius: 8px;
-}
-
-.sidebar-nav__item--mini.sidebar-nav__item--active {
-  background-color: rgba(51, 150, 254, 0.14);
-}
-
-.sidebar-nav__item--logout {
-  color: rgba(255, 255, 255, 0.35);
-}
-
-.sidebar-nav__item--logout:hover {
-  background-color: rgba(239, 68, 68, 0.08);
-  color: #ef4444;
-}
-
-/* ── Icon wrap ───────────────────────────────────── */
-.sidebar-nav__icon-wrap {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  width: 20px;
-  height: 20px;
-}
-
-/* ── Label ───────────────────────────────────────── */
-.sidebar-nav__label {
-  flex: 1;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  color: inherit;
-}
-
-/* ── Badge (pill) ────────────────────────────────── */
-.sidebar-nav__badge {
-  font-size: 0.6rem;
-  font-weight: 700;
-  padding: 2px 7px;
-  border-radius: 99px;
-  background: linear-gradient(90deg, #3396fe, #00a89b);
-  color: #ffffff;
-  white-space: nowrap;
-  letter-spacing: 0.04em;
-  flex-shrink: 0;
-}
-
-.sidebar-nav__badge--neutral {
-  background: rgba(255, 255, 255, 0.12);
-  color: rgba(255, 255, 255, 0.6);
-}
-
-/* ── Dot indicator (mini mode) ───────────────────── */
-.sidebar-nav__dot {
-  position: absolute;
-  top: -3px;
-  right: -5px;
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #3396fe, #00a89b);
-  border: 1.5px solid #020c16;
-}
-
-.sidebar-nav__dot--accent {
-  background: #f59e0b;
-}
-
-/* ── Footer ──────────────────────────────────────── */
-.sidebar-footer {
-  flex-shrink: 0;
-  padding: 0 8px 16px;
-}
-
-.sidebar-footer--mini {
-  padding: 0 8px 16px;
-}
-
-.sidebar-divider {
-  height: 1px;
-  background-color: rgba(51, 150, 254, 0.1);
-  margin: 8px 4px 12px;
-}
-
-/* ── Tooltip override ────────────────────────────── */
+/* ── Tooltip (Quasar portal — needs :deep) ───────── */
 :deep(.sidebar-tooltip) {
-  font-size: 0.8rem;
-  background-color: #111d2d;
-  color: rgba(255, 255, 255, 0.9);
-  border: 1px solid rgba(51, 150, 254, 0.2);
-  border-radius: 6px;
+  @apply text-xs bg-dark-card text-dark-text border border-border-dark rounded-md;
   padding: 5px 10px;
 }
 </style>
