@@ -12,6 +12,7 @@ export function useChat() {
   const isTyping = ref(false);
   const isLoadingSessions = ref(false);
   const isLoadingMessages = ref(false);
+  const messagePagination = ref(null);
   const pendingFiles = ref([]);
   const selectedSession = ref(null);
 
@@ -29,14 +30,9 @@ export function useChat() {
     () => activeConversationId.value !== null,
   );
 
-  /*   const historyPayload = computed(() =>
-    messages.value.map((m) => ({
-      role: m.sender === "user" ? "user" : "assistant",
-      content: m.text,
-    })),
+  const hasMoreMessages = computed(
+    () => messagePagination.value?.has_next ?? false,
   );
-
-  */
 
   // ── Conversas ─────────────────────────────────────────────────────────────
 
@@ -91,9 +87,8 @@ export function useChat() {
       const { data, error } = await chatService.getSessions(idSession);
 
       if (error) throw error;
-      
-      sessions.value = data ?? [];
 
+      sessions.value = data ?? [];
     } catch (err) {
       console.error("Erro ao carregar sessions:", err);
       sessions.value = [];
@@ -102,26 +97,35 @@ export function useChat() {
     }
   }
 
+  function _mapMessages(rawMessages) {
+    return (rawMessages ?? []).map((msg) => ({
+      id: String(msg.id),
+      sender: msg.role === "user" ? "user" : "ai",
+      text: msg.content ?? msg.message ?? msg.text ?? "",
+      files: [],
+      timestamp: new Date(msg.created_at),
+    }));
+  }
+
   async function getMessagesSessions(sessionId) {
     if (!sessionId) return;
 
     isLoadingMessages.value = true;
+    messagePagination.value = null;
 
     try {
-      const { data, error } = await chatService.getMessagesSessions(sessionId);
+      const { data: rpcResult, error } = await chatService.getMessagesPaginated(
+        sessionId,
+        1,
+        10,
+        "DESC",
+      );
 
       if (error) throw error;
 
-      const loadedMessages = (data ?? [])
-        .slice()
-        .reverse()
-        .map((msg) => ({
-          id: String(msg.id),
-          sender: msg.role === "user" ? "user" : "ai",
-          text: msg.content ?? msg.message ?? msg.text ?? "",
-          files: [],
-          timestamp: new Date(msg.created_at),
-        }));
+      messagePagination.value = rpcResult?.pagination ?? null;
+
+      const loadedMessages = _mapMessages(rpcResult?.data).reverse();
 
       const session = sessions.value.find((s) => s.id === sessionId);
 
@@ -155,6 +159,39 @@ export function useChat() {
     }
   }
 
+  async function loadMoreMessages() {
+    const sessionId = activeConversationId.value;
+    if (!sessionId || !messagePagination.value?.has_next) return;
+
+    isLoadingMessages.value = true;
+
+    const nextPage = messagePagination.value.page + 1;
+
+    try {
+      const { data: rpcResult, error } = await chatService.getMessagesPaginated(
+        sessionId,
+        nextPage,
+        10,
+        "DESC",
+      );
+
+      if (error) throw error;
+
+      messagePagination.value = rpcResult?.pagination ?? null;
+
+      const newMessages = _mapMessages(rpcResult?.data).reverse();
+
+      const conv = conversations.value.find((c) => c.id === sessionId);
+      if (conv) {
+        conv.messages = [...newMessages, ...conv.messages];
+      }
+    } catch (err) {
+      console.error("Erro ao carregar mais mensagens:", err);
+    } finally {
+      isLoadingMessages.value = false;
+    }
+  }
+
   // ── Envio de mensagem ─────────────────────────────────────────────────────
 
   async function sendMessage(text) {
@@ -170,16 +207,13 @@ export function useChat() {
     );
     if (!conv) return;
 
-    // Define o título da conversa pela primeira mensagem
     if (conv.messages.length === 0 && trimmed) {
       conv.title =
         trimmed.length > 45 ? trimmed.substring(0, 45) + "..." : trimmed;
     }
 
-    // Snapshot dos arquivos antes de limpar
     const filesToSend = [...pendingFiles.value];
 
-    // Adiciona mensagem do usuário na UI imediatamente
     const userMessage = {
       id: String(Date.now()),
       sender: "user",
@@ -194,21 +228,17 @@ export function useChat() {
     conv.messages.push(userMessage);
     conv.timestamp = new Date();
 
-    // Limpa arquivos pendentes após capturar
     clearFiles();
 
-    // Indica que a IA está digitando
     isTyping.value = true;
 
     try {
-      // const history = historyPayload.value.slice(0, -1); // exclui a mensagem recém adicionada
       const sessionId = activeConversationId.value;
 
       const form = new FormData();
       form.append("message", trimmed);
       if (sessionId) form.append("session_id", sessionId);
-      //form.append("history", JSON.stringify(history));
-      //
+
       filesToSend.forEach((file) => form.append("files", file, file.name));
 
       const responseData = await chatService.sendMessage(form);
@@ -272,6 +302,7 @@ export function useChat() {
     isTyping,
     isLoadingSessions,
     isLoadingMessages,
+    messagePagination,
     pendingFiles,
     selectedSession,
 
@@ -279,6 +310,7 @@ export function useChat() {
     messages,
     hasActiveConversation,
     activeConversation,
+    hasMoreMessages,
 
     // Conversas
     selectConversation,
@@ -288,6 +320,7 @@ export function useChat() {
     // Sessions
     loadSessions,
     getMessagesSessions,
+    loadMoreMessages,
 
     // Arquivos
     attachFiles,
