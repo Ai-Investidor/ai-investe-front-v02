@@ -2,20 +2,34 @@
   <div class="relative flex-1! min-h-0! flex! flex-col!">
     <div
       ref="listRef"
-      class="flex-1 min-h-0! overflow-y-auto! px-4 md:px-8 lg:px-16 py-6"
+      class="chat-message-list flex-1 min-h-0 overflow-y-auto px-4 md:px-8 lg:px-16 py-6"
       @scroll="onScroll"
     >
-      <CChatMessage
-        v-for="msg in messages"
-        :key="msg.id"
-        :message="msg.text"
-        :sender="msg.sender"
-        :timestamp="msg.timestamp"
-      />
+      <q-infinite-scroll
+        ref="infiniteScroll"
+        scroll-target=".chat-message-list"
+        :reverse="true"
+        :offset="80"
+        @load="onLoadMore"
+      >
+        <template #loading>
+          <div class="flex justify-center py-8">
+            <q-spinner-dots color="primary" size="40px" />
+          </div>
+        </template>
 
-      <CChatMessage v-if="isTyping" message="" sender="ai" :is-typing="true" />
+        <CChatMessage
+          v-for="msg in messages"
+          :key="msg.id"
+          :message="msg.text"
+          :sender="msg.sender"
+          :timestamp="msg.timestamp"
+        />
 
-      <div ref="bottomRef" />
+        <CChatMessage v-if="isTyping" message="" sender="ai" :is-typing="true" />
+
+        <div ref="bottomRef" />
+      </q-infinite-scroll>
     </div>
 
     <transition name="fade">
@@ -53,6 +67,18 @@ export default {
       type: Boolean,
       default: false,
     },
+    hasMoreMessages: {
+      type: Boolean,
+      default: false,
+    },
+    conversationId: {
+      type: String,
+      default: null,
+    },
+    onLoadMoreMessages: {
+      type: Function,
+      default: null,
+    },
   },
 
   data() {
@@ -65,6 +91,7 @@ export default {
   watch: {
     messages: {
       handler() {
+        if (this._isLoadingMore) return;
         this.scrollToBottom();
       },
       deep: true,
@@ -72,14 +99,44 @@ export default {
     isTyping() {
       this.scrollToBottom();
     },
+    conversationId: {
+      handler() {
+        this._isLoadingMore = false;
+        this.$nextTick(() => {
+          const el = this.$refs.listRef;
+          if (el) el.scrollTop = el.scrollHeight;
+          if (this.$refs.infiniteScroll) {
+            this.$refs.infiniteScroll.reset();
+          }
+        });
+      },
+    },
   },
 
   methods: {
+    async onLoadMore(index, done) {
+      if (!this.onLoadMoreMessages || !this.hasMoreMessages) {
+        done(true);
+        return;
+      }
+
+      const el = this.$refs.listRef;
+      const prevScrollHeight = el?.scrollHeight ?? 0;
+      this._isLoadingMore = true;
+
+      await this.onLoadMoreMessages();
+
+      await this.$nextTick();
+      if (el) el.scrollTop = el.scrollHeight - prevScrollHeight;
+      this._isLoadingMore = false;
+
+      done(!this.hasMoreMessages);
+    },
+
     onScroll() {
       const el = this.$refs.listRef;
       if (!el) return;
 
-      // Esconde imediatamente enquanto está scrollando
       this.showScrollButton = false;
 
       clearTimeout(this.scrollEndTimer);
