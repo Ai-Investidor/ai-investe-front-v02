@@ -55,13 +55,16 @@
         @select-prompt="onSelectPrompt"
       />
 
-      <div v-else class="chat-area-content flex! flex-col overflow-y-scroll!">
-        <CChatMessageList
-          ref="messageList"
-          :messages="chat.messages.value"
-          :is-typing="chat.isTyping.value"
-        />
-      </div>
+      <CChatMessageList
+        v-else
+        ref="messageList"
+        :messages="chat.messages.value"
+        :is-typing="chat.isTyping.value"
+        :has-more-messages="chat.hasMoreMessages.value"
+        :conversation-id="chat.activeConversationId.value"
+        :on-load-more-messages="chat.loadMoreMessages"
+        class="chat-message-wrapper"
+      />
 
       <!-- Input sempre visível no rodapé -->
       <div class="chat-area-input">
@@ -235,6 +238,13 @@ export default {
 
   min-height: 0;
   min-width: 0;
+}
+
+.chat-message-wrapper {
+  grid-row: content;
+  min-height: 0;
+  min-width: 0;
+  overflow: hidden;
 }
 
 .chat-area-input {

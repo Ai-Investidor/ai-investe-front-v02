@@ -8,6 +8,10 @@ const BASE_URL = import.meta.env.VITE_BASE_URL_API || "https://localhost:8000";
 
 export const URLS = {
   CHAT_ADVISOR: "/chat",
+  
+  // supabase
+  CHAT_SESSIONS: "/chat_sessions",
+  CHAT_MESSAGES_PAGINATED: "/chat_messages_paginated",
 };
 
 const api = axios.create({ baseURL: BASE_URL });

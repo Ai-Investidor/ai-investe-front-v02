@@ -10,15 +10,21 @@ export function useChatService() {
       api.mutation(URLS.CHAT_ADVISOR, "post", formData),
     getSessions: (idSession) =>
       supabase
-        .from("chat_sessions")
+        .from(URLS.CHAT_SESSIONS)
         .select("*")
         .eq("user_id", idSession)
         .order("created_at", { ascending: false }),
-    getMessagesSessions: (idSession) =>
-      supabase
-        .from("chat_messages")
-        .select("*")
-        .eq("session_id", idSession)
-        .order("created_at", { ascending: false }),
+    getMessagesPaginated: (
+      sessionId,
+      page = 1,
+      pageSize = 10,
+      order = "DESC",
+    ) =>
+      supabase.rpc(URLS.CHAT_MESSAGES_PAGINATED, {
+        p_session_id: sessionId,
+        p_page: page,
+        p_page_size: pageSize,
+        p_order: order,
+      }),
   };
 }
