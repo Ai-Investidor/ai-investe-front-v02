@@ -30,7 +30,7 @@
     <div
       class="relative z-1 grid grid-cols-2 max-sm:grid-cols-1 gap-6 w-full max-w-176"
     >
-      <c-card-action
+      <CCardAction
         v-for="prompt in prompts"
         :key="prompt.id"
         :icon="prompt.icon"

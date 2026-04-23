@@ -9,7 +9,7 @@
     </div>
 
     <!-- Google Login -->
-    <c-button
+    <CButton
       unelevated
       outline
       no-caps
@@ -24,7 +24,7 @@
           <span class="text-paragraph-md">Continuar com o Google</span>
         </div>
       </template>
-    </c-button>
+    </CButton>
 
     <!-- Divider -->
     <div class="flex items-center gap-3" aria-hidden="true">
@@ -40,7 +40,7 @@
       @submit.prevent="handleLogin"
       greedy
     >
-      <c-input
+      <CInput
         v-model="email"
         outlined
         dense
@@ -54,7 +54,7 @@
         lazy-rules
       />
 
-      <c-input
+      <CInput
         v-model="password"
         outlined
         dense
@@ -77,7 +77,7 @@
             @keyup.enter="togglePasswordVisibility"
           />
         </template>
-      </c-input>
+      </CInput>
 
       <!-- Forgot password -->
       <div class="flex justify-end -mt-2">
@@ -90,7 +90,7 @@
       </div>
 
       <!-- Submit -->
-      <c-button
+      <CButton
         type="submit"
         unelevated
         no-caps

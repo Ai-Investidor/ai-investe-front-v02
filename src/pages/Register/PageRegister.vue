@@ -9,7 +9,7 @@
     </div>
 
     <!-- Google Register -->
-    <c-button
+    <CButton
       unelevated
       outline
       no-caps
@@ -24,7 +24,7 @@
           <span class="text-paragraph-md">Continuar com o Google</span>
         </div>
       </template>
-    </c-button>
+    </CButton>
 
     <!-- Divider -->
     <div class="flex items-center gap-3" aria-hidden="true">
@@ -40,7 +40,7 @@
       @submit.prevent="handleRegister"
       greedy
     >
-      <c-input
+      <CInput
         v-model="name"
         outlined
         dense
@@ -53,7 +53,7 @@
         lazy-rules
       />
 
-      <c-input
+      <CInput
         v-model="email"
         outlined
         dense
@@ -67,7 +67,7 @@
         lazy-rules
       />
 
-      <c-input
+      <CInput
         v-model="phone"
         outlined
         dense
@@ -87,7 +87,7 @@
 
       <!-- Password row: two fields side by side on desktop -->
       <div class="flex flex-col gap-4 min-[480px]:flex-row min-[480px]:gap-3">
-        <c-input
+        <CInput
           v-model="password"
           outlined
           dense
@@ -110,9 +110,9 @@
               @keyup.enter="togglePassword"
             />
           </template>
-        </c-input>
+        </CInput>
 
-        <c-input
+        <CInput
           v-model="confirmPassword"
           outlined
           dense
@@ -139,7 +139,7 @@
               @keyup.enter="toggleConfirmPassword"
             />
           </template>
-        </c-input>
+        </CInput>
       </div>
 
       <!-- Terms note -->
@@ -159,7 +159,7 @@
       </p>
 
       <!-- Submit -->
-      <c-button
+      <CButton
         type="submit"
         unelevated
         no-caps

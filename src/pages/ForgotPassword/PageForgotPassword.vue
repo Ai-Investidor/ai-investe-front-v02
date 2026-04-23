@@ -24,7 +24,7 @@
         @submit.prevent="handleSubmit"
         novalidate
       >
-        <c-input
+        <CInput
           v-model="email"
           outlined
           dense
@@ -36,7 +36,7 @@
           class="w-full"
         />
 
-        <c-button
+        <CButton
           type="submit"
           unelevated
           no-caps
@@ -82,7 +82,7 @@
 
       <!-- Actions -->
       <div class="flex flex-col gap-3">
-        <c-button
+        <CButton
           unelevated
           outline
           no-caps

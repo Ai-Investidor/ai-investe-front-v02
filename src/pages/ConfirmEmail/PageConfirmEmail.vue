@@ -12,7 +12,7 @@
           </p>
         </div>
 
-        <c-button
+        <CButton
           label="Fazer login"
           class="w-full! bg-primary dark:bg-primary-dark! text-white text-paragraph-md"
         />
