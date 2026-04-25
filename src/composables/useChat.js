@@ -233,7 +233,8 @@ export function useChat() {
     isTyping.value = true;
 
     try {
-      const sessionId = activeConversationId.value;
+      // selectedSession contém apenas UUIDs reais do backend (null para novas conversas)
+      const sessionId = selectedSession.value;
 
       const form = new FormData();
       form.append("message", trimmed);
@@ -243,6 +244,16 @@ export function useChat() {
 
       const responseData = await chatService.sendMessage(form);
 
+      // Captura session_id retornado pelo backend para conversas novas
+      const backendSessionId = responseData?.session_id ?? responseData?.chat_session_id;
+      if (backendSessionId && !selectedSession.value) {
+        const oldId = activeConversationId.value;
+        const convIndex = conversations.value.findIndex((c) => c.id === oldId);
+        if (convIndex >= 0) conversations.value[convIndex].id = backendSessionId;
+        activeConversationId.value = backendSessionId;
+        selectedSession.value = backendSessionId;
+      }
+
       const aiText =
         responseData?.message ??
         responseData?.text ??
@@ -250,7 +261,10 @@ export function useChat() {
         responseData?.response ??
         "Não foi possível obter uma resposta.";
 
-      conv.messages.push({
+      const targetConv = conversations.value.find(
+        (c) => c.id === activeConversationId.value,
+      );
+      (targetConv ?? conv).messages.push({
         id: String(Date.now() + 1),
         sender: "ai",
         text: aiText,

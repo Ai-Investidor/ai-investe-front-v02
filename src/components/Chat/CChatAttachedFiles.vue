@@ -17,7 +17,7 @@
         class="flex items-center gap-2 py-1 pl-3 pr-1.5 bg-dark-card rounded-button text-dark-text text-paragraph-3 border border-border-dark transition-colors group hover:border-primary/40 cursor-pointer"
       >
         <q-icon
-          name="description"
+          :name="file.type && file.type.startsWith('image/') ? 'image' : 'description'"
           size="16px"
           class="text-dark-text-muted shrink-0"
         />
