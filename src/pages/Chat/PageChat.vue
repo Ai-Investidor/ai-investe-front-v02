@@ -32,7 +32,7 @@
       <!-- Botão toggle sidebar (mobile) -->
       <button
         v-if="isMobile && !sidebarOpen"
-        class="absolute top-4 left-4 z-10 flex items-center justify-center size-10 rounded-button bg-dark-card border border-border-dark text-dark-text cursor-pointer transition-opacity duration-200 hover:opacity-80"
+        class="absolute top-4 left-4 z-10 flex items-center justify-center flex-nowrap! size-10 rounded-button bg-dark-card border border-border-dark text-dark-text cursor-pointer transition-opacity duration-200 hover:opacity-80"
         aria-label="Abrir conversas"
         @click="sidebarOpen = true"
       >

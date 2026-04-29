@@ -34,7 +34,7 @@
         v-for="conversation in conversations"
         :key="conversation.id"
         type="button"
-        class="flex items-center gap-2.5 w-full p-2 rounded-button border-0 cursor-pointer text-left text-dark-text transition-colors duration-200 shrink-0 hover:bg-dark-elevated"
+        class="flex items-center flex-nowrap! gap-2.5 w-full p-2 rounded-button border-0 cursor-pointer text-left text-dark-text transition-colors duration-200 shrink-0 hover:bg-dark-elevated"
         :class="{
           'bg-dark-elevated ring-inset ring-1 ring-white/10':
             conversation.session_id === activeConversationId,
