@@ -1,5 +1,6 @@
 import { ref, computed } from "vue";
 import { useChatService } from "@services/chat.service";
+import { safeJsonParse } from "src/utils/parse..utils";
 
 export function useChat() {
   const chatService = useChatService();
@@ -24,7 +25,24 @@ export function useChat() {
       null,
   );
 
-  const messages = computed(() => activeConversation.value?.messages ?? []);
+  const messages = computed(() => {
+    const contentMessages = [];
+
+    activeConversation.value?.messages?.forEach((msg) => {
+      const parsed = safeJsonParse(msg?.text);
+      // debugger;
+      if (parsed && parsed?.error?.code === 503) {
+        contentMessages.push({
+          ...msg,
+          text: "Nossa ia está atualmente com alta demanda. Picos de demanda costumam ser temporários. Por favor, tente novamente mais tarde.",
+        });
+      } else {
+        contentMessages.push(msg);
+      }
+    });
+
+    return contentMessages ?? [];
+  });
 
   const hasActiveConversation = computed(
     () => activeConversationId.value !== null,

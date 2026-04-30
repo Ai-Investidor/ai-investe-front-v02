@@ -142,18 +142,8 @@ export default {
     formattedMessage() {
       if (this.isTyping) return "";
       try {
-        const contentMessage = safeJsonParse(this.message);
-        let content = "";
-
-        if (contentMessage && contentMessage?.error?.code === 503) {
-          content =
-            "Nossa ia está atualmente com alta demanda. Picos de demanda costumam ser temporários. Por favor, tente novamente mais tarde.";
-        } else {
-          content = this.message;
-        }
-
         // debugger;
-        return marked.parse(content, { breaks: true });
+        return marked.parse(this.message, { breaks: true });
       } catch {
         return this.message.replace(/\n/g, "<br>");
       }
