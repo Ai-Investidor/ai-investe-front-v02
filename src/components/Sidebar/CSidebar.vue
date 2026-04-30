@@ -61,7 +61,8 @@
           </q-tooltip>
         </button>
 
-        <button
+        <!-- <button
+
           class="sidebar-btn"
           aria-label="Configurações"
           @click="navigate({ route: '/configuracoes' })"
@@ -75,7 +76,7 @@
           >
             Configurações
           </q-tooltip>
-        </button>
+        </button> -->
       </div>
 
       <!-- Spacer -->
@@ -122,18 +123,6 @@ export default {
           label: "IA Chat",
           icon: "forum",
           route: "/ia-chat",
-        },
-        {
-          key: "portfolio",
-          label: "Portfólio",
-          icon: "account_balance_wallet",
-          route: "/portfolio",
-        },
-        {
-          key: "analytics",
-          label: "Análises",
-          icon: "show_chart",
-          route: "/analises",
         },
       ],
     };
