@@ -1,24 +1,11 @@
 <template>
   <aside
     v-show="open"
-    class="flex flex-col shrink-0 h-full min-h-0 w-full max-w-64! bg-dark-card border-r border-border-dark overflow-hidden"
+    class="flex flex-col shrink-0 h-full min-h-0 w-full max-w-96! bg-dark-panel border-r border-border-dark overflow-hidden"
   >
     <!-- Botão Novo Chat -->
-    <div
-      class="flex items-center justify-center py-4 px-7 border-b border-border-dark shrink-0"
-    >
-      <button
-        class="btn-new-chat-gradient flex items-center justify-center gap-2.5 w-full py-1.5 px-4 rounded-button border border-primary/35 text-dark-text cursor-pointer transition duration-200 hover:opacity-85"
-        @click="$emit('new-chat')"
-      >
-        <span
-          class="flex justify-center items-center text-xl font-light leading-none shrink-0 max-h-6"
-          >+</span
-        >
-        <span class="text-xl font-regular tracking-ui whitespace-nowrap"
-          >Novo Chat</span
-        >
-      </button>
+    <div class="flex items-center justify-center py-4 px-4 shrink-0">
+      <CChatSessionsInfo />
     </div>
 
     <!-- Lista de conversas -->
@@ -77,10 +64,13 @@
 
 <script>
 import { formatDateBR } from "@utils/dates.util";
+import CChatSessionsInfo from "./CChatSessionsInfo.vue";
 
 export default {
   name: "CChatConversationsMenu",
-
+  components: {
+    CChatSessionsInfo,
+  },
   props: {
     open: {
       type: Boolean,

@@ -25,9 +25,13 @@
   /* ═══════════════════════════════════════════════════════════
      BACKGROUNDS — Dark Theme
      Quasar: $dark → #111d2d | $dark-page → #020c16
+
+     old color-dark: #0d1117
   ═══════════════════════════════════════════════════════════ */
   --color-dark: #020c16;
-  --color-dark-card: #111d2d;
+  --color-dark-card: #1e1f22;
+  --color-dark-surface: #3f424a;
+  --color-dark-panel: #282a2e;
   --color-dark-elevated: #0d2b50;
 
   /* ═══════════════════════════════════════════════════════════

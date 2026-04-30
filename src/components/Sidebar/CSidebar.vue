@@ -10,7 +10,7 @@
       <!-- Logo -->
       <div class="flex items-center justify-center shrink-0 py-[21px]">
         <div
-          class="flex items-center justify-center shrink-0 size-10 rounded-md bg-linear-to-br from-primary to-primary-dark2 shadow-[0_0_16px_rgba(51,150,254,0.28)]"
+          class="flex items-center justify-center shrink-0 size-8 rounded-md bg-linear-to-br from-primary to-primary-dark2 shadow-[0_0_16px_rgba(51,150,254,0.28)]"
         >
           <q-icon
             name="svguse:icons/icons.svg#icon-logo"
@@ -21,9 +21,7 @@
       </div>
 
       <!-- Navegação principal -->
-      <nav
-        class="flex flex-col items-center shrink-0 gap-8 py-4 border-y border-border-dark"
-      >
+      <nav class="flex flex-col items-center shrink-0 gap-8! mt-16">
         <button
           v-for="item in navItems"
           :key="item.key"
@@ -46,9 +44,7 @@
       </nav>
 
       <!-- Controles secundários -->
-      <div
-        class="flex flex-col items-center shrink-0 gap-8 py-4 border-b border-border-dark"
-      >
+      <div class="flex flex-col items-center shrink-0 gap-8 mt-6">
         <button class="sidebar-btn" aria-label="Notificações">
           <q-icon name="notifications_none" size="20px" />
           <q-tooltip
@@ -166,7 +162,7 @@ export default {
 
 /* ── Sidebar button (nav items + controls) ───────── */
 .sidebar-btn {
-  @apply flex items-center justify-center shrink-0 size-10
+  @apply flex items-center justify-center shrink-0 size-8
          bg-transparent text-dark-text-muted
          rounded-md border-none cursor-pointer;
   transition:
@@ -179,7 +175,7 @@ export default {
 }
 
 .sidebar-btn--active {
-  @apply bg-linear-to-br from-primary to-primary-dark2 text-dark-text;
+  @apply bg-primary  text-dark-text;
 }
 
 .sidebar-btn--active:hover {

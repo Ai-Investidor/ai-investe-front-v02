@@ -1,6 +1,6 @@
 <template>
   <q-header
-    class="flex items-stretch shrink-0 h-20.75 bg-dark-card! border-b border-border-dark"
+    class="flex items-stretch shrink-0 h-20.75 bg-dark-panel! border-b border-border-dark"
   >
     <div class="flex items-center justify-between w-full px-7.5 max-sm:px-4">
       <div class="flex items-center gap-3 min-w-0">
