@@ -15,20 +15,91 @@
       <div
         class="flex items-center gap-3 w-full bg-dark-card! rounded-input py-2 px-4"
       >
-        <!-- Botão anexar -->
+        <!-- Botão anexar com dropdown -->
         <button
           type="button"
           class="flex items-center justify-center size-10 shrink-0 bg-transparent border-none rounded-full cursor-pointer text-dark-text-muted transition-colors hover:bg-white/7 hover:text-dark-text disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-transparent"
           :disabled="disabled"
-          aria-label="Anexar arquivos"
-          @click="openFilePicker"
+          aria-label="Adicionar arquivo"
         >
-          <q-icon name="attach_file" size="20px" />
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+          >
+            <path
+              d="M12 5v14M5 12h14"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+
+          <q-menu
+            anchor="top left"
+            self="bottom left"
+            :offset="[0, 8]"
+            class="attach-menu"
+          >
+            <q-list dense class="attach-menu__list">
+              <q-item
+                v-close-popup
+                clickable
+                class="attach-menu__item"
+                @click="openDocPicker"
+              >
+                <q-item-section avatar class="attach-menu__icon">
+                  <q-icon name="svguse:icons/icons.svg#icon-attach-doc" size="16px" />
+                </q-item-section>
+                <q-item-section>Documento</q-item-section>
+              </q-item>
+
+              <q-item
+                v-close-popup
+                clickable
+                class="attach-menu__item"
+                @click="openImgPicker"
+              >
+                <q-item-section avatar class="attach-menu__icon">
+                  <q-icon name="svguse:icons/icons.svg#icon-attach-img" size="16px" />
+                </q-item-section>
+                <q-item-section>IMG</q-item-section>
+              </q-item>
+
+              <q-separator class="attach-menu__separator" />
+
+              <q-item
+                v-close-popup
+                clickable
+                class="attach-menu__item"
+                @click="onGenerateChart"
+              >
+                <q-item-section avatar class="attach-menu__icon">
+                  <q-icon name="svguse:icons/icons.svg#icon-attach-chart" size="16px" />
+                </q-item-section>
+                <q-item-section>Gerar Gráfico</q-item-section>
+              </q-item>
+            </q-list>
+          </q-menu>
         </button>
+
         <input
-          ref="fileInput"
+          ref="docInput"
           type="file"
           multiple
+          accept=".pdf,.csv,.txt,.xlsx,.md"
+          class="hidden"
+          @change="handleFileChange"
+        />
+        <input
+          ref="imgInput"
+          type="file"
+          multiple
+          accept="image/png,image/jpeg,image/jpg,image/gif,image/webp"
           class="hidden"
           @change="handleFileChange"
         />
@@ -117,7 +188,7 @@ export default {
     },
   },
 
-  emits: ["send", "attach", "remove-file"],
+  emits: ["send", "attach", "remove-file", "generate-chart"],
 
   data() {
     return {
@@ -170,9 +241,18 @@ export default {
       });
     },
 
-    openFilePicker() {
+    openDocPicker() {
       if (this.disabled) return;
-      this.$refs.fileInput?.click();
+      this.$refs.docInput?.click();
+    },
+
+    openImgPicker() {
+      if (this.disabled) return;
+      this.$refs.imgInput?.click();
+    },
+
+    onGenerateChart() {
+      this.$emit("generate-chart");
     },
 
     handleFileChange(event) {
@@ -189,3 +269,47 @@ export default {
   },
 };
 </script>
+
+<style>
+/* global — q-menu renderiza fora do componente (teleport), scoped não alcança */
+.attach-menu.q-menu {
+  background: #e6e8e9 !important;
+  border: 0.5px solid rgba(12, 66, 136, 0.18) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12) !important;
+  width: 188px !important;
+  max-width: 188px !important;
+  overflow: hidden !important;
+}
+
+.attach-menu__list {
+  padding: 4px;
+  height: 138px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.attach-menu__item.q-item {
+  border-radius: 8px;
+  color: #0c4288 !important;
+  font-size: 14px;
+  font-weight: 500;
+  min-height: 38px;
+  transition: background 0.15s;
+}
+
+.attach-menu__item.q-item:hover {
+  background: rgba(12, 66, 136, 0.08) !important;
+}
+
+.attach-menu__icon {
+  min-width: 32px;
+  color: #0c4288 !important;
+}
+
+.attach-menu__separator {
+  background: rgba(12, 66, 136, 0.15) !important;
+  margin: 2px 8px;
+}
+</style>
