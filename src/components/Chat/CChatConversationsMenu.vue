@@ -1,27 +1,23 @@
 <template>
   <aside
     v-show="open"
-    class="flex flex-col shrink-0 h-full min-h-0 w-full max-w-96! bg-dark-panel border-r border-border-dark overflow-hidden"
+    class="flex flex-col shrink-0 h-full min-h-0 w-60 bg-dark-card border-r border-border-dark overflow-hidden"
   >
     <!-- Botão Novo Chat -->
-    <div class="flex items-center justify-center py-4 px-4 shrink-0">
-      <CChatSessionsInfo />
+    <div class="flex justify-center shrink-0 px-4 py-4">
+      <CChatSessionsInfo @new-chat="$emit('new-chat')" />
     </div>
 
     <!-- Lista de conversas -->
     <div
       ref="conversationsList"
-      class="flex! flex-col! flex-nowrap! min-h-0 overflow-y-scroll! gap-0.5 py-3.5 px-4"
+      class="flex flex-col min-h-0 overflow-y-auto gap-0.5 pb-3 px-2"
     >
-      <p class="text-paragraph-2 text-dark-text mb-3.5! shrink-0">
-        Conversas recentes
-      </p>
-
       <button
         v-for="conversation in conversations"
         :key="conversation.id"
         type="button"
-        class="flex items-center flex-nowrap! gap-2.5 w-full p-2 rounded-button border-0 cursor-pointer text-left text-dark-text transition-colors duration-200 shrink-0 hover:bg-dark-elevated"
+        class="flex items-center flex-nowrap gap-2 w-full px-2 py-2 rounded-button border-0 cursor-pointer text-left text-dark-text transition-colors duration-200 shrink-0 hover:bg-dark-elevated"
         :class="{
           'bg-dark-elevated ring-inset ring-1 ring-white/10':
             conversation.session_id === activeConversationId,
@@ -30,7 +26,7 @@
         @click="$emit('select-conversation', conversation.session_id)"
       >
         <svg
-          class="size-[18px] shrink-0 text-dark-text-secondary"
+          class="size-[16px] shrink-0 text-dark-text-muted"
           viewBox="0 0 24 24"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
@@ -45,32 +41,33 @@
           />
         </svg>
 
-        <div class="flex flex-col items-start gap-0.5 min-w-0 h-full">
-          <p class="text-paragraph-2 text-dark-text truncate max-w-[180px]">
-            {{ conversation.title ?? "Nova Conversa" }}
-          </p>
-          <p class="text-paragraph-4 text-dark-text-secondary">
-            {{
-              conversation.created_at
-                ? formatDateBR(conversation.created_at)
-                : "N/A"
-            }}
-          </p>
-        </div>
+        <span class="text-paragraph-3 text-dark-text truncate">
+          {{ conversation.title ?? "Nova Conversa" }}
+        </span>
       </button>
+    </div>
+
+    <!-- Spacer -->
+    <div class="flex-1" />
+
+    <!-- Footer: plano do usuário -->
+    <div class="shrink-0 px-4 py-3 border-t border-border-dark">
+      <span class="text-paragraph-4 text-dark-text-muted">{{ userPlan }}</span>
     </div>
   </aside>
 </template>
 
 <script>
-import { formatDateBR } from "@utils/dates.util";
+import { useAuthStore } from "@stores/auth.store";
 import CChatSessionsInfo from "./CChatSessionsInfo.vue";
 
 export default {
   name: "CChatConversationsMenu",
+
   components: {
     CChatSessionsInfo,
   },
+
   props: {
     open: {
       type: Boolean,
@@ -88,6 +85,13 @@ export default {
 
   emits: ["new-chat", "select-conversation"],
 
+  computed: {
+    userPlan() {
+      const authStore = useAuthStore();
+      return authStore.userPlan || "Plano X";
+    },
+  },
+
   watch: {
     conversations() {
       this.$nextTick(() => this.scrollToBottom());
@@ -95,8 +99,6 @@ export default {
   },
 
   methods: {
-    formatDateBR,
-
     scrollToBottom() {
       const el = this.$refs.conversationsList;
       if (el) el.scrollTop = el.scrollHeight;

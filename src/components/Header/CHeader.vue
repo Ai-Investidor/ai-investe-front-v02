@@ -1,90 +1,80 @@
 <template>
-  <q-header
-    class="flex items-stretch shrink-0 h-20.75 bg-dark-panel! border-b border-border-dark"
-  >
-    <div class="flex items-center justify-between w-full px-7.5 max-sm:px-4">
-      <div class="flex items-center gap-3 min-w-0">
-        <button
-          v-if="$q.screen.lt.md"
-          type="button"
-          class="flex items-center justify-center shrink-0 size-10 text-dark-text-secondary bg-transparent border-none rounded-md cursor-pointer transition-colors hover:bg-white/7 hover:text-dark-text"
-          aria-label="Abrir menu"
-          @click="onOpenSidebar"
-        >
-          <q-icon name="menu" size="22px" />
-        </button>
-        <span class="text-title-3 text-white truncate">
-          {{ nameCurrentRoute }}
-        </span>
+  <q-header class="flex items-stretc shrink-0 h-15 bg-dark">
+    <div
+      class="flex items-center gap-11 w-59 shrink-0 bg-black pl-18 rounded-br-2xl"
+    >
+      <router-link to="/" class="w-full h-full max-w-24 max-h-15">
+        <q-img
+          :src="IconLogo"
+          fit="contain"
+          class="w-full h-full cursor-pointer"
+        />
+      </router-link>
+
+      <q-icon
+        name="menu_open"
+        size="1.2rem"
+        class="cursor-pointer text-[#404040] hover:text-white"
+      />
+    </div>
+
+    <div class="flex-1 flex items-center justify-between bg-chat-bg px-4 gap-4">
+      <!-- LEFT: Breadcrumb -->
+      <div class="shrink-0 min-w-0">
+        <q-breadcrumbs active-color="grey-5">
+          <q-breadcrumbs-el icon="home" />
+          <q-breadcrumbs-el
+            :label="nameCurrentRoute"
+            :to="$route.path"
+            class="text-paragraph-3 truncate text-primary"
+          />
+        </q-breadcrumbs>
       </div>
 
-      <!-- Direita: ações + info do usuário -->
-      <div class="flex items-center gap-1">
-        <!-- Notificações -->
+      <!-- CENTER: Search -->
+      <div
+        class="flex items-center flex-1 max-w-96 mx-auto h-9 bg-dark border border-border-input rounded-md overflow-hidden max-sm:hidden"
+      >
+        <input
+          v-model="searchQuery"
+          type="text"
+          placeholder="Pesquisar histórico"
+          class="header-search-input"
+        />
         <button
-          v-if="$q.screen.gt.sm"
-          class="relative flex items-center justify-center size-9 text-dark-text-secondary cursor-pointer rounded-md transition-colors hover:bg-white/7 hover:text-dark-text"
-          aria-label="Notificações"
+          type="button"
+          class="shrink-0 h-8 mx-1 px-3 rounded-md bg-search-btn text-light-text text-paragraph-4 font-medium cursor-pointer transition-opacity hover:opacity-80"
+          @click="onSearch"
         >
-          <q-icon name="notifications_none" size="20px" />
-          <q-tooltip anchor="bottom middle" self="top middle" :offset="[0, 6]">
-            Notificações
-          </q-tooltip>
+          Buscar
         </button>
+      </div>
 
-        <!-- Alternar tema -->
-        <button
-          v-if="$q.screen.gt.sm"
-          class="relative flex items-center justify-center size-9 text-dark-text-secondary cursor-pointer rounded-md transition-colors hover:bg-white/7 hover:text-dark-text"
-          :aria-label="$q.dark.isActive ? 'Modo claro' : 'Modo escuro'"
-          @click="$q.dark.toggle()"
-        >
-          <q-icon
-            :name="$q.dark.isActive ? 'light_mode' : 'dark_mode'"
-            size="18px"
-          />
-          <q-tooltip anchor="bottom middle" self="top middle" :offset="[0, 6]">
-            {{ $q.dark.isActive ? "Modo claro" : "Modo escuro" }}
-          </q-tooltip>
-        </button>
-
-        <!-- Seção do usuário -->
+      <!-- RIGHT: User -->
+      <div class="flex items-center gap-4 shrink-0">
+        <div class="flex flex-col items-end max-sm:hidden">
+          <span class="text-paragraph-3 text-dark-text truncate max-w-32">
+            {{ userDisplayName }}
+          </span>
+          <span class="text-paragraph-4 text-dark-text-muted whitespace-nowrap">
+            {{ userPlan }}
+          </span>
+        </div>
         <div
-          class="flex items-center gap-2.5 px-3.5 border-l border-border-dark cursor-pointer transition-opacity hover:opacity-85"
+          class="flex items-center justify-center shrink-0 size-8 rounded-full bg-primary overflow-hidden cursor-pointer transition-opacity hover:opacity-85"
         >
-          <div
-            class="flex items-center justify-center shrink-0 size-10 overflow-hidden rounded-full bg-linear-to-br from-primary to-primary-dark2"
-          >
-            <img
-              v-if="userAvatar"
-              :src="userAvatar"
-              :alt="userDisplayName"
-              class="size-full object-cover"
-            />
-            <span
-              v-else
-              class="text-sm font-bold leading-none text-dark-text select-none"
-            >
-              {{ userInitials }}
-            </span>
-          </div>
-          <div class="flex flex-col items-start gap-0.5 max-sm:hidden">
-            <span
-              class="font-display text-2xl leading-normal font-regular text-dark-text truncate max-w-40 max-sm:max-w-20"
-            >
-              {{ userDisplayName }}
-            </span>
-            <span
-              class="font-display text-2xs leading-normal font-regular text-dark-text-secondary whitespace-nowrap"
-            >
-              PRO INVESTING
-            </span>
-          </div>
-          <q-icon
-            name="keyboard_arrow_down"
-            size="20px"
-            class="text-dark-text-muted shrink-0 max-sm:hidden"
+          <img
+            v-if="userAvatar"
+            :src="userAvatar"
+            :alt="userDisplayName"
+            class="size-full object-cover"
           />
+          <span
+            v-else
+            class="text-title-4 font-bold text-dark leading-none select-none"
+          >
+            {{ userInitials }}
+          </span>
         </div>
       </div>
     </div>
@@ -93,36 +83,32 @@
 
 <script>
 import { useAuthStore } from "@stores/auth.store";
-import { useUiStore } from "@stores/ui.store";
 import { useRouter } from "vue-router";
+import IconLogo from "@assets/imgs/logo_invest.webp";
 
 export default {
   name: "CHeader",
 
-  emits: ["toggle:sidebar"],
-
-  setup() {
-    return { uiStore: useUiStore() };
+  data() {
+    return {
+      searchQuery: "",
+      IconLogo,
+    };
   },
 
   computed: {
     userAvatar() {
-      const authStore = useAuthStore();
-      return authStore.userAvatar || "";
+      return useAuthStore().userAvatar || "";
     },
 
     userDisplayName() {
       const authStore = useAuthStore();
-      return (
-        authStore.userFullName ||
-        authStore.userEmail ||
-        "USER NAME"
-      ).toUpperCase();
+      return authStore.userFullName || authStore.userEmail || "Usuário";
     },
 
     userInitials() {
-      const authStore = useAuthStore();
-      const name = authStore.userFullName || authStore.userEmail || "";
+      const name =
+        useAuthStore().userFullName || useAuthStore().userEmail || "";
       return (
         name
           .split(" ")
@@ -133,23 +119,37 @@ export default {
       );
     },
 
-    nameCurrentRoute() {
-      const router = useRouter();
+    userPlan() {
+      return useAuthStore().userPlan || "Plano X";
+    },
 
-      return router.currentRoute.value?.meta?.label || "Dashboard";
+    nameCurrentRoute() {
+      return useRouter().currentRoute.value?.meta?.label || "Dashboard";
     },
   },
 
   methods: {
-    onToggle() {
-      this.$emit("toggle:sidebar");
-    },
-
-    onOpenSidebar() {
-      this.uiStore.openMainSidebar();
+    onSearch() {
+      // TODO: implement search
     },
   },
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+@reference "../../css/tailwind.css";
+
+.header-search-input {
+  @apply flex-1 h-full bg-transparent outline-none px-3;
+
+  font-family: var(--font-family-sans);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-regular);
+  color: var(--color-dark-text);
+  line-height: 1.5;
+
+  &::placeholder {
+    color: var(--color-dark-text-placeholder);
+  }
+}
+</style>

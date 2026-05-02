@@ -4,35 +4,23 @@
 
 @theme {
   /* ═══════════════════════════════════════════════════════════
-     BRAND — Primary (Blue)
-     Quasar: $primary → #3396fe
+     BRAND — Primary (Neon Green)
+     Quasar: $primary → #e1ff06
   ═══════════════════════════════════════════════════════════ */
-  --color-primary: #3396fe;
-  --color-primary-light: #3894f1;
-  --color-primary-dark: #0d2b50;
-  --color-primary-darker: #052650;
-  --color-primary-dark2: #0c376c;
-
-  /* ═══════════════════════════════════════════════════════════
-     BRAND — Secondary / Accent (Teal)
-     Quasar: $secondary → #009388 | $accent → #0c376c
-  ═══════════════════════════════════════════════════════════ */
-  --color-secondary: #009388;
-  --color-accent: #009388;
-  --color-accent-light: #00a89b;
-  --color-accent-dark: #007d73;
+  --color-primary: #E1FF06;
+  --color-primary-hover: #c8e500;
+  --color-primary-muted: rgb(225 255 6 / 0.12);
+  --color-primary-dark: #090a0a;
 
   /* ═══════════════════════════════════════════════════════════
      BACKGROUNDS — Dark Theme
-     Quasar: $dark → #111d2d | $dark-page → #020c16
-
-     old color-dark: #0d1117
+     Quasar: $dark → #090a0a | $dark-page → #090a0a
   ═══════════════════════════════════════════════════════════ */
-  --color-dark: #020c16;
-  --color-dark-card: #1e1f22;
-  --color-dark-surface: #3f424a;
-  --color-dark-panel: #282a2e;
-  --color-dark-elevated: #0d2b50;
+  --color-dark: #090a0a;
+  --color-dark-card: #151515;
+  --color-dark-surface: #363636;
+  --color-dark-panel: #1e1e1e;
+  --color-dark-elevated: #2a2a2a;
 
   /* ═══════════════════════════════════════════════════════════
      BACKGROUNDS — Light Theme
@@ -59,7 +47,7 @@
      TEXT — Light Theme
      Quasar: $input-text-color | $input-label-color
   ═══════════════════════════════════════════════════════════ */
-  --color-light-text: #052650;
+  --color-light-text: #090a0a;
   --color-light-text-secondary: #4c505e;
   --color-light-text-muted: #606370;
 
@@ -79,11 +67,17 @@
   --color-neutral-950: #030712;
 
   /* ═══════════════════════════════════════════════════════════
+     HEADER
+  ═══════════════════════════════════════════════════════════ */
+  --color-search-btn: #f1f5f9; /* bg do botão Buscar no header */
+
+  /* ═══════════════════════════════════════════════════════════
      BORDERS / SEPARATORS
      Quasar: $separator-color | $separator-dark-color
   ═══════════════════════════════════════════════════════════ */
-  --color-border-dark: rgb(51 150 254 / 0.13);
-  --color-border-light: rgb(1 7 27 / 0.1);
+  --color-border-dark: rgba(64, 64, 64, 0.25);
+  --color-border-light: rgba(226, 232, 240, 0.1);
+  --color-border-input: rgba(226, 232, 240, 0.15);
 
   /* ═══════════════════════════════════════════════════════════
      SEMANTIC / STATE COLORS
@@ -92,7 +86,7 @@
   --color-error: #ef4444;
   --color-success: #10b981;
   --color-warning: #f59e0b;
-  --color-info: #3396fe;
+  --color-info: #e1ff06;
 
   /* ═══════════════════════════════════════════════════════════
      OVERLAYS / DIMMED
@@ -106,13 +100,13 @@
      Quasar: $menu-background | $tooltip-background | $tooltip-color
   ═══════════════════════════════════════════════════════════ */
   --color-surface: #ffffff;
-  --color-surface-tooltip: #111d2d;
+  --color-surface-tooltip: #151515;
   --color-on-tooltip: #ffffff;
   --color-card-overlay: rgba(
-    17,
-    29,
-    45,
-    0.2
+    21,
+    21,
+    21,
+    0.5
   ); /* bg dos cards de sugestão (chat welcome) */
 
   /* ═══════════════════════════════════════════════════════════
@@ -120,21 +114,20 @@
      Paleta dark usada em CChatSidebar, CChatInput, CChatMessage,
      CChatMessageList e CFileCard.
   ═══════════════════════════════════════════════════════════ */
-  --color-chat-bg: #0d1117;
-  --color-chat-surface: #161b22;
-  --color-chat-hover: #21262d;
-  --color-chat-border: #30363d;
+  --color-chat-bg: #090a0a;
+  --color-chat-surface: #151515;
+  --color-chat-hover: #1e1e1e;
+  --color-chat-border: rgba(64, 64, 64, 0.25);
 
   /* ═══════════════════════════════════════════════════════════
      FONT FAMILIES
      Quasar: $typography-font-family
   ═══════════════════════════════════════════════════════════ */
-  --font-family-sans:
-    "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+  --font-family-app:
+    "ABeeZee", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     "Helvetica Neue", Arial, sans-serif;
-  --font-family-display: "Bebas Neue", sans-serif;
-  --font-family-heading: "DM Sans", Inter, sans-serif;
-  --font-family-button: Montserrat, Inter, sans-serif;
+  --font-family-sans: var(--font-family-app);
+  --font-family-button: var(--font-family-app);
 
   /* ═══════════════════════════════════════════════════════════
      FONT SIZES
@@ -218,6 +211,9 @@
   /* ─── Layout shadow (Quasar: $layout-shadow) ─────────────── */
   --shadow-layout: 0 0 10px 2px rgb(0 0 0 / 0.2), 0 0 10px rgb(0 0 0 / 0.24);
 
+  /* ─── Button shadow ──────────────────────────────────────── */
+  --shadow-button: 0px 2px 0px 0px #000000;
+
   /* ═══════════════════════════════════════════════════════════
      BORDER RADIUS
      Quasar: $generic-border-radius → 4px
@@ -227,8 +223,8 @@
   --radius-sm: 3px;
   --radius-base: 4px;
   --radius-md: 8px;
-  --radius-button: 7px; /* botão "Novo Chat" e similares */
-  --radius-input: 13px; /* campo de input do chat */
+  --radius-button: 6px;
+  --radius-input: 8px;
   --radius-xl: 12px;
   --radius-2xl: 16px;
   --radius-3xl: 24px;
@@ -363,13 +359,13 @@
    =================================================== */
 @layer components {
   /* ── Display ─────────────────────────────────────
-     Bebas Neue — marca, splash screens, logotipos   */
+     Inter bold — marca, splash screens, logotipos   */
   .text-display-1 {
-    font-family: var(--font-family-display) !important; /* Bebas Neue */
-    font-size: var(--font-size-5xl) !important; /* 48px       */
-    font-weight: var(--font-weight-regular) !important;
-    line-height: normal !important;
-    letter-spacing: 0 !important;
+    font-family: var(--font-family-sans) !important;
+    font-size: var(--font-size-5xl) !important; /* 48px */
+    font-weight: var(--font-weight-extrabold) !important;
+    line-height: 1 !important;
+    letter-spacing: -0.03em !important;
   }
 
   /* ── Headline 1–6 ────────────────────────────────
@@ -495,9 +491,9 @@
 
   .text-welcome-heading-sm {
     font-family: var(--font-family-sans) !important;
-    font-size: 20rem !important; /* Tamanho reduzido para 32px */
+    font-size: 2rem !important; /* 32px */
     font-weight: var(--font-weight-medium) !important;
-    line-height: 1.2 !important; /* Espaçamento de linha levemente maior para facilitar leitura */
+    line-height: 1.2 !important;
     letter-spacing: var(--tracking-ui) !important;
   }
 

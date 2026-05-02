@@ -1,37 +1,19 @@
 <template>
-  <div
-    class="flex justify-between items-center gap-3 w-full! h-full! p-1 rounded-md bg-dark-surface"
+  <button
+    type="button"
+    class="inline-flex flex-nowrap items-center justify-center gap-2 w-full h-8 px-4 bg-gradient-to-r from-dark to-dark-card border border-chat-border shadow-button text-dark-text rounded-button text-paragraph-3 cursor-pointer transition-opacity hover:opacity-80"
+    aria-label="Registrar nova interação"
+    @click="$emit('new-chat')"
   >
-    <div
-      class="flex-1 flex justify-center items-center flex-nowrap gap-2 h-12! p-1 rounded-[6px] bg-dark-card cursor-pointer"
-    >
-      <q-icon name="chat_bubble" size="1rem" color="primary" />
-      <p class="text-primary text-paragraph-sm">CHATS</p>
-      <q-chip dense color="primary" text-color="white" size=".6rem">
-        50
-      </q-chip>
-    </div>
-
-    <div
-      class="flex-1 flex justify-center items-center gap-2 h-12! p-1 rounded-[6px] bg-dark-card cursor-pointer"
-    >
-      <q-icon name="delete" size="1rem" color="primary" />
-      <p class="text-primary text-paragraph-sm">EXCLUIDOS</p>
-      <q-chip dense color="primary" text-color="white" size=".6rem">
-        50
-      </q-chip>
-    </div>
-  </div>
+    <q-icon name="add" size="1rem" color="primary" />
+    <span class="flex-1">Registrar Interação</span>
+  </button>
 </template>
 
 <script>
 export default {
   name: "CChatSessionsInfo",
 
-  data() {
-    return {};
-  },
+  emits: ["new-chat"],
 };
 </script>
-
-<style lang="sass" scoped></style>

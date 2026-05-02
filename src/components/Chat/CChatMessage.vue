@@ -113,7 +113,6 @@
 
 <script>
 import { marked } from "marked";
-import { safeJsonParse } from "src/utils/parse..utils";
 
 export default {
   name: "CChatMessage",
