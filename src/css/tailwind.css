@@ -78,6 +78,7 @@
   --color-border-dark: rgba(64, 64, 64, 0.25);
   --color-border-light: rgba(226, 232, 240, 0.1);
   --color-border-input: rgba(226, 232, 240, 0.15);
+  --color-border-pinned: rgba(255, 255, 255, 0.15);
 
   /* ═══════════════════════════════════════════════════════════
      SEMANTIC / STATE COLORS

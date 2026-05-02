@@ -1,54 +1,42 @@
 <template>
   <aside
     v-show="open"
-    class="flex flex-col shrink-0 h-full min-h-0 w-60 bg-dark-card border-r border-border-dark overflow-hidden"
+    class="flex flex-col shrink-0 h-full min-h-0 w-60 bg-dark border-r border-border-dark overflow-hidden"
   >
     <!-- Botão Novo Chat -->
-    <div class="flex justify-center shrink-0 px-4 py-4">
+    <div class="flex justify-center shrink-0 px-4 pt-4">
       <CChatSessionsInfo @new-chat="$emit('new-chat')" />
     </div>
 
     <!-- Lista de conversas -->
     <div
       ref="conversationsList"
-      class="flex flex-col min-h-0 overflow-y-auto gap-0.5 pb-3 px-2"
+      class="flex-1 overflow-x-hidden! flex flex-col pb-3 pl-10! pr-2"
     >
-      <button
-        v-for="conversation in conversations"
-        :key="conversation.id"
-        type="button"
-        class="flex items-center flex-nowrap gap-2 w-full px-2 py-2 rounded-button border-0 cursor-pointer text-left text-dark-text transition-colors duration-200 shrink-0 hover:bg-dark-elevated"
-        :class="{
-          'bg-dark-elevated ring-inset ring-1 ring-white/10':
-            conversation.session_id === activeConversationId,
-        }"
-        :aria-label="`Abrir conversa: ${conversation.title || 'Nova Conversa'}`"
-        @click="$emit('select-conversation', conversation.session_id)"
+      <!-- Mensagens anexadas -->
+      <div
+        class="flex-1 h-full min-h-0 overflow-y-scroll! overflow-x-hidden! border-l-2 border-border-pinned pl-2 flex flex-flex-row gap-0.5 mb-2 dashed-border-left"
       >
-        <svg
-          class="size-[16px] shrink-0 text-dark-text-muted"
-          viewBox="0 0 24 24"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          aria-hidden="true"
-        >
-          <path
-            d="M21 11.5C21.0034 12.8199 20.6951 14.1219 20.1 15.3C19.3944 16.7118 18.3098 17.8992 16.9674 18.7293C15.6251 19.5594 14.0782 19.9994 12.5 20C11.1801 20.0035 9.87812 19.6951 8.7 19.1L3 21L4.9 15.3C4.30493 14.1219 3.99656 12.8199 4 11.5C4.00061 9.92179 4.44061 8.37488 5.27072 7.03258C6.10083 5.69028 7.28825 4.6056 8.7 3.90003C9.87812 3.30496 11.1801 2.99659 12.5 3.00003H13C15.0843 3.11502 17.053 3.99479 18.5291 5.47089C20.0052 6.94699 20.885 8.91568 21 11V11.5Z"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          />
-        </svg>
+        <CChatConversationItem
+          v-for="conversation in pinnedConversations"
+          :key="`pinned-${conversation.id}`"
+          :conversation="conversation"
+          :active="conversation.session_id === activeConversationId"
+          @select="$emit('select-conversation', $event)"
+        />
+      </div>
 
-        <span class="text-paragraph-3 text-dark-text truncate">
-          {{ conversation.title ?? "Nova Conversa" }}
-        </span>
-      </button>
+      <!-- Mensagens não anexadas -->
+      <!-- <div class="flex-1 flex flex-row gap-0.5 min-h-0 overflow-y-scroll!">
+        <CChatConversationItem
+          v-for="conversation in regularConversations"
+          :key="`regular-${conversation.id}`"
+          :conversation="conversation"
+          :active="conversation.session_id === activeConversationId"
+          @select="$emit('select-conversation', $event)"
+        />
+      </div> -->
     </div>
-
-    <!-- Spacer -->
-    <div class="flex-1" />
 
     <!-- Footer: plano do usuário -->
     <div class="shrink-0 px-4 py-3 border-t border-border-dark">
@@ -60,12 +48,14 @@
 <script>
 import { useAuthStore } from "@stores/auth.store";
 import CChatSessionsInfo from "./CChatSessionsInfo.vue";
+import CChatConversationItem from "./CChatConversationItem.vue";
 
 export default {
   name: "CChatConversationsMenu",
 
   components: {
     CChatSessionsInfo,
+    CChatConversationItem,
   },
 
   props: {
@@ -86,6 +76,12 @@ export default {
   emits: ["new-chat", "select-conversation"],
 
   computed: {
+    pinnedConversations() {
+      return this.conversations.map((c) => ({ ...c, has_attachment: true }));
+    },
+    regularConversations() {
+      return this.conversations.map((c) => ({ ...c, has_attachment: false }));
+    },
     userPlan() {
       const authStore = useAuthStore();
       return authStore.userPlan || "Plano X";
@@ -115,5 +111,17 @@ aside {
   height: 100%;
   min-height: 0;
   overflow: hidden;
+}
+
+.dashed-border-left {
+  border-style: dashed;
+  border-image: repeating-linear-gradient(
+      to bottom,
+      var(--color-border-pinned) 0,
+      var(--color-border-pinned) 6px,
+      transparent 6px,
+      transparent 10px
+    )
+    1;
 }
 </style>

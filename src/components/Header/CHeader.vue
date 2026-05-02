@@ -43,7 +43,7 @@
         />
         <button
           type="button"
-          class="shrink-0 h-8 mx-1 px-3 rounded-md bg-search-btn text-light-text text-paragraph-4 font-medium cursor-pointer transition-opacity hover:opacity-80"
+          class="text-title-1! shrink-0 h-8 mx-1 px-3 rounded-md bg-search-btn text-light-text text-paragraph-4 font-medium cursor-pointer transition-opacity hover:opacity-80"
           @click="onSearch"
         >
           Buscar
