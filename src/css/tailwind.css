@@ -584,7 +584,45 @@
 
   .card-action-banner:hover {
     border-color: rgb(from var(--color-primary) r g b / 0.4);
-    box-shadow: var(--shadow-button), 0 0 12px rgb(from var(--color-primary) r g b / 0.08);
+    box-shadow:
+      var(--shadow-button),
+      0 0 12px rgb(from var(--color-primary) r g b / 0.08);
+  }
+}
+
+/* ===================================================
+   CHAT BUBBLES — Balões de mensagem (IA e Usuário)
+   IA: gradient escuro com tint neon sutil no fim.
+   Usuário: gradient escuro neutro.
+   Ambos compartilham border, shadow e border-radius.
+   =================================================== */
+@layer components {
+  .chat-bubble-ai {
+    background:
+      linear-gradient(
+        106deg,
+        rgba(18, 18, 18, 0.34) 12.61%,
+        rgba(225, 255, 6, 0.34) 93.18%
+      ),
+      linear-gradient(90deg, #000 0%, #151515 100%);
+    background-blend-mode: hard-light, normal;
+    box-shadow: 0 2px 0 0 #000;
+    border-radius: var(--radius-button);
+    padding: 15px;
+    color: white;
+  }
+
+  .chat-bubble-user {
+    background: linear-gradient(
+      126.91deg,
+      var(--color-dark-card) 0%,
+      var(--color-dark-elevated) 100%
+    );
+    border: 1px solid rgb(64 64 64 / 0.25);
+    box-shadow: 0px 2px 0px 0px #000;
+    border-radius: var(--radius-button);
+    padding: 15px;
+    color: white;
   }
 }
 

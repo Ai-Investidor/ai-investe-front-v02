@@ -1,9 +1,11 @@
 import { ref, computed } from "vue";
 import { useChatService } from "@services/chat.service";
 import { safeJsonParse } from "src/utils/parse..utils";
+import { useAuthStore } from "src/stores/auth.store";
 
 export function useChat() {
   const chatService = useChatService();
+  const authStore = useAuthStore();
 
   // ── Estado ────────────────────────────────────────────────────────────────
 
@@ -31,14 +33,18 @@ export function useChat() {
     activeConversation.value?.messages?.forEach((msg) => {
       const parsed = safeJsonParse(msg?.text);
       // debugger;
-      if (parsed && parsed?.error?.code === 503) {
+      if (parsed && msg.sender === "ai" && parsed?.error?.code === 503) {
         contentMessages.push({
           ...msg,
           text: "Nossa ia está atualmente com alta demanda. Picos de demanda costumam ser temporários. Por favor, tente novamente mais tarde.",
         });
+      } else if (msg.sender === "user") {
+        contentMessages.push({ ...msg, avatar: authStore?.userAvatar });
       } else {
         contentMessages.push(msg);
       }
+
+      // debugger;
     });
 
     return contentMessages ?? [];

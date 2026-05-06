@@ -24,9 +24,15 @@
           :message="msg.text"
           :sender="msg.sender"
           :timestamp="msg.timestamp"
+          :avatar="msg?.avatar"
         />
 
-        <CChatMessage v-if="isTyping" message="" sender="ai" :is-typing="true" />
+        <CChatMessage
+          v-if="isTyping"
+          message=""
+          sender="ai"
+          :is-typing="true"
+        />
 
         <div ref="bottomRef" />
       </q-infinite-scroll>
