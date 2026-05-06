@@ -28,7 +28,7 @@
 
     <!-- Coluna 3: área principal -->
 
-    <div class="chat-container-content relative flex-1 min-w-0">
+    <div class="chat-container-content relative flex-1 min-w-0 chat-welcome-bg overflow-hidden rounded-md">
       <!-- Botão toggle sidebar (mobile) -->
       <button
         v-if="isMobile && !sidebarOpen"

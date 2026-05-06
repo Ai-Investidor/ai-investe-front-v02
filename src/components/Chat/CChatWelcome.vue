@@ -1,6 +1,6 @@
 <template>
   <div
-    class="chat-welcome-bg relative flex-1 h-full min-h-svh overflow-hidden rounded-md"
+    class="relative flex-1 h-full min-h-svh"
   >
     <div
       class="flex justify-center items-center flex-col gap-6 w-full h-full max-w-2xl mx-auto"
