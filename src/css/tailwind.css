@@ -7,7 +7,7 @@
      BRAND — Primary (Neon Green)
      Quasar: $primary → #e1ff06
   ═══════════════════════════════════════════════════════════ */
-  --color-primary: #E1FF06;
+  --color-primary: #e1ff06;
   --color-primary-hover: #c8e500;
   --color-primary-muted: rgb(225 255 6 / 0.12);
   --color-primary-dark: #090a0a;
@@ -42,6 +42,7 @@
   --color-dark-text-hint-emphasis: rgb(
     255 255 255 / 0.4
   ); /* palavras destacadas no hint */
+  --color-dark-text-subtle: rgb(255 255 255 / 0.75);
 
   /* ═══════════════════════════════════════════════════════════
      TEXT — Light Theme
@@ -272,6 +273,11 @@
      Quasar: $toolbar-min-height → 50px
   ═══════════════════════════════════════════════════════════ */
   --toolbar-height: 50px;
+
+  /* ═══════════════════════════════════════════════════════════
+  backgrounds-images
+  ═══════════════════════════════════════════════════════════ */
+  --background-image-logo-pattern: url("../assets/imgs/ai_investe_logo.webp");
 }
 
 /* ===================================================
@@ -280,6 +286,7 @@
    Title      → títulos de seções e blocos
    Headline   → heroes, banners e chamadas principais
    =================================================== */
+
 @layer components {
   /* ── Paragraph ───────────────────────────────── */
   .text-paragraph-sm {
@@ -484,8 +491,8 @@
      Tipografias específicas da tela de boas-vindas  */
   .text-welcome-heading {
     font-family: var(--font-family-sans) !important;
-    font-size: 2.5rem !important; /* 40px */
-    font-weight: var(--font-weight-medium) !important;
+    font-size: 2.1875rem !important; /* 35px */
+    font-weight: var(--font-weight-light) !important;
     line-height: 1.1 !important;
     letter-spacing: var(--tracking-ui) !important;
   }
@@ -496,6 +503,12 @@
     font-weight: var(--font-weight-medium) !important;
     line-height: 1.2 !important;
     letter-spacing: var(--tracking-ui) !important;
+  }
+
+  .text-glow-primary {
+    text-shadow:
+      0 0 20px var(--color-primary),
+      0 0 40px var(--color-primary-muted);
   }
 
   .text-welcome-subtitle {
@@ -562,6 +575,17 @@
       inset 0 1px 0 rgb(255 255 255 / 0.1),
       0 4px 32px rgb(from var(--color-primary) r g b / 0.12);
   }
+
+  .card-action-banner {
+    background: linear-gradient(to right, black, var(--color-dark-card));
+    border: 1px solid rgb(64 64 64 / 0.25);
+    box-shadow: var(--shadow-button);
+  }
+
+  .card-action-banner:hover {
+    border-color: rgb(from var(--color-primary) r g b / 0.4);
+    box-shadow: var(--shadow-button), 0 0 12px rgb(from var(--color-primary) r g b / 0.08);
+  }
 }
 
 /* ===================================================
@@ -594,6 +618,15 @@
     rgb(from var(--color-primary) r g b / 0.34) 0%,
     rgb(from var(--color-dark) r g b / 0.34) 100%
   );
+}
+
+@utility chat-welcome-bg {
+  background-image:
+    linear-gradient(145deg, #000000cc 6.53%, #151515cc 92.17%),
+    url("../assets/imgs/ai_investe_logo.webp");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
 }
 
 /* ===================================================

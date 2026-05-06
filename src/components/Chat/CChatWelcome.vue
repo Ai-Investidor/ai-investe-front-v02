@@ -1,68 +1,90 @@
 <template>
   <div
-    class="welcome-glow-bg relative flex-1 flex flex-col flex-nowrap! items-center max-sm:items-start justify-center py-12 px-6 text-center overflow-x-hidden overflow-y-scroll"
+    class="chat-welcome-bg relative flex-1 h-full min-h-svh overflow-hidden rounded-md"
   >
-
-    <!-- Ícone central -->
-    <div class="relative z-1 flex items-center justify-center mb-6 shrink-0">
-      <q-icon
-        name="svguse:icons/icons.svg#icon-log"
-        size="64px"
-        color="white"
-      />
-    </div>
-
-    <!-- Título principal -->
-    <h1 class="relative z-1 text-welcome-heading text-dark-text mb-4!">
-      Como posso te ajudar hoje?
-    </h1>
-
-    <!-- Subtítulo -->
-    <p
-      class="relative z-1 text-welcome-subtitle text-dark-text-muted max-w-[46rem] !mb-10"
-    >
-      Sou seu assistente especializado em análise financeira e investimentos.
-      Posso ajudar com análise de ativos, tendências de mercado e estratégias de
-      investimento
-    </p>
-
-    <!-- Grid de cards de sugestão -->
     <div
-      class="relative z-1 grid grid-cols-2 max-sm:grid-cols-1 gap-6 w-full max-w-176"
+      class="flex justify-center items-center flex-col gap-6 w-full h-full max-w-2xl mx-auto"
     >
-      <CCardAction
-        v-for="prompt in prompts"
-        :key="prompt.id"
-        :icon="prompt.icon"
-        :icon-color="prompt.color"
-        :title="prompt.title"
-        :description="prompt.description"
-        @click="$emit('select-prompt', prompt.text)"
-      />
+      <h1 class="text-welcome-heading text-white whitespace-nowrap">
+        Como posso te
+        <span class="font-semibold text-primary text-glow-primary">ajudar</span>
+        hoje?
+      </h1>
+
+      <p
+        class="text-paragraph-4! text-dark-text-subtle! text-center! max-w-156"
+      >
+        Sou seu assistente especializado em análise financeira e investimentos.
+        Posso ajudar com análise de ativos, tendências de mercado e estratégias
+        de investimento
+      </p>
+
+      <div class="grid grid-cols-2 gap-4 w-full">
+        <CCardAction
+          icon="chat"
+          title="Análise Fundamentalista"
+          description="faça análise fundamentalista da apple baseada em noticias"
+          class="col-span-1"
+        />
+
+        <CCardAction
+          icon="chat"
+          title="Análise Fundamentalista"
+          description="faça análise fundamentalista da apple baseada em noticias"
+          class="col-span-1"
+        />
+
+        <CCardAction
+          icon="chat"
+          title="Análise Fundamentalista"
+          description="faça análise fundamentalista da apple baseada em noticias"
+          class="col-span-1"
+        />
+
+        <CCardAction
+          icon="chat"
+          title="Análise Fundamentalista"
+          description="faça análise fundamentalista da apple baseada em noticias"
+          class="col-span-1"
+        />
+      </div>
+
+      <div
+        class="flex items-center w-full bg-chat-bg text-neutral-500 border border-border-input rounded-md p-1 overflow-hidden"
+      >
+        <input
+          v-model="searchQuery"
+          type="text"
+          placeholder="Fale com nossa IA..."
+          class="input-container-message"
+        />
+        <q-btn icon="send" size="100%" dense color="white" class="text-black" />
+      </div>
+
+      <p class="text-paragraph-4! text-white/40! text-center!">
+        AI invest é uma IA e pode cometer erros pode cometer erros.
+      </p>
     </div>
   </div>
 </template>
 
 <script>
-import CCardAction from "@components/Card/CCardAction.vue";
-
+import CCardAction from "../Card/CCardAction.vue";
 export default {
   name: "CChatWelcome",
-
   components: {
     CCardAction,
   },
-
   emits: ["select-prompt"],
 
   data() {
     return {
+      inputMessage: "",
       prompts: [
         {
           id: 1,
           icon: "trending_up",
           title: "Análise Fundamentalista",
-          color: "blue",
           description:
             "Faça análise fundamentalista da Apple baseada em notícias",
           text: "Faça análise fundamentalista da Apple baseada em notícias",
@@ -71,16 +93,14 @@ export default {
           id: 2,
           icon: "bar_chart",
           title: "Comparação de ETFs",
-          color: "green",
           description:
             "Compare o desempenho de ETFs de tecnologia nos últimos 5 anos",
           text: "Compare o desempenho de ETFs de tecnologia nos últimos 5 anos",
         },
         {
           id: 3,
-          icon: "pie_chart",
+          icon: "loop",
           title: "Diversificação de Portfolio",
-          color: "red",
           description: "Como posso diversificar um portfolio de R$ 100.000?",
           text: "Como posso diversificar um portfolio de R$ 100.000?",
         },
@@ -88,7 +108,6 @@ export default {
           id: 4,
           icon: "savings",
           title: "Análise de Dividend Yield",
-          color: "blue",
           description: "Melhores ações com dividend yield acima de 6%",
           text: "Quais são as melhores ações com dividend yield acima de 6%?",
         },
@@ -96,17 +115,51 @@ export default {
     };
   },
 
-  mounted() {
-    const refHeader = document.getElementsByTagName("header")[0];
-    const isMobile = this.$q.screen.lt.sm;
-
-    if (refHeader && isMobile) {
-      const headerHeight = refHeader.offsetHeight;
-      const welcomeContainer = this.$el;
-      welcomeContainer.style.paddingTop = `${headerHeight * 6}px`;
-
-      console.log(welcomeContainer.style.paddingTop);
-    }
+  methods: {
+    handleInputSend() {
+      const text = this.inputMessage.trim();
+      if (!text) return;
+      this.$emit("select-prompt", text);
+      this.inputMessage = "";
+    },
   },
 };
 </script>
+
+<style scoped>
+.card-prompt {
+  background: linear-gradient(
+    to right,
+    var(--color-dark),
+    var(--color-dark-card)
+  );
+  border: 1px solid var(--color-border-dark);
+  box-shadow: var(--shadow-button);
+}
+
+.card-prompt:hover {
+  background: linear-gradient(
+    to right,
+    var(--color-dark-card),
+    var(--color-dark-panel)
+  );
+}
+
+.input-container-message {
+  flex: 1;
+  height: 100%;
+  background: transparent;
+  outline: none;
+  padding: 0.8rem 0.75rem;
+
+  font-family: var(--font-family-sans);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-regular);
+  color: var(--color-dark-text);
+  line-height: 1.5;
+
+  &::placeholder {
+    color: var(--color-dark-text-placeholder);
+  }
+}
+</style>

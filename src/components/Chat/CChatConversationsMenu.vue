@@ -1,7 +1,7 @@
 <template>
   <aside
     v-show="open"
-    class="flex flex-col shrink-0 h-full min-h-0 w-60 bg-dark border-r border-border-dark overflow-hidden"
+    class="flex flex-col shrink-0 h-full min-h-0 w-60 bg-dark overflow-hidden"
   >
     <!-- Botão Novo Chat -->
     <div class="flex justify-center shrink-0 px-4 pt-4">
@@ -17,13 +17,17 @@
       <div
         class="flex-1 h-full min-h-0 overflow-y-scroll! overflow-x-hidden! border-l-2 border-border-pinned pl-2 flex flex-flex-row gap-0.5 mb-2 dashed-border-left"
       >
-        <CChatConversationItem
+        <div
           v-for="conversation in pinnedConversations"
           :key="`pinned-${conversation.id}`"
-          :conversation="conversation"
-          :active="conversation.session_id === activeConversationId"
-          @select="$emit('select-conversation', $event)"
-        />
+          class="max-w-40"
+        >
+          <CChatConversationItem
+            :conversation="conversation"
+            :active="conversation.session_id === activeConversationId"
+            @select="$emit('select-conversation', $event)"
+          />
+        </div>
       </div>
 
       <!-- Mensagens não anexadas -->
@@ -77,7 +81,7 @@ export default {
 
   computed: {
     pinnedConversations() {
-      return this.conversations.map((c) => ({ ...c, has_attachment: true }));
+      return this.conversations.map((c) => ({ ...c, has_attachment: false }));
     },
     regularConversations() {
       return this.conversations.map((c) => ({ ...c, has_attachment: false }));

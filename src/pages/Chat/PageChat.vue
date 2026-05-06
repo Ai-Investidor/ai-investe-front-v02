@@ -67,7 +67,7 @@
       />
 
       <!-- Input sempre visível no rodapé -->
-      <div class="chat-area-input">
+      <!-- <div class="chat-area-input">
         <CChatInputArea
           :disabled="chat.isTyping.value"
           :pending-files="chat.pendingFiles.value"
@@ -75,7 +75,7 @@
           @attach="onAttachFiles"
           @remove-file="onRemoveFile"
         />
-      </div>
+      </div> -->
     </div>
   </q-page>
 </template>
@@ -87,7 +87,6 @@ import { useUiStore } from "@stores/ui.store";
 import CChatConversationsMenu from "@components/Chat/CChatConversationsMenu.vue";
 import CChatWelcome from "@components/Chat/CChatWelcome.vue";
 import CChatMessageList from "@components/Chat/CChatMessageList.vue";
-import CChatInputArea from "@components/Chat/CChatInputArea.vue";
 import CSpinner from "@components/Spinner/CSpinner.vue";
 
 export default {
@@ -97,7 +96,6 @@ export default {
     CChatConversationsMenu,
     CChatWelcome,
     CChatMessageList,
-    CChatInputArea,
     CSpinner,
   },
 
