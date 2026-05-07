@@ -28,7 +28,9 @@
 
     <!-- Coluna 3: área principal -->
 
-    <div class="chat-container-content relative flex-1 min-w-0 chat-welcome-bg overflow-hidden rounded-md">
+    <div
+      class="chat-container-content relative flex-1 min-w-0 chat-welcome-bg overflow-hidden rounded-md"
+    >
       <!-- Botão toggle sidebar (mobile) -->
       <button
         v-if="isMobile && !sidebarOpen"
@@ -55,27 +57,28 @@
         @select-prompt="onSelectPrompt"
       />
 
-      <CChatMessageList
-        v-else
-        ref="messageList"
-        :messages="chat.messages.value"
-        :is-typing="chat.isTyping.value"
-        :has-more-messages="chat.hasMoreMessages.value"
-        :conversation-id="chat.activeConversationId.value"
-        :on-load-more-messages="chat.loadMoreMessages"
-        class="chat-message-wrapper"
-      />
-
-      <!-- Input sempre visível no rodapé -->
-      <!-- <div class="chat-area-input">
-        <CChatInputArea
-          :disabled="chat.isTyping.value"
-          :pending-files="chat.pendingFiles.value"
-          @send="sendNewMessage"
-          @attach="onAttachFiles"
-          @remove-file="onRemoveFile"
+      <template v-else>
+        <CChatMessageList
+          ref="messageList"
+          :messages="chat.messages.value"
+          :is-typing="chat.isTyping.value"
+          :has-more-messages="chat.hasMoreMessages.value"
+          :conversation-id="chat.activeConversationId.value"
+          :on-load-more-messages="chat.loadMoreMessages"
+          class="chat-message-wrapper"
         />
-      </div> -->
+
+        <!-- Input sempre visível no rodapé -->
+        <div class="chat-area-input">
+          <CChatInputArea
+            :disabled="chat.isTyping.value"
+            :pending-files="chat.pendingFiles.value"
+            @send="sendNewMessage"
+            @attach="onAttachFiles"
+            @remove-file="onRemoveFile"
+          />
+        </div>
+      </template>
     </div>
   </q-page>
 </template>
@@ -87,6 +90,7 @@ import { useUiStore } from "@stores/ui.store";
 import CChatConversationsMenu from "@components/Chat/CChatConversationsMenu.vue";
 import CChatWelcome from "@components/Chat/CChatWelcome.vue";
 import CChatMessageList from "@components/Chat/CChatMessageList.vue";
+import CChatInputArea from "@components/Chat/CChatInputArea.vue";
 import CSpinner from "@components/Spinner/CSpinner.vue";
 
 export default {
@@ -96,6 +100,7 @@ export default {
     CChatConversationsMenu,
     CChatWelcome,
     CChatMessageList,
+    CChatInputArea,
     CSpinner,
   },
 

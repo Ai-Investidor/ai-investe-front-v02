@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex flex-col items-center gap-4 py-6 px-7.5 max-sm:px-2 bg-dark! border-t border-border-dark shrink-0 w-full min-w-0"
+    class="flex flex-col items-center gap-4 py-3 px-7.5 max-sm:px-2 bg-dark! shrink-0 w-full min-w-0"
   >
     <!-- Wrapper: chips + input -->
     <div class="flex flex-col gap-2 w-full min-w-0 max-w-225">
@@ -13,17 +13,32 @@
 
       <!-- Campo de input -->
       <div
-        class="flex items-center gap-3 w-full bg-dark-card! rounded-input py-2 px-4"
+        class="flex items-center gap-3 w-full bg-dark rounded-input py-2 px-4 border border-border-input shadow-xs"
       >
         <!-- Botão anexar -->
         <button
           type="button"
-          class="flex items-center justify-center size-10 shrink-0 bg-transparent border-none rounded-full cursor-pointer text-dark-text-muted transition-colors hover:bg-white/7 hover:text-dark-text disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-transparent"
+          class="flex items-center justify-center size-8 shrink-0 bg-transparent border-none rounded-full cursor-pointer text-dark-text-muted transition-colors hover:bg-white/7 hover:text-dark-text disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-transparent"
           :disabled="disabled"
           aria-label="Anexar arquivos"
           @click="openFilePicker"
         >
-          <q-icon name="attach_file" size="20px" />
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" />
+            <path d="M14 2v4a2 2 0 0 0 2 2h4" />
+            <path d="M9 15h6" />
+            <path d="M12 12v6" />
+          </svg>
         </button>
         <input
           ref="fileInput"
@@ -37,7 +52,7 @@
           ref="textareaRef"
           v-model="message"
           class="flex-1 bg-transparent border-none outline-none resize-none text-dark-text text-paragraph-2 max-h-32 overflow-y-auto placeholder:text-dark-text-placeholder"
-          placeholder="Digite sua pergunta sobre investimentos, análise de ativos ou mercado financeiro . . ."
+          placeholder="Fale com nossa IA..."
           :disabled="disabled"
           rows="1"
           @keydown="handleKeyDown"
@@ -46,10 +61,10 @@
 
         <!-- Botão enviar -->
         <button
-          class="flex items-center justify-center size-10 shrink-0 rounded-full border-none cursor-pointer transition-[background-color,opacity] duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+          class="flex items-center justify-center gap-1.5 shrink-0 rounded-input border-none cursor-pointer transition-[background-color,opacity] duration-200 py-1.5 px-3 disabled:opacity-50 disabled:cursor-not-allowed"
           :class="
             canSend
-              ? 'bg-linear-to-br from-primary to-primary-dark2 text-dark-text'
+              ? 'bg-search-btn text-light-text'
               : 'bg-dark-elevated text-dark-text-muted'
           "
           :disabled="disabled || !canSend"
@@ -57,8 +72,8 @@
           @click="handleSend"
         >
           <svg
-            width="18"
-            height="18"
+            width="16"
+            height="16"
             viewBox="0 0 24 24"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"

@@ -53,12 +53,13 @@
         class="flex items-center w-full bg-chat-bg text-neutral-500 border border-border-input rounded-md p-1 overflow-hidden"
       >
         <input
-          v-model="searchQuery"
+          v-model="inputMessage"
           type="text"
           placeholder="Fale com nossa IA..."
           class="input-container-message"
+          @keydown.enter.prevent="handleInputSend"
         />
-        <q-btn icon="send" size="100%" dense color="white" class="text-black" />
+        <q-btn icon="send" size="100%" dense color="white" class="text-black" @click="handleInputSend" />
       </div>
 
       <p class="text-paragraph-4! text-white/40! text-center!">
