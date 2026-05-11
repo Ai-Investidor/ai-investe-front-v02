@@ -2,28 +2,13 @@
   <q-drawer
     v-model="isOpen"
     show-if-above
-    :width="70"
+    :width="53"
     :breakpoint="1023"
-    class="h-full bg-dark-card border-r border-border-dark overflow-hidden"
+    class="h-full bg-black overflow-hidden"
   >
-    <div class="flex flex-col h-full">
-      <!-- Logo -->
-      <div class="flex items-center justify-center shrink-0 py-[21px]">
-        <div
-          class="flex items-center justify-center shrink-0 size-10 rounded-md bg-linear-to-br from-primary to-primary-dark2 shadow-[0_0_16px_rgba(51,150,254,0.28)]"
-        >
-          <q-icon
-            name="svguse:icons/icons.svg#icon-logo"
-            size="20px"
-            color="white"
-          />
-        </div>
-      </div>
-
+    <div class="flex flex-col h-full pt-6 px-3">
       <!-- Navegação principal -->
-      <nav
-        class="flex flex-col items-center shrink-0 gap-8 py-4 border-y border-border-dark"
-      >
+      <nav class="flex flex-col items-center gap-6">
         <button
           v-for="item in navItems"
           :key="item.key"
@@ -33,7 +18,17 @@
           :aria-label="item.label"
           @click="navigate(item)"
         >
-          <q-icon :name="item.icon" size="20px" />
+          <div class="relative">
+            <img
+              v-if="item.customIcon"
+              :src="item.customIcon"
+              class="w-4 h-4 object-contain"
+              :alt="item.label"
+              aria-hidden="true"
+            />
+            <q-icon v-else :name="item.icon" size="16px" />
+            <span v-if="item.badge" class="sidebar-badge" />
+          </div>
           <q-tooltip
             anchor="center right"
             self="center left"
@@ -45,51 +40,17 @@
         </button>
       </nav>
 
-      <!-- Controles secundários -->
-      <div
-        class="flex flex-col items-center shrink-0 gap-8 py-4 border-b border-border-dark"
-      >
-        <button class="sidebar-btn" aria-label="Notificações">
-          <q-icon name="notifications_none" size="20px" />
-          <q-tooltip
-            anchor="center right"
-            self="center left"
-            :offset="[12, 0]"
-            class="sidebar-tooltip"
-          >
-            Notificações
-          </q-tooltip>
-        </button>
-
-        <!-- <button
-
-          class="sidebar-btn"
-          aria-label="Configurações"
-          @click="navigate({ route: '/configuracoes' })"
-        >
-          <q-icon name="settings" size="20px" />
-          <q-tooltip
-            anchor="center right"
-            self="center left"
-            :offset="[12, 0]"
-            class="sidebar-tooltip"
-          >
-            Configurações
-          </q-tooltip>
-        </button> -->
-      </div>
-
       <!-- Spacer -->
       <div class="flex-1" />
 
       <!-- Rodapé: logout -->
-      <div class="flex items-center justify-center shrink-0 py-4">
+      <div class="flex flex-col items-center shrink-0 pb-3">
         <button
-          class="sidebar-btn hover:text-error!"
+          class="sidebar-btn sidebar-btn--logout"
           aria-label="Sair"
           @click="onLogout"
         >
-          <q-icon name="logout" size="20px" />
+          <q-icon name="logout" size="16px" />
           <q-tooltip
             anchor="center right"
             self="center left"
@@ -107,6 +68,8 @@
 <script>
 import useAuth from "@composables/useAuth";
 import { useUiStore } from "@stores/ui.store";
+import IconChat from "@assets/icons/icon-chat.svg";
+import IconCards from "@assets/icons/icon-cards.svg";
 
 export default {
   name: "CSidebar",
@@ -121,8 +84,21 @@ export default {
         {
           key: "ia-chat",
           label: "IA Chat",
-          icon: "forum",
+          customIcon: IconChat,
           route: "/ia-chat",
+        },
+        {
+          key: "alerts",
+          label: "Alertas",
+          icon: "notifications",
+          route: null,
+          badge: true,
+        },
+        {
+          key: "portfolio",
+          label: "Portfólio",
+          customIcon: IconCards,
+          route: null,
         },
       ],
     };
@@ -141,11 +117,21 @@ export default {
 
   methods: {
     isActive(item) {
-      return this.$route.path === item.route;
+      return item.route && this.$route.path === item.route;
     },
 
     navigate(item) {
-      if (item.route && this.$route.path !== item.route) {
+      if (item.key === "ia-chat") {
+        if (this.$route.path === "/ia-chat") {
+          this.uiStore.toggleChatSidebar();
+        } else {
+          this.$router.push("/ia-chat");
+        }
+        return;
+      }
+
+      if (!item.route) return;
+      if (this.$route.path !== item.route) {
         this.$router.push(item.route);
       }
       if (this.$q.screen.lt.md) {
@@ -164,29 +150,36 @@ export default {
 <style scoped>
 @reference "../../css/tailwind.css";
 
-/* ── Sidebar button (nav items + controls) ───────── */
 .sidebar-btn {
-  @apply flex items-center justify-center shrink-0 size-10
-         bg-transparent text-dark-text-muted
-         rounded-md border-none cursor-pointer;
-  transition:
-    background-color 0.18s ease,
-    color 0.18s ease;
+  @apply flex items-center justify-center h-7 w-full
+         bg-gradient-to-r from-dark to-dark-card
+         border border-border-dark rounded-button
+         text-primary cursor-pointer shrink-0;
+  box-shadow: 0px 2px 0px 0px #000;
+  transition: opacity 0.18s ease;
 }
 
-.sidebar-btn:not(.sidebar-btn--active):hover {
-  @apply bg-white/[0.07] text-dark-text-secondary;
+.sidebar-btn:hover {
+  opacity: 0.8;
 }
 
 .sidebar-btn--active {
-  @apply bg-linear-to-br from-primary to-primary-dark2 text-dark-text;
+  border-color: rgb(from var(--color-primary) r g b / 0.4);
 }
 
-.sidebar-btn--active:hover {
-  opacity: 0.9;
+.sidebar-btn--logout {
+  @apply text-dark-text-muted;
 }
 
-/* ── Tooltip (Quasar portal — needs :deep) ───────── */
+.sidebar-btn--logout:hover {
+  @apply text-error;
+  opacity: 1;
+}
+
+.sidebar-badge {
+  @apply absolute -top-1 -right-1 size-2 bg-primary rounded-full;
+}
+
 :deep(.sidebar-tooltip) {
   @apply text-xs bg-dark-card text-dark-text border border-border-dark rounded-md;
   padding: 5px 10px;

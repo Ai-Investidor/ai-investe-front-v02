@@ -1,90 +1,97 @@
 <template>
-  <q-header
-    class="flex items-stretch shrink-0 h-20.75 bg-dark-card! border-b border-border-dark"
-  >
-    <div class="flex items-center justify-between w-full px-7.5 max-sm:px-4">
-      <div class="flex items-center gap-3 min-w-0">
-        <button
-          v-if="$q.screen.lt.md"
-          type="button"
-          class="flex items-center justify-center shrink-0 size-10 text-dark-text-secondary bg-transparent border-none rounded-md cursor-pointer transition-colors hover:bg-white/7 hover:text-dark-text"
-          aria-label="Abrir menu"
-          @click="onOpenSidebar"
+  <q-header class="flex items-stretch shrink-0 h-15 bg-dark">
+    <div
+      class="flex items-center shrink-0 bg-black rounded-br-2xl transition-all duration-250 w-59"
+      :class="chatSidebarOpen ? 'pl-18 gap-11' : 'pl-3 gap-3'"
+    >
+      <transition name="logo" mode="out-in">
+        <router-link
+          v-if="chatSidebarOpen"
+          key="logo-full"
+          to="/"
+          class="h-full cursor-pointer overflow-hidden max-w-24 max-h-15"
         >
-          <q-icon name="menu" size="22px" />
-        </button>
-        <span class="text-title-3 text-white truncate">
-          {{ nameCurrentRoute }}
-        </span>
+          <q-img :src="IconLogo" fit="contain" class="w-full h-full" />
+        </router-link>
+
+        <router-link
+          v-else
+          key="logo-small"
+          to="/"
+          class="flex items-center cursor-pointer shrink-0"
+        >
+          <img :src="IconLogoSmall" class="h-9 w-auto object-contain" alt="" />
+        </router-link>
+      </transition>
+
+      <button
+        type="button"
+        class="menu-toggle-btn"
+        :class="{ 'is-open': chatSidebarOpen }"
+        aria-label="Mostrar/ocultar conversas"
+        @click="toggleChatSidebar"
+      >
+        <img :src="IconMenuToggle" alt="" aria-hidden="true" />
+      </button>
+    </div>
+
+    <div class="flex-1 flex items-center justify-between bg-chat-bg px-4 gap-4">
+      <!-- LEFT: Breadcrumb -->
+      <div class="shrink-0 min-w-0">
+        <q-breadcrumbs active-color="grey-5">
+          <q-breadcrumbs-el icon="home" />
+          <q-breadcrumbs-el
+            :label="nameCurrentRoute"
+            :to="$route.path"
+            class="text-paragraph-3 truncate text-primary"
+          />
+        </q-breadcrumbs>
       </div>
 
-      <!-- Direita: ações + info do usuário -->
-      <div class="flex items-center gap-1">
-        <!-- Notificações -->
+      <!-- CENTER: Search -->
+      <div
+        class="flex items-center flex-1 max-w-96 mx-auto h-9 bg-dark border border-border-input rounded-md overflow-hidden max-sm:hidden"
+      >
+        <input
+          v-model="searchQuery"
+          type="text"
+          placeholder="Pesquisar histórico"
+          class="header-search-input"
+        />
         <button
-          v-if="$q.screen.gt.sm"
-          class="relative flex items-center justify-center size-9 text-dark-text-secondary cursor-pointer rounded-md transition-colors hover:bg-white/7 hover:text-dark-text"
-          aria-label="Notificações"
+          type="button"
+          class="text-title-1! shrink-0 h-8 mx-1 px-3 rounded-md bg-search-btn text-light-text text-paragraph-4 font-medium cursor-pointer transition-opacity hover:opacity-80"
+          @click="onSearch"
         >
-          <q-icon name="notifications_none" size="20px" />
-          <q-tooltip anchor="bottom middle" self="top middle" :offset="[0, 6]">
-            Notificações
-          </q-tooltip>
+          Buscar
         </button>
+      </div>
 
-        <!-- Alternar tema -->
-        <button
-          v-if="$q.screen.gt.sm"
-          class="relative flex items-center justify-center size-9 text-dark-text-secondary cursor-pointer rounded-md transition-colors hover:bg-white/7 hover:text-dark-text"
-          :aria-label="$q.dark.isActive ? 'Modo claro' : 'Modo escuro'"
-          @click="$q.dark.toggle()"
-        >
-          <q-icon
-            :name="$q.dark.isActive ? 'light_mode' : 'dark_mode'"
-            size="18px"
-          />
-          <q-tooltip anchor="bottom middle" self="top middle" :offset="[0, 6]">
-            {{ $q.dark.isActive ? "Modo claro" : "Modo escuro" }}
-          </q-tooltip>
-        </button>
-
-        <!-- Seção do usuário -->
+      <!-- RIGHT: User -->
+      <div class="flex items-center gap-4 shrink-0">
+        <div class="flex flex-col items-end max-sm:hidden">
+          <span class="text-paragraph-3 text-dark-text truncate max-w-32">
+            {{ userDisplayName }}
+          </span>
+          <span class="text-paragraph-4 text-dark-text-muted whitespace-nowrap">
+            {{ userPlan }}
+          </span>
+        </div>
         <div
-          class="flex items-center gap-2.5 px-3.5 border-l border-border-dark cursor-pointer transition-opacity hover:opacity-85"
+          class="flex items-center justify-center shrink-0 size-8 rounded-full bg-primary overflow-hidden cursor-pointer transition-opacity hover:opacity-85"
         >
-          <div
-            class="flex items-center justify-center shrink-0 size-10 overflow-hidden rounded-full bg-linear-to-br from-primary to-primary-dark2"
-          >
-            <img
-              v-if="userAvatar"
-              :src="userAvatar"
-              :alt="userDisplayName"
-              class="size-full object-cover"
-            />
-            <span
-              v-else
-              class="text-sm font-bold leading-none text-dark-text select-none"
-            >
-              {{ userInitials }}
-            </span>
-          </div>
-          <div class="flex flex-col items-start gap-0.5 max-sm:hidden">
-            <span
-              class="font-display text-2xl leading-normal font-regular text-dark-text truncate max-w-40 max-sm:max-w-20"
-            >
-              {{ userDisplayName }}
-            </span>
-            <span
-              class="font-display text-2xs leading-normal font-regular text-dark-text-secondary whitespace-nowrap"
-            >
-              PRO INVESTING
-            </span>
-          </div>
-          <q-icon
-            name="keyboard_arrow_down"
-            size="20px"
-            class="text-dark-text-muted shrink-0 max-sm:hidden"
+          <img
+            v-if="userAvatar"
+            :src="userAvatar"
+            :alt="userDisplayName"
+            class="size-full object-cover"
           />
+          <span
+            v-else
+            class="text-title-4 font-bold text-dark leading-none select-none"
+          >
+            {{ userInitials }}
+          </span>
 
           <q-menu
             anchor="bottom right"
@@ -93,7 +100,6 @@
             class="profile-menu"
           >
             <div class="profile-menu__content">
-              <!-- Info do usuário -->
               <div class="profile-menu__user">
                 <div class="profile-menu__avatar">
                   <img
@@ -114,7 +120,6 @@
 
               <q-separator class="profile-menu__separator" />
 
-              <!-- Perfil -->
               <q-item
                 v-close-popup
                 clickable
@@ -129,7 +134,6 @@
 
               <q-separator class="profile-menu__separator" />
 
-              <!-- Sair -->
               <q-item
                 v-close-popup
                 clickable
@@ -154,21 +158,30 @@ import { useAuthStore } from "@stores/auth.store";
 import { useUiStore } from "@stores/ui.store";
 import { useRouter } from "vue-router";
 import useAuth from "@composables/useAuth";
+import IconLogo from "@assets/imgs/logo_invest.webp";
+import IconLogoSmall from "@assets/imgs/logo-small.svg";
+import IconMenuToggle from "@assets/icons/icon-menu-toggle.svg";
 
 export default {
   name: "CHeader",
-
-  emits: ["toggle:sidebar"],
 
   setup() {
     const auth = useAuth();
     return { uiStore: useUiStore(), auth };
   },
 
+  data() {
+    return {
+      searchQuery: "",
+      IconLogo,
+      IconLogoSmall,
+      IconMenuToggle,
+    };
+  },
+
   computed: {
     userAvatar() {
-      const authStore = useAuthStore();
-      return authStore.userAvatar || "";
+      return useAuthStore().userAvatar || "";
     },
 
     userDisplayName() {
@@ -179,8 +192,7 @@ export default {
     },
 
     userInitials() {
-      const authStore = useAuthStore();
-      const name = authStore.userFullName || authStore.userEmail || "";
+      const name = useAuthStore().userFullName || useAuthStore().userEmail || "";
       return (
         name
           .split(" ")
@@ -192,8 +204,7 @@ export default {
     },
 
     userEmail() {
-      const authStore = useAuthStore();
-      return authStore.userEmail || "";
+      return useAuthStore().userEmail || "";
     },
 
     userMenuName() {
@@ -203,20 +214,26 @@ export default {
       return "Usuário";
     },
 
-    nameCurrentRoute() {
-      const router = useRouter();
+    userPlan() {
+      return useAuthStore().userPlan || "Plano X";
+    },
 
-      return router.currentRoute.value?.meta?.label || "Dashboard";
+    nameCurrentRoute() {
+      return useRouter().currentRoute.value?.meta?.label || "Dashboard";
+    },
+
+    chatSidebarOpen() {
+      return useUiStore().chatSidebarOpen;
     },
   },
 
   methods: {
-    onToggle() {
-      this.$emit("toggle:sidebar");
+    onSearch() {
+      // TODO: implement search
     },
 
-    onOpenSidebar() {
-      this.uiStore.openMainSidebar();
+    toggleChatSidebar() {
+      useUiStore().toggleChatSidebar();
     },
 
     onProfile() {
@@ -230,8 +247,54 @@ export default {
 };
 </script>
 
+<style scoped>
+@reference "../../css/tailwind.css";
+
+.header-search-input {
+  @apply flex-1 h-full bg-transparent outline-none px-3;
+
+  font-family: var(--font-family-sans);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-regular);
+  color: var(--color-dark-text);
+  line-height: 1.5;
+
+  &::placeholder {
+    color: var(--color-dark-text-placeholder);
+  }
+}
+
+.menu-toggle-btn {
+  @apply flex items-center justify-center bg-transparent border-none p-0 cursor-pointer shrink-0;
+  transition: opacity 0.18s ease;
+}
+
+.menu-toggle-btn img {
+  display: block;
+  transition: transform 0.25s ease;
+  transform: scaleX(-1);
+}
+
+.menu-toggle-btn.is-open img {
+  transform: scaleX(1);
+}
+
+.menu-toggle-btn:hover {
+  opacity: 0.7;
+}
+
+.logo-enter-active,
+.logo-leave-active {
+  transition: opacity 0.2s ease;
+}
+
+.logo-enter-from,
+.logo-leave-to {
+  opacity: 0;
+}
+</style>
+
 <style>
-/* global — q-menu usa teleport fora do componente */
 .profile-menu.q-menu {
   background: #0d2b50 !important;
   border: 0.5px solid rgba(51, 150, 254, 0.2) !important;
@@ -336,5 +399,4 @@ export default {
   width: 100%;
   color: inherit;
 }
-
 </style>

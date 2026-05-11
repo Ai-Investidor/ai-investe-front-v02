@@ -1,27 +1,20 @@
 <template>
   <button
     type="button"
-    class="flex! items-start gap-2.5 p-5 rounded-xl h-min w-full cursor-pointer text-left card-action-glass"
+    class="flex! items-start gap-2 p-4 rounded-md h-min w-full cursor-pointer text-left card-action-banner transition-all duration-200"
     @click="$emit('click', $event)"
   >
     <q-icon
       :name="icon"
       :color="iconColor"
-      size="20px"
-      class="shrink-0 !mt-0.5"
+      size="16px"
+      class="shrink-0 mt-1"
       aria-hidden="true"
     />
 
     <div>
-      <div class="flex items-center gap-2">
-        <p
-          class="text-base font-medium tracking-ui leading-[1.3] text-dark-text"
-        >
-          {{ title }}
-        </p>
-      </div>
-
-      <p class="text-paragraph-3 text-dark-text-muted">{{ description }}</p>
+      <p class="text-title-2 text-dark-text">{{ title }}</p>
+      <p class="text-paragraph-3 text-dark-text-subtle!">{{ description }}</p>
     </div>
   </button>
 </template>
@@ -45,7 +38,7 @@ export default {
     },
     iconColor: {
       type: String,
-      default: "var(--color-primary)",
+      default: "primary",
     },
   },
 
