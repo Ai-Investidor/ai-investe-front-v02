@@ -3,7 +3,7 @@
     :style-fn="
       (offset) => ({ height: `calc(100vh - ${offset}px)`, minHeight: '0' })
     "
-    class="relative flex flex-row overflow-hidden bg-dark"
+    class="relative flex flex-row overflow-hidden chat-welcome-bg"
   >
     <!-- Backdrop mobile -->
     <transition name="fade">
@@ -29,7 +29,7 @@
     <!-- Coluna 3: área principal -->
 
     <div
-      class="chat-container-content relative flex-1 min-w-0 chat-welcome-bg overflow-hidden rounded-md"
+      class="chat-container-content relative flex-1 min-w-0 overflow-hidden rounded-md"
     >
       <!-- Botão toggle sidebar (mobile) -->
       <button
@@ -76,6 +76,7 @@
             @send="sendNewMessage"
             @attach="onAttachFiles"
             @remove-file="onRemoveFile"
+            @generate-chart="onGenerateChart"
           />
         </div>
       </template>
@@ -137,7 +138,9 @@ export default {
     isMobile: {
       immediate: true,
       handler(mobile) {
-        this.uiStore.setChatSidebarOpen(!mobile);
+        if (mobile) {
+          this.uiStore.setChatSidebarOpen(false);
+        }
       },
     },
   },
@@ -181,6 +184,10 @@ export default {
 
     onRemoveFile(index) {
       this.chat.removeFile(index);
+    },
+
+    onGenerateChart() {
+      // TODO: implement chart generation flow
     },
 
     openNewChat() {

@@ -1,21 +1,38 @@
 <template>
   <q-header class="flex items-stretc shrink-0 h-15 bg-dark">
     <div
-      class="flex items-center gap-11 w-59 shrink-0 bg-black pl-18 rounded-br-2xl"
+      class="flex items-center shrink-0 bg-black rounded-br-2xl transition-all duration-250 w-59"
+      :class="chatSidebarOpen ? 'pl-18 gap-11' : 'pl-3 gap-3'"
     >
-      <router-link to="/" class="w-full h-full max-w-24 max-h-15">
-        <q-img
-          :src="IconLogo"
-          fit="contain"
-          class="w-full h-full cursor-pointer"
-        />
-      </router-link>
+      <transition name="logo" mode="out-in">
+        <router-link
+          v-if="chatSidebarOpen"
+          key="logo-full"
+          to="/"
+          class="h-full cursor-pointer overflow-hidden max-w-24 max-h-15"
+        >
+          <q-img :src="IconLogo" fit="contain" class="w-full h-full" />
+        </router-link>
 
-      <q-icon
-        name="menu_open"
-        size="1.2rem"
-        class="cursor-pointer text-[#404040] hover:text-white"
-      />
+        <router-link
+          v-else
+          key="logo-small"
+          to="/"
+          class="flex items-center cursor-pointer shrink-0"
+        >
+          <img :src="IconLogoSmall" class="h-9 w-auto object-contain" alt="" />
+        </router-link>
+      </transition>
+
+      <button
+        type="button"
+        class="menu-toggle-btn"
+        :class="{ 'is-open': chatSidebarOpen }"
+        aria-label="Mostrar/ocultar conversas"
+        @click="toggleChatSidebar"
+      >
+        <img :src="IconMenuToggle" alt="" aria-hidden="true" />
+      </button>
     </div>
 
     <div class="flex-1 flex items-center justify-between bg-chat-bg px-4 gap-4">
@@ -83,8 +100,11 @@
 
 <script>
 import { useAuthStore } from "@stores/auth.store";
+import { useUiStore } from "@stores/ui.store";
 import { useRouter } from "vue-router";
 import IconLogo from "@assets/imgs/logo_invest.webp";
+import IconLogoSmall from "@assets/imgs/logo-small.svg";
+import IconMenuToggle from "@assets/icons/icon-menu-toggle.svg";
 
 export default {
   name: "CHeader",
@@ -93,6 +113,8 @@ export default {
     return {
       searchQuery: "",
       IconLogo,
+      IconLogoSmall,
+      IconMenuToggle,
     };
   },
 
@@ -126,11 +148,19 @@ export default {
     nameCurrentRoute() {
       return useRouter().currentRoute.value?.meta?.label || "Dashboard";
     },
+
+    chatSidebarOpen() {
+      return useUiStore().chatSidebarOpen;
+    },
   },
 
   methods: {
     onSearch() {
       // TODO: implement search
+    },
+
+    toggleChatSidebar() {
+      useUiStore().toggleChatSidebar();
     },
   },
 };
@@ -151,5 +181,34 @@ export default {
   &::placeholder {
     color: var(--color-dark-text-placeholder);
   }
+}
+
+.menu-toggle-btn {
+  @apply flex items-center justify-center bg-transparent border-none p-0 cursor-pointer shrink-0;
+  transition: opacity 0.18s ease;
+}
+
+.menu-toggle-btn img {
+  display: block;
+  transition: transform 0.25s ease;
+  transform: scaleX(-1);
+}
+
+.menu-toggle-btn.is-open img {
+  transform: scaleX(1);
+}
+
+.menu-toggle-btn:hover {
+  opacity: 0.7;
+}
+
+.logo-enter-active,
+.logo-leave-active {
+  transition: opacity 0.2s ease;
+}
+
+.logo-enter-from,
+.logo-leave-to {
+  opacity: 0;
 }
 </style>

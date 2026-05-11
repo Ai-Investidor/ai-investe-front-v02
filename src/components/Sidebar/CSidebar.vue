@@ -19,7 +19,14 @@
           @click="navigate(item)"
         >
           <div class="relative">
-            <q-icon :name="item.icon" size="16px" />
+            <img
+              v-if="item.customIcon"
+              :src="item.customIcon"
+              class="w-4 h-4 object-contain"
+              :alt="item.label"
+              aria-hidden="true"
+            />
+            <q-icon v-else :name="item.icon" size="16px" />
             <span v-if="item.badge" class="sidebar-badge" />
           </div>
           <q-tooltip
@@ -61,6 +68,8 @@
 <script>
 import useAuth from "@composables/useAuth";
 import { useUiStore } from "@stores/ui.store";
+import IconChat from "@assets/icons/icon-chat.svg";
+import IconCards from "@assets/icons/icon-cards.svg";
 
 export default {
   name: "CSidebar",
@@ -75,7 +84,7 @@ export default {
         {
           key: "ia-chat",
           label: "IA Chat",
-          icon: "forum",
+          customIcon: IconChat,
           route: "/ia-chat",
         },
         {
@@ -88,7 +97,7 @@ export default {
         {
           key: "portfolio",
           label: "Portfólio",
-          icon: "analytics",
+          customIcon: IconCards,
           route: null,
         },
       ],
@@ -112,6 +121,15 @@ export default {
     },
 
     navigate(item) {
+      if (item.key === "ia-chat") {
+        if (this.$route.path === "/ia-chat") {
+          this.uiStore.toggleChatSidebar();
+        } else {
+          this.$router.push("/ia-chat");
+        }
+        return;
+      }
+
       if (!item.route) return;
       if (this.$route.path !== item.route) {
         this.$router.push(item.route);

@@ -15,36 +15,82 @@
       <div
         class="flex items-center gap-3 w-full bg-dark rounded-input py-2 px-4 border border-border-input shadow-xs"
       >
-        <!-- Botão anexar -->
+        <!-- Botão anexar com menu dropdown -->
         <button
           type="button"
-          class="flex items-center justify-center size-8 shrink-0 bg-transparent border-none rounded-full cursor-pointer text-dark-text-muted transition-colors hover:bg-white/7 hover:text-dark-text disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-transparent"
+          class="attach-btn flex items-center justify-center size-8 shrink-0 bg-transparent border-none rounded-full cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
           :disabled="disabled"
           aria-label="Anexar arquivos"
-          @click="openFilePicker"
         >
-          <svg
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+          <img
+            :src="IconAttach"
+            class="attach-icon w-3 h-3.5 object-contain"
             aria-hidden="true"
+            alt=""
+          />
+
+          <q-menu
+            anchor="top left"
+            self="bottom left"
+            :offset="[0, 8]"
+            transition-show="jump-up"
+            transition-hide="jump-down"
           >
-            <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" />
-            <path d="M14 2v4a2 2 0 0 0 2 2h4" />
-            <path d="M9 15h6" />
-            <path d="M12 12v6" />
-          </svg>
+            <q-list class="attach-menu">
+              <q-item
+                v-close-popup
+                clickable
+                class="attach-menu-item"
+                @click="openDocPicker"
+              >
+                <q-item-section side>
+                  <q-icon name="description" size="16px" />
+                </q-item-section>
+                <q-item-section>Documento</q-item-section>
+              </q-item>
+
+              <q-item
+                v-close-popup
+                clickable
+                class="attach-menu-item"
+                @click="openImgPicker"
+              >
+                <q-item-section side>
+                  <q-icon name="image" size="16px" />
+                </q-item-section>
+                <q-item-section>IMG</q-item-section>
+              </q-item>
+
+              <q-item
+                v-close-popup
+                clickable
+                class="attach-menu-item"
+                @click="onGenerateChart"
+              >
+                <q-item-section side>
+                  <q-icon name="bar_chart" size="16px" />
+                </q-item-section>
+                <q-item-section>Gerar Gráfico</q-item-section>
+              </q-item>
+            </q-list>
+          </q-menu>
         </button>
+
+        <!-- Inputs de arquivo ocultos -->
         <input
-          ref="fileInput"
+          ref="docInput"
           type="file"
           multiple
           class="hidden"
+          accept=".pdf,.doc,.docx,.txt,.csv,.xls,.xlsx,.ppt,.pptx"
+          @change="handleFileChange"
+        />
+        <input
+          ref="imgInput"
+          type="file"
+          multiple
+          class="hidden"
+          accept="image/*"
           @change="handleFileChange"
         />
 
@@ -113,6 +159,7 @@
 
 <script>
 import CChatAttachedFiles from "@components/Chat/CChatAttachedFiles.vue";
+import IconAttach from "@assets/icons/icon-attach.svg";
 
 export default {
   name: "CChatInputArea",
@@ -132,11 +179,12 @@ export default {
     },
   },
 
-  emits: ["send", "attach", "remove-file"],
+  emits: ["send", "attach", "remove-file", "generate-chart"],
 
   data() {
     return {
       message: "",
+      IconAttach,
     };
   },
 
@@ -185,9 +233,18 @@ export default {
       });
     },
 
-    openFilePicker() {
+    openDocPicker() {
       if (this.disabled) return;
-      this.$refs.fileInput?.click();
+      this.$refs.docInput?.click();
+    },
+
+    openImgPicker() {
+      if (this.disabled) return;
+      this.$refs.imgInput?.click();
+    },
+
+    onGenerateChart() {
+      this.$emit("generate-chart");
     },
 
     handleFileChange(event) {
@@ -204,3 +261,44 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.attach-btn .attach-icon {
+  transition: filter 0.18s ease;
+}
+
+.attach-btn:hover:not(:disabled) .attach-icon {
+  filter: brightness(0) saturate(100%) invert(98%) sepia(67%) saturate(1573%)
+    hue-rotate(5deg) brightness(107%) contrast(107%);
+}
+
+:deep(.attach-menu) {
+  min-width: 160px;
+  background: var(--color-dark-card) !important;
+  border: 1px solid var(--color-border-dark);
+  border-radius: var(--radius-md) !important;
+  padding: 4px;
+}
+
+:deep(.attach-menu-item) {
+  color: var(--color-dark-text);
+  border-radius: var(--radius-base);
+  font-size: var(--font-size-sm);
+  min-height: 36px;
+  padding: 6px 12px;
+  gap: 8px;
+}
+
+:deep(.attach-menu-item:hover) {
+  background: var(--color-dark-elevated) !important;
+}
+
+:deep(.attach-menu-item .q-icon) {
+  color: var(--color-dark-text-muted);
+  transition: color 0.18s ease;
+}
+
+:deep(.attach-menu-item:hover .q-icon) {
+  color: var(--color-primary);
+}
+</style>

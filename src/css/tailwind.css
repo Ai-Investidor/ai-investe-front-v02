@@ -660,7 +660,7 @@
 
 @utility chat-welcome-bg {
   background-image:
-    linear-gradient(145deg, #000000cc 6.53%, #151515cc 92.17%),
+    linear-gradient(145deg, rgba(0, 0, 0, 0.99) 6.53%, rgba(21, 21, 21, 0.99) 92.17%),
     url("../assets/imgs/ai_investe_logo.webp");
   background-position: center;
   background-size: cover;
