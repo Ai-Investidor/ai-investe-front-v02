@@ -3,7 +3,7 @@
     :style-fn="
       (offset) => ({ height: `calc(100vh - ${offset}px)`, minHeight: '0' })
     "
-    class="relative flex flex-row overflow-hidden bg-dark"
+    class="relative flex flex-row overflow-hidden chat-welcome-bg"
   >
     <!-- Backdrop mobile -->
     <transition name="fade">
@@ -28,7 +28,9 @@
 
     <!-- Coluna 3: área principal -->
 
-    <div class="chat-container-content relative flex-1 min-w-0">
+    <div
+      class="chat-container-content relative flex-1 min-w-0 overflow-hidden rounded-md"
+    >
       <!-- Botão toggle sidebar (mobile) -->
       <button
         v-if="isMobile && !sidebarOpen"
@@ -55,27 +57,29 @@
         @select-prompt="onSelectPrompt"
       />
 
-      <CChatMessageList
-        v-else
-        ref="messageList"
-        :messages="chat.messages.value"
-        :is-typing="chat.isTyping.value"
-        :has-more-messages="chat.hasMoreMessages.value"
-        :conversation-id="chat.activeConversationId.value"
-        :on-load-more-messages="chat.loadMoreMessages"
-        class="chat-message-wrapper"
-      />
-
-      <!-- Input sempre visível no rodapé -->
-      <div class="chat-area-input">
-        <CChatInputArea
-          :disabled="chat.isTyping.value"
-          :pending-files="chat.pendingFiles.value"
-          @send="sendNewMessage"
-          @attach="onAttachFiles"
-          @remove-file="onRemoveFile"
+      <template v-else>
+        <CChatMessageList
+          ref="messageList"
+          :messages="chat.messages.value"
+          :is-typing="chat.isTyping.value"
+          :has-more-messages="chat.hasMoreMessages.value"
+          :conversation-id="chat.activeConversationId.value"
+          :on-load-more-messages="chat.loadMoreMessages"
+          class="chat-message-wrapper"
         />
-      </div>
+
+        <!-- Input sempre visível no rodapé -->
+        <div class="chat-area-input">
+          <CChatInputArea
+            :disabled="chat.isTyping.value"
+            :pending-files="chat.pendingFiles.value"
+            @send="sendNewMessage"
+            @attach="onAttachFiles"
+            @remove-file="onRemoveFile"
+            @generate-chart="onGenerateChart"
+          />
+        </div>
+      </template>
     </div>
   </q-page>
 </template>
@@ -134,7 +138,9 @@ export default {
     isMobile: {
       immediate: true,
       handler(mobile) {
-        this.uiStore.setChatSidebarOpen(!mobile);
+        if (mobile) {
+          this.uiStore.setChatSidebarOpen(false);
+        }
       },
     },
   },
@@ -178,6 +184,10 @@ export default {
 
     onRemoveFile(index) {
       this.chat.removeFile(index);
+    },
+
+    onGenerateChart() {
+      // TODO: implement chart generation flow
     },
 
     openNewChat() {

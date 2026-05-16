@@ -12,6 +12,7 @@ export const useAuthStore = defineStore("auth", {
     userFullName: (state) => state.user?.user_metadata?.full_name ?? "",
     userEmail: (state) => state.user?.email ?? "",
     userAvatar: (state) => state.user?.user_metadata?.avatar_url ?? "",
+    userPlan: (state) => state.user?.user_metadata?.plan ?? "",
   },
 
   actions: {

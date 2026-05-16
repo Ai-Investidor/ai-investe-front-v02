@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex flex-col items-center gap-4 py-6 px-7.5 max-sm:px-2 bg-dark! border-t border-border-dark shrink-0 w-full min-w-0"
+    class="flex flex-col items-center gap-4 py-3 px-7.5 max-sm:px-2 bg-dark! shrink-0 w-full min-w-0"
   >
     <!-- Wrapper: chips + input -->
     <div class="flex flex-col gap-2 w-full min-w-0 max-w-225">
@@ -13,47 +13,38 @@
 
       <!-- Campo de input -->
       <div
-        class="flex items-center gap-3 w-full bg-dark-card! rounded-input py-2 px-4"
+        class="flex items-center gap-3 w-full bg-dark rounded-input py-2 px-4 border border-border-input shadow-xs"
       >
-        <!-- Botão anexar com dropdown -->
+        <!-- Botão anexar com menu dropdown -->
         <button
           type="button"
-          class="flex items-center justify-center size-10 shrink-0 bg-transparent border-none rounded-full cursor-pointer text-dark-text-muted transition-colors hover:bg-white/7 hover:text-dark-text disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-transparent"
+          class="attach-btn flex items-center justify-center size-8 shrink-0 bg-transparent border-none rounded-full cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
           :disabled="disabled"
-          aria-label="Adicionar arquivo"
+          aria-label="Anexar arquivos"
         >
-          <svg
-            width="20"
-            height="20"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
+          <img
+            :src="IconAttach"
+            class="attach-icon w-3 h-3.5 object-contain"
             aria-hidden="true"
-          >
-            <path
-              d="M12 5v14M5 12h14"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-          </svg>
+            alt=""
+          />
 
           <q-menu
             anchor="top left"
             self="bottom left"
             :offset="[0, 8]"
-            class="attach-menu"
+            transition-show="jump-up"
+            transition-hide="jump-down"
           >
-            <q-list dense class="attach-menu__list">
+            <q-list class="attach-menu">
               <q-item
                 v-close-popup
                 clickable
-                class="attach-menu__item"
+                class="attach-menu-item"
                 @click="openDocPicker"
               >
-                <q-item-section avatar class="attach-menu__icon">
-                  <q-icon name="svguse:icons/icons.svg#icon-attach-doc" size="16px" />
+                <q-item-section side>
+                  <q-icon name="description" size="16px" />
                 </q-item-section>
                 <q-item-section>Documento</q-item-section>
               </q-item>
@@ -61,25 +52,23 @@
               <q-item
                 v-close-popup
                 clickable
-                class="attach-menu__item"
+                class="attach-menu-item"
                 @click="openImgPicker"
               >
-                <q-item-section avatar class="attach-menu__icon">
-                  <q-icon name="svguse:icons/icons.svg#icon-attach-img" size="16px" />
+                <q-item-section side>
+                  <q-icon name="image" size="16px" />
                 </q-item-section>
                 <q-item-section>IMG</q-item-section>
               </q-item>
 
-              <q-separator class="attach-menu__separator" />
-
               <q-item
                 v-close-popup
                 clickable
-                class="attach-menu__item"
+                class="attach-menu-item"
                 @click="onGenerateChart"
               >
-                <q-item-section avatar class="attach-menu__icon">
-                  <q-icon name="svguse:icons/icons.svg#icon-attach-chart" size="16px" />
+                <q-item-section side>
+                  <q-icon name="bar_chart" size="16px" />
                 </q-item-section>
                 <q-item-section>Gerar Gráfico</q-item-section>
               </q-item>
@@ -87,6 +76,7 @@
           </q-menu>
         </button>
 
+        <!-- Inputs de arquivo ocultos -->
         <input
           ref="docInput"
           type="file"
@@ -99,8 +89,16 @@
           ref="imgInput"
           type="file"
           multiple
-          accept="image/png,image/jpeg,image/jpg,image/gif,image/webp"
           class="hidden"
+          accept=".pdf,.doc,.docx,.txt,.csv,.xls,.xlsx,.ppt,.pptx"
+          @change="handleFileChange"
+        />
+        <input
+          ref="imgInput"
+          type="file"
+          multiple
+          class="hidden"
+          accept="image/*"
           @change="handleFileChange"
         />
 
@@ -108,7 +106,7 @@
           ref="textareaRef"
           v-model="message"
           class="flex-1 bg-transparent border-none outline-none resize-none text-dark-text text-paragraph-2 max-h-32 overflow-y-auto placeholder:text-dark-text-placeholder"
-          placeholder="Digite sua pergunta sobre investimentos, análise de ativos ou mercado financeiro . . ."
+          placeholder="Fale com nossa IA..."
           :disabled="disabled"
           rows="1"
           @keydown="handleKeyDown"
@@ -117,10 +115,10 @@
 
         <!-- Botão enviar -->
         <button
-          class="flex items-center justify-center size-10 shrink-0 rounded-full border-none cursor-pointer transition-[background-color,opacity] duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+          class="flex items-center justify-center gap-1.5 shrink-0 rounded-input border-none cursor-pointer transition-[background-color,opacity] duration-200 py-1.5 px-3 disabled:opacity-50 disabled:cursor-not-allowed"
           :class="
             canSend
-              ? 'bg-linear-to-br from-primary to-primary-dark2 text-dark-text'
+              ? 'bg-search-btn text-light-text'
               : 'bg-dark-elevated text-dark-text-muted'
           "
           :disabled="disabled || !canSend"
@@ -128,8 +126,8 @@
           @click="handleSend"
         >
           <svg
-            width="18"
-            height="18"
+            width="16"
+            height="16"
             viewBox="0 0 24 24"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
@@ -169,6 +167,7 @@
 
 <script>
 import CChatAttachedFiles from "@components/Chat/CChatAttachedFiles.vue";
+import IconAttach from "@assets/icons/icon-attach.svg";
 
 export default {
   name: "CChatInputArea",
@@ -193,6 +192,7 @@ export default {
   data() {
     return {
       message: "",
+      IconAttach,
     };
   },
 
@@ -270,46 +270,43 @@ export default {
 };
 </script>
 
-<style>
-/* global — q-menu renderiza fora do componente (teleport), scoped não alcança */
-.attach-menu.q-menu {
-  background: #e6e8e9 !important;
-  border: 0.5px solid rgba(12, 66, 136, 0.18) !important;
-  border-radius: 12px !important;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12) !important;
-  width: 188px !important;
-  max-width: 188px !important;
-  overflow: hidden !important;
+<style scoped>
+.attach-btn .attach-icon {
+  transition: filter 0.18s ease;
 }
 
-.attach-menu__list {
+.attach-btn:hover:not(:disabled) .attach-icon {
+  filter: brightness(0) saturate(100%) invert(98%) sepia(67%) saturate(1573%)
+    hue-rotate(5deg) brightness(107%) contrast(107%);
+}
+
+:deep(.attach-menu) {
+  min-width: 160px;
+  background: var(--color-dark-card) !important;
+  border: 1px solid var(--color-border-dark);
+  border-radius: var(--radius-md) !important;
   padding: 4px;
-  height: 138px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
 }
 
-.attach-menu__item.q-item {
-  border-radius: 8px;
-  color: #0c4288 !important;
-  font-size: 14px;
-  font-weight: 500;
-  min-height: 38px;
-  transition: background 0.15s;
+:deep(.attach-menu-item) {
+  color: var(--color-dark-text);
+  border-radius: var(--radius-base);
+  font-size: var(--font-size-sm);
+  min-height: 36px;
+  padding: 6px 12px;
+  gap: 8px;
 }
 
-.attach-menu__item.q-item:hover {
-  background: rgba(12, 66, 136, 0.08) !important;
+:deep(.attach-menu-item:hover) {
+  background: var(--color-dark-elevated) !important;
 }
 
-.attach-menu__icon {
-  min-width: 32px;
-  color: #0c4288 !important;
+:deep(.attach-menu-item .q-icon) {
+  color: var(--color-dark-text-muted);
+  transition: color 0.18s ease;
 }
 
-.attach-menu__separator {
-  background: rgba(12, 66, 136, 0.15) !important;
-  margin: 2px 8px;
+:deep(.attach-menu-item:hover .q-icon) {
+  color: var(--color-primary);
 }
 </style>

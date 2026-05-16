@@ -23,6 +23,10 @@ export const useUiStore = defineStore("ui", {
     setChatSidebarOpen(value) {
       this.chatSidebarOpen = value;
     },
+
+    toggleChatSidebar() {
+      this.chatSidebarOpen = !this.chatSidebarOpen;
+    },
   },
 });
 
