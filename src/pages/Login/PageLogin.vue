@@ -388,4 +388,12 @@ export default {
   justify-content: center;
   flex-shrink: 0;
 }
+
+@media (max-width: 767px) {
+  .login-card {
+    position: static;
+    transform: none;
+    max-width: 100%;
+  }
+}
 </style>

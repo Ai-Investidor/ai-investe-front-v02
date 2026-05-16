@@ -85,18 +85,6 @@
 
     <!-- Form Panel -->
     <main class="form-panel">
-      <!-- Mobile logo -->
-      <div class="mobile-logo" aria-label="AI.INVEST">
-        <div class="mobile-logo__icon">
-          <q-icon
-            name="svguse:icons/icons.svg#icon-logo"
-            size="18px"
-            color="white"
-          />
-        </div>
-        <span class="mobile-logo__name">AI.INVEST</span>
-      </div>
-
       <div class="form-inner">
         <router-view />
       </div>
@@ -315,32 +303,6 @@ export default {
   max-width: 461px;
 }
 
-/* ── Mobile Logo ─────────────────────────────────── */
-.mobile-logo {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 40px;
-}
-
-.mobile-logo__icon {
-  width: 36px;
-  height: 36px;
-  background-color: var(--color-primary);
-  border-radius: 9px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-.mobile-logo__name {
-  font-size: 1.25rem;
-  font-weight: 800;
-  letter-spacing: -0.02em;
-  color: #ffffff;
-}
-
 /* ── Responsive ──────────────────────────────────── */
 @media (min-width: 768px) and (max-width: 1179px) {
   .brand-panel {
@@ -360,20 +322,12 @@ export default {
   .brand-subtitle {
     font-size: 18px;
   }
-
-  .mobile-logo {
-    display: none;
-  }
 }
 
 @media (min-width: 1180px) {
   .brand-panel {
     display: flex;
     width: 64%;
-  }
-
-  .mobile-logo {
-    display: none;
   }
 }
 </style>
