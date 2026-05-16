@@ -202,6 +202,8 @@ export default {
   display: flex;
   min-height: 100dvh;
   background-color: var(--color-dark);
+  position: relative;
+  z-index: 1;
 }
 
 /* ── Brand Panel ─────────────────────────────────── */
@@ -212,6 +214,7 @@ export default {
   flex-shrink: 0;
   background-color: var(--color-dark);
   overflow: hidden;
+  z-index: 1;
 }
 
 .particle-canvas {
@@ -303,7 +306,8 @@ export default {
   padding: 32px 24px;
   min-height: 100dvh;
   background-color: var(--color-primary);
-  overflow-y: auto;
+  position: relative;
+  z-index: 10 !important;
 }
 
 .form-inner {
