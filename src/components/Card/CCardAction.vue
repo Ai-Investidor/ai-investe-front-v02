@@ -1,20 +1,19 @@
 <template>
   <button
     type="button"
-    class="flex! items-start gap-2 p-4 rounded-md h-min w-full cursor-pointer text-left card-action-banner transition-all duration-200"
+    class="card-action-banner"
     @click="$emit('click', $event)"
   >
     <q-icon
       :name="icon"
-      :color="iconColor"
       size="16px"
-      class="shrink-0 mt-1"
+      class="card-action-icon shrink-0"
       aria-hidden="true"
     />
 
-    <div>
-      <p class="text-title-2 text-dark-text">{{ title }}</p>
-      <p class="text-paragraph-3 text-dark-text-subtle!">{{ description }}</p>
+    <div class="card-action-text">
+      <p class="card-action-title">{{ title }}</p>
+      <p class="card-action-desc">{{ description }}</p>
     </div>
   </button>
 </template>
@@ -36,12 +35,67 @@ export default {
       type: String,
       default: "",
     },
-    iconColor: {
-      type: String,
-      default: "primary",
-    },
   },
 
   emits: ["click"],
 };
 </script>
+
+<style scoped>
+.card-action-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  width: 100%;
+  height: 68px;
+  padding: 12px 16px 14px;
+  border-radius: 8px;
+  border: 1px solid rgba(64, 64, 64, 0.25);
+  background: linear-gradient(135deg, #000000 0%, #151515 100%);
+  cursor: pointer;
+  text-align: left;
+  transition: opacity 0.2s ease;
+  overflow: hidden;
+}
+
+.card-action-banner:hover {
+  opacity: 0.8;
+}
+
+.card-action-icon {
+  color: #e1ff06;
+  margin-top: 1px;
+}
+
+.card-action-text {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.card-action-title {
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', sans-serif;
+  font-size: 12px;
+  font-weight: 510;
+  line-height: 16px;
+  letter-spacing: 0.04em;
+  color: #ffffff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.card-action-desc {
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', sans-serif;
+  font-size: 12px;
+  font-weight: 274;
+  line-height: 130%;
+  letter-spacing: 0.04em;
+  color: rgba(255, 255, 255, 0.5);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+</style>

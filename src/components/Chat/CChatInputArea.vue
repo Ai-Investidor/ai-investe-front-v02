@@ -144,16 +144,6 @@
       </div>
     </div>
 
-    <!-- Hint de atalhos -->
-    <p
-      class="text-paragraph-2 text-dark-text-hint text-center whitespace-nowrap"
-    >
-      Pressione
-      <span class="text-dark-text-hint-emphasis">Enter</span>
-      para enviar,
-      <span class="text-dark-text-hint-emphasis">Shift + Enter</span>
-      para pra nova linha
-    </p>
   </div>
 </template>
 

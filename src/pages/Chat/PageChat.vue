@@ -54,7 +54,11 @@
           !chat.hasActiveConversation.value || chat.messages.value.length === 0
         "
         class="chat-area-content overflow-y-auto"
+        :pending-files="chat.pendingFiles.value"
         @select-prompt="onSelectPrompt"
+        @attach="onAttachFiles"
+        @remove-file="onRemoveFile"
+        @generate-chart="onGenerateChart"
       />
 
       <template v-else>
@@ -68,7 +72,6 @@
           class="chat-message-wrapper"
         />
 
-        <!-- Input sempre visível no rodapé -->
         <div class="chat-area-input">
           <CChatInputArea
             :disabled="chat.isTyping.value"
