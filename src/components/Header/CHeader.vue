@@ -2,20 +2,8 @@
   <q-header class="flex items-stretch shrink-0 h-15 header-bg">
 
     <!-- LEFT: Menu toggle -->
-    <div class="flex items-center shrink-0 px-3">
-      <!-- Mobile: hamburger -->
+    <div class="flex items-center shrink-0 px-3 gap-2">
       <button
-        v-if="isMobile"
-        type="button"
-        class="flex items-center justify-center size-8 text-dark-text cursor-pointer hover:opacity-70 transition-opacity bg-transparent border-none"
-        aria-label="Menu de navegação"
-        @click="mobileMenuOpen = true; searchModalOpen = false"
-      >
-        <q-icon name="menu" size="22px" />
-      </button>
-      <!-- Desktop: toggle chat sidebar -->
-      <button
-        v-else
         type="button"
         class="menu-toggle-btn"
         :class="{ 'is-open': chatSidebarOpen }"
@@ -23,6 +11,69 @@
         @click="toggleChatSidebar"
       >
         <img :src="IconMenuToggle" alt="" aria-hidden="true" />
+      </button>
+
+      <!-- Hamburger Menu (mobile only) -->
+      <button
+        v-if="isMobile"
+        type="button"
+        class="flex items-center justify-center size-8 rounded-button bg-dark-card border border-border-dark text-dark-text cursor-pointer hover:opacity-80 transition-opacity"
+        aria-label="Menu de navegação"
+      >
+        <q-icon name="menu" size="20px" />
+        <q-menu anchor="top left" self="top left" :offset="[0, 8]" class="header-mobile-menu">
+          <div class="header-mobile-menu__content">
+            <!-- Navigation section -->
+            <q-item
+              v-close-popup
+              clickable
+              class="header-mobile-menu__item"
+              @click="navigateToChat"
+            >
+              <q-item-section side>
+                <img :src="IconChat" class="w-4 h-4 object-contain" />
+              </q-item-section>
+              <q-item-section>IA Chat</q-item-section>
+            </q-item>
+
+            <q-item
+              v-close-popup
+              clickable
+              class="header-mobile-menu__item"
+            >
+              <q-item-section side>
+                <q-icon name="notifications" size="16px" />
+              </q-item-section>
+              <q-item-section>Alertas</q-item-section>
+            </q-item>
+
+            <q-item
+              v-close-popup
+              clickable
+              class="header-mobile-menu__item"
+            >
+              <q-item-section side>
+                <img :src="IconCards" class="w-4 h-4 object-contain" />
+              </q-item-section>
+              <q-item-section>Portfólio</q-item-section>
+            </q-item>
+
+            <q-separator class="header-mobile-menu__separator" />
+
+            <!-- Actions section -->
+            <q-item
+              v-close-popup
+              clickable
+              class="header-mobile-menu__item"
+              @click="toggleConversations"
+            >
+              <q-item-section side>
+                <q-icon name="visibility" size="16px" />
+              </q-item-section>
+              <q-item-section>{{ chatSidebarOpen ? 'Ocultar' : 'Mostrar' }} conversas</q-item-section>
+            </q-item>
+          </div>
+        </q-menu>
       </button>
     </div>
 
@@ -41,10 +92,9 @@
         </q-breadcrumbs>
       </div>
 
-      <!-- CENTER: Search (Desktop only) -->
+      <!-- CENTER: Search -->
       <div
-        v-if="!isMobile"
-        class="absolute left-[48.5%] top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-[420px] pointer-events-none"
+        class="absolute left-[48.5%] top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-[420px] pointer-events-none max-sm:hidden"
       >
         <div
           class="flex items-center w-full h-9 bg-dark border border-border-input rounded-lg overflow-hidden pointer-events-auto"
@@ -65,22 +115,40 @@
         </div>
       </div>
 
-      <div v-if="!isMobile" class="flex-1" />
+      <!-- Mobile Search Button -->
+      <button
+        v-if="isMobile"
+        type="button"
+        class="hidden max-sm:flex items-center justify-center size-8 rounded-button bg-dark-card border border-border-dark text-dark-text cursor-pointer hover:opacity-80 transition-opacity absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2"
+        aria-label="Pesquisar"
+      >
+        <q-icon name="search" size="18px" />
+        <q-menu anchor="bottom center" self="top center" :offset="[0, 8]" class="header-search-menu">
+          <div class="header-search-menu__content">
+            <input
+              v-model="searchQuery"
+              type="text"
+              placeholder="Pesquisar histórico"
+              class="header-search-menu__input"
+              @keydown.enter="onSearch"
+              autofocus
+            />
+            <button
+              type="button"
+              class="header-search-menu__button"
+              @click="onSearch"
+            >
+              <q-icon name="search" size="16px" />
+            </button>
+          </div>
+        </q-menu>
+      </button>
+
+      <div class="flex-1 max-sm:hidden" />
 
       <!-- User -->
       <div class="flex items-center gap-4 shrink-0">
-        <!-- Mobile Search Button (Lupinha) - Right side -->
-        <button
-          v-if="isMobile"
-          type="button"
-          class="flex items-center justify-center size-8 rounded-button bg-dark-card border border-border-dark text-dark-text cursor-pointer hover:opacity-80 transition-opacity"
-          aria-label="Pesquisar"
-          @click="searchModalOpen = true"
-        >
-          <q-icon name="search" size="18px" />
-        </button>
-
-        <div v-if="!isMobile" class="flex flex-col items-end max-sm:hidden">
+        <div class="flex flex-col items-end max-sm:hidden">
           <span class="user-display-name truncate max-w-32">
             {{ userDisplayName }}
           </span>
@@ -92,11 +160,10 @@
           class="flex items-center justify-center shrink-0 size-8 rounded-full bg-primary overflow-hidden cursor-pointer transition-opacity hover:opacity-85"
         >
           <img
-            v-if="userAvatar && !avatarError"
+            v-if="userAvatar"
             :src="userAvatar"
             :alt="userDisplayName"
             class="size-full object-cover"
-            @error="avatarError = true"
           />
           <span
             v-else
@@ -110,7 +177,6 @@
             self="top right"
             :offset="[0, 12]"
             class="profile-menu"
-            @show="searchModalOpen = false"
           >
             <div class="profile-menu__content">
               <div class="profile-menu__user">
@@ -165,115 +231,6 @@
     </div>
 
   </q-header>
-
-  <!-- Mobile Menu Drawer -->
-  <transition name="fade">
-    <div
-      v-if="mobileMenuOpen"
-      class="header-mobile-menu-backdrop"
-      @click="mobileMenuOpen = false"
-    />
-  </transition>
-
-  <transition name="slide-left">
-    <div v-if="mobileMenuOpen" class="header-mobile-menu-drawer">
-      <nav class="header-mobile-menu-drawer__nav">
-        <!-- Chat -->
-        <button
-          type="button"
-          class="header-mobile-menu-drawer__item"
-          @click="navigateToChat(); mobileMenuOpen = false"
-        >
-          <img :src="IconChat" class="w-4 h-4 object-contain" />
-          <span>Chat</span>
-        </button>
-
-        <!-- Notificações -->
-        <button
-          type="button"
-          class="header-mobile-menu-drawer__item"
-        >
-          <div class="relative">
-            <q-icon name="notifications" size="16px" class="text-primary" />
-            <span class="header-mobile-menu-drawer__badge" />
-          </div>
-          <span>Notificações</span>
-          <q-menu
-            anchor="top right"
-            self="top left"
-            :offset="[12, 0]"
-            class="notifications-menu"
-          >
-            <div class="notifications-menu__content">
-              <div class="notifications-menu__header">
-                <span class="notifications-menu__title">Notificações</span>
-                <span class="notifications-menu__badge">3</span>
-              </div>
-              <div v-for="n in placeholderNotifications" :key="n.id" class="notifications-menu__item">
-                <q-icon :name="n.icon" size="16px" class="notifications-menu__item-icon" />
-                <span class="notifications-menu__item-title">{{ n.title }}</span>
-                <span v-if="n.unread" class="notifications-menu__unread-dot" />
-              </div>
-              <div class="notifications-menu__divider" />
-              <button type="button" class="notifications-menu__see-all">Ver todas</button>
-            </div>
-          </q-menu>
-        </button>
-
-        <!-- Portfólio -->
-        <button
-          type="button"
-          class="header-mobile-menu-drawer__item"
-        >
-          <img :src="IconCards" class="w-4 h-4 object-contain" />
-          <span>Portfólio</span>
-        </button>
-
-        <div class="header-mobile-menu-drawer__divider" />
-
-        <!-- Toggle Conversas -->
-        <button
-          type="button"
-          class="header-mobile-menu-drawer__item"
-          @click="toggleConversations(); mobileMenuOpen = false"
-        >
-          <img :src="IconMenuToggle" class="w-3.5 h-3.5 object-contain" alt="" aria-hidden="true" />
-          <span>{{ chatSidebarOpen ? 'Ocultar' : 'Mostrar' }} conversas</span>
-        </button>
-      </nav>
-
-    </div>
-  </transition>
-
-  <!-- Search Modal (Mobile) -->
-  <transition name="search-modal">
-    <div v-if="searchModalOpen" class="search-modal-overlay">
-      <div class="search-modal-content">
-        <button
-          type="button"
-          class="search-modal-button"
-          @click="onSearch"
-        >
-          <q-icon name="search" size="18px" />
-        </button>
-        <input
-          v-model="searchQuery"
-          type="text"
-          placeholder="Pesquisar histórico"
-          class="search-modal-input"
-          @keydown.enter="onSearch"
-          autofocus
-        />
-        <button
-          type="button"
-          class="search-modal-close"
-          @click="searchModalOpen = false"
-        >
-          <q-icon name="close" size="18px" />
-        </button>
-      </div>
-    </div>
-  </transition>
 </template>
 
 <script>
@@ -296,17 +253,9 @@ export default {
   data() {
     return {
       searchQuery: "",
-      searchModalOpen: false,
-      mobileMenuOpen: false,
-      avatarError: false,
       IconMenuToggle,
       IconChat,
       IconCards,
-      placeholderNotifications: [
-        { id: 1, icon: "trending_up", title: "PETR4 subiu 3,2%", desc: "Petrobras atingiu seu maior valor em 30 dias.", time: "Agora mesmo", unread: true },
-        { id: 2, icon: "notifications_active", title: "Alerta de preço ativado", desc: "VALE3 ultrapassou R$ 68,00.", time: "Há 15 minutos", unread: true },
-        { id: 3, icon: "article", title: "Novo relatório disponível", desc: "Análise semanal do setor financeiro.", time: "Há 2 horas", unread: false },
-      ],
     };
   },
 
@@ -359,12 +308,6 @@ export default {
 
     chatSidebarOpen() {
       return useUiStore().chatSidebarOpen;
-    },
-  },
-
-  watch: {
-    userAvatar() {
-      this.avatarError = false;
     },
   },
 
@@ -452,107 +395,19 @@ export default {
 }
 
 .header-search-menu__input {
-  flex: 1;
-  background: transparent;
-  outline: none;
-  padding: 12px;
+  @apply flex-1 bg-transparent outline-none px-3 py-2;
+  width: 100%;
   font-family: var(--font-family-sans);
   font-size: var(--font-size-sm);
   color: var(--color-dark-text);
-}
 
-.header-search-menu__input::placeholder {
-  color: var(--color-dark-text-placeholder);
+  &::placeholder {
+    color: var(--color-dark-text-placeholder);
+  }
 }
 
 .header-search-menu__button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0 12px;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  color: var(--color-dark-text);
-  transition: opacity 0.2s ease;
-}
-
-.search-modal-overlay {
-  position: fixed;
-  top: 60px;
-  left: 0;
-  right: 0;
-  background: rgba(0, 0, 0, 0.6);
-  z-index: 100;
-  padding: 8px 12px;
-  border-bottom: 0.5px solid var(--color-border-dark);
-  backdrop-filter: blur(8px);
-}
-
-.search-modal-content {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  background: var(--color-dark);
-  border: 1px solid var(--color-border-input);
-  border-radius: 10px;
-  padding: 0;
-  overflow: hidden;
-}
-
-.search-modal-close {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  width: 36px;
-  height: 36px;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  color: var(--color-dark-text-muted);
-  transition: color 0.2s ease;
-}
-
-.search-modal-close:hover {
-  color: var(--color-dark-text);
-}
-
-.search-modal-input-wrapper {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  width: 100%;
-  background: var(--color-dark);
-  border: 1px solid var(--color-border-input);
-  border-radius: 8px;
-  overflow: hidden;
-}
-
-.search-modal-input {
-  flex: 1;
-  background: transparent;
-  outline: none;
-  padding: 12px;
-  font-family: var(--font-family-sans);
-  font-size: var(--font-size-sm);
-  color: var(--color-dark-text);
-}
-
-.search-modal-input::placeholder {
-  color: var(--color-dark-text-placeholder);
-}
-
-.search-modal-button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0 12px;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  color: var(--color-dark-text);
-  transition: opacity 0.2s ease;
+  @apply flex items-center justify-center shrink-0 px-3 bg-transparent border-none cursor-pointer text-dark-text hover:opacity-70 transition-opacity;
 }
 
 </style>
@@ -604,119 +459,6 @@ export default {
 .header-mobile-menu__separator {
   background: var(--color-border-dark) !important;
   margin: 4px 0 !important;
-}
-
-.header-mobile-menu__badge {
-  position: absolute;
-  top: -4px;
-  right: -4px;
-  width: 6px;
-  height: 6px;
-  background: var(--color-primary);
-  border-radius: 50%;
-}
-
-.header-search-menu.q-menu {
-  background: var(--color-dark-card) !important;
-  border: 0.5px solid var(--color-border-dark) !important;
-  border-radius: 12px !important;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4) !important;
-  width: 280px !important;
-  overflow: hidden !important;
-}
-
-.header-search-menu__content {
-  padding: 8px;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-/* Mobile Menu Drawer */
-.header-mobile-menu-backdrop {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.7);
-  z-index: 99;
-}
-
-.header-mobile-menu-drawer {
-  position: fixed;
-  top: 60px;
-  left: 0;
-  bottom: 0;
-  width: 180px;
-  background: linear-gradient(180deg, rgba(14, 14, 14, 1) 0%, rgba(0, 0, 0, 1) 100%);
-  z-index: 100;
-  display: flex;
-  flex-direction: column;
-  border-right: 0.5px solid var(--color-border-dark);
-  padding: 8px;
-  gap: 4px;
-}
-
-.header-mobile-menu-drawer__close {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  align-self: flex-end;
-  width: 24px;
-  height: 24px;
-  background: rgba(255,255,255,0.06);
-  border: 0.5px solid var(--color-border-dark);
-  border-radius: 6px;
-  cursor: pointer;
-  color: var(--color-dark-text-muted);
-  transition: opacity 0.2s ease;
-  margin-top: 4px;
-}
-
-.header-mobile-menu-drawer__close:hover {
-  color: var(--color-dark-text);
-}
-
-.header-mobile-menu-drawer__nav {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.header-mobile-menu-drawer__item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  width: 100%;
-  padding: 8px 10px;
-  background: linear-gradient(to right, var(--color-dark), var(--color-dark-card));
-  border: 1px solid var(--color-border-dark);
-  border-radius: 8px;
-  color: var(--color-dark-text);
-  cursor: pointer;
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', sans-serif;
-  font-size: 12px;
-  font-weight: 274;
-  letter-spacing: 0.04em;
-  transition: all 0.18s ease;
-}
-
-.header-mobile-menu-drawer__item:hover {
-  border-color: rgb(from var(--color-primary) r g b / 0.3);
-}
-
-.header-mobile-menu-drawer__badge {
-  position: absolute;
-  top: -2px;
-  right: -2px;
-  width: 6px;
-  height: 6px;
-  background: var(--color-primary);
-  border-radius: 50%;
-}
-
-.header-mobile-menu-drawer__divider {
-  height: 0.5px;
-  background: var(--color-border-dark);
-  margin: 6px 0;
 }
 
 .header-search-menu.q-menu {
@@ -835,48 +577,6 @@ export default {
   gap: 12px;
   width: 100%;
   color: inherit;
-}
-
-/* Search Modal Transitions */
-.search-modal-enter-active,
-.search-modal-leave-active {
-  transition: opacity 0.3s ease;
-}
-
-.search-modal-enter-from,
-.search-modal-leave-to {
-  opacity: 0;
-}
-
-.search-modal-enter-active .search-modal-content,
-.search-modal-leave-active .search-modal-content {
-  transition: transform 0.3s ease;
-}
-
-.search-modal-enter-from .search-modal-content,
-.search-modal-leave-to .search-modal-content {
-  transform: scale(0.95);
-}
-
-/* Mobile Menu Drawer Transitions */
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.3s ease;
-}
-
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-}
-
-.slide-left-enter-active,
-.slide-left-leave-active {
-  transition: transform 0.3s ease;
-}
-
-.slide-left-enter-from,
-.slide-left-leave-to {
-  transform: translateX(-100%);
 }
 
 </style>

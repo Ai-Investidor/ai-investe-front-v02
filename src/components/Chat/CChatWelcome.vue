@@ -1,9 +1,9 @@
 <template>
   <div class="relative flex-1 h-full min-h-svh">
     <div
-      class="flex justify-center items-center flex-col gap-6 w-full h-full max-w-2xl mx-auto px-4"
+      class="flex justify-center items-center flex-col gap-6 w-full h-full max-w-2xl mx-auto"
     >
-      <h1 class="welcome-heading text-white text-center">
+      <h1 class="welcome-heading text-white whitespace-nowrap">
         Como posso te
         <span class="welcome-heading-accent text-primary text-glow-primary">ajudar</span>
         hoje?
@@ -15,7 +15,7 @@
         de investimento
       </p>
 
-      <div class="grid grid-cols-2 gap-[15px] max-w-[539px] mx-auto w-full min-w-0">
+      <div class="grid grid-cols-2 gap-[15px] max-w-[539px] mx-auto w-full">
         <CCardAction
           icon="svguse:icons/icons.svg#icon-chat"
           title="Análise Fundamentalista"
@@ -89,17 +89,17 @@ export default {
 <style scoped>
 .welcome-heading {
   font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', sans-serif;
-  font-size: clamp(22px, 5vw, 35px);
+  font-size: 35px;
   font-weight: 274;
-  line-height: 1.1;
+  line-height: 1;
   letter-spacing: 0.0025em;
 }
 
 .welcome-heading-accent {
   font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', sans-serif;
-  font-size: clamp(22px, 5vw, 35px);
+  font-size: 35px;
   font-weight: 590;
-  line-height: 1.1;
+  line-height: 1;
   letter-spacing: 0.0025em;
 }
 
