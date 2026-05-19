@@ -9,6 +9,7 @@ export default {
   name: "App",
 
   setup() {
+    console.log("Iniciando projeto");
     const $q = useQuasar();
     const isDevMode = import.meta.env.VITE_APP_DEV_MODE === "true";
 
@@ -16,4 +17,3 @@ export default {
   },
 };
 </script>
-
