@@ -47,20 +47,19 @@ export default {
   align-items: flex-start;
   gap: 8px;
   width: 100%;
-  height: 76px;
-  padding: 12px 16px 18px;
+  height: 68px;
+  padding: 12px 16px 14px;
   border-radius: 8px;
   border: 1px solid rgba(64, 64, 64, 0.25);
   background: linear-gradient(135deg, #000000 0%, #151515 100%);
   cursor: pointer;
   text-align: left;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  transition: opacity 0.2s ease;
   overflow: hidden;
 }
 
 .card-action-banner:hover {
-  border-color: #e1ff06;
-  box-shadow: 0 0 10px rgba(225, 255, 6, 0.15);
+  opacity: 0.8;
 }
 
 .card-action-icon {

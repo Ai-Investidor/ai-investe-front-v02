@@ -1,7 +1,7 @@
 <template>
   <aside
     v-show="open"
-    class="flex flex-col shrink-0 h-full min-h-0 w-60 overflow-hidden"
+    class="flex flex-col shrink-0 h-full min-h-0 w-60 bg-dark overflow-hidden"
   >
     <!-- Botão Novo Chat -->
     <div class="flex justify-center shrink-0 px-4 pt-4">
@@ -115,7 +115,6 @@ aside {
   height: 100%;
   min-height: 0;
   overflow: hidden;
-  background: linear-gradient(180deg, rgba(9, 10, 10, 1) 0%, rgba(0, 0, 0, 1) 100%);
 }
 
 .dashed-border-left {
