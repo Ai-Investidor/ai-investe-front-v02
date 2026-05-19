@@ -21,7 +21,7 @@
       <div class="sidebar-divider" />
 
       <!-- Ícones de nav — preenchem o restante verticalmente -->
-      <nav class="flex-1 flex flex-col gap-2 py-4" :class="isMobile ? 'px-3' : 'items-center px-2'">
+      <nav class="flex-1 flex flex-col gap-6 py-4" :class="isMobile ? 'px-3' : 'items-center px-2'">
 
         <!-- IA Chat -->
         <button
@@ -66,20 +66,13 @@
                 <span class="notifications-menu__title">Notificações</span>
                 <span class="notifications-menu__badge">3</span>
               </div>
-              <q-separator class="notifications-menu__separator" />
               <div v-for="n in placeholderNotifications" :key="n.id" class="notifications-menu__item">
-                <div class="notifications-menu__item-icon">
-                  <q-icon :name="n.icon" size="16px" />
-                </div>
-                <div class="notifications-menu__item-body">
-                  <p class="notifications-menu__item-title">{{ n.title }}</p>
-                  <p class="notifications-menu__item-desc">{{ n.desc }}</p>
-                  <p class="notifications-menu__item-time">{{ n.time }}</p>
-                </div>
+                <q-icon :name="n.icon" size="16px" class="notifications-menu__item-icon" />
+                <span class="notifications-menu__item-title">{{ n.title }}</span>
                 <span v-if="n.unread" class="notifications-menu__unread-dot" />
               </div>
-              <q-separator class="notifications-menu__separator" />
-              <button type="button" class="notifications-menu__see-all">Ver todas as notificações</button>
+              <div class="notifications-menu__divider" />
+              <button type="button" class="notifications-menu__see-all">Ver todas</button>
             </div>
           </q-menu>
         </button>
@@ -207,26 +200,110 @@ export default {
 
 <style>
 .notifications-menu.q-menu {
-  background: var(--color-dark-card) !important;
+  background: linear-gradient(180deg, rgba(9, 10, 10, 1) 0%, rgba(0, 0, 0, 1) 100%) !important;
   border: 0.5px solid var(--color-border-dark) !important;
   border-radius: 12px !important;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4) !important;
-  width: 300px !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5) !important;
+  width: 240px !important;
   overflow: hidden !important;
 }
-.notifications-menu__content { display: flex; flex-direction: column; }
-.notifications-menu__header { display: flex; align-items: center; justify-content: space-between; padding: 14px 16px 10px; }
-.notifications-menu__title { font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', sans-serif; font-size: 13px; font-weight: 510; color: var(--color-dark-text); letter-spacing: 0.04em; }
-.notifications-menu__badge { font-size: 11px; font-weight: 510; color: var(--color-dark); background: var(--color-primary); border-radius: 999px; padding: 1px 7px; line-height: 1.6; }
-.notifications-menu__separator { background: var(--color-border-dark) !important; margin: 0 !important; }
-.notifications-menu__item { display: flex; align-items: flex-start; gap: 10px; padding: 12px 16px; position: relative; cursor: pointer; transition: background 0.15s; }
-.notifications-menu__item:hover { background: rgba(255, 255, 255, 0.04); }
-.notifications-menu__item-icon { display: flex; align-items: center; justify-content: center; width: 30px; height: 30px; border-radius: 8px; background: rgba(225, 255, 6, 0.1); color: var(--color-primary); flex-shrink: 0; margin-top: 1px; }
-.notifications-menu__item-body { display: flex; flex-direction: column; gap: 2px; min-width: 0; flex: 1; }
-.notifications-menu__item-title { font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', sans-serif; font-size: 12px; font-weight: 510; color: var(--color-dark-text); letter-spacing: 0.04em; }
-.notifications-menu__item-desc { font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', sans-serif; font-size: 11px; font-weight: 274; color: var(--color-dark-text-secondary); letter-spacing: 0.04em; line-height: 1.4; }
-.notifications-menu__item-time { font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', sans-serif; font-size: 10px; font-weight: 274; color: var(--color-dark-text-muted); letter-spacing: 0.04em; margin-top: 2px; }
-.notifications-menu__unread-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--color-primary); flex-shrink: 0; margin-top: 6px; }
-.notifications-menu__see-all { width: 100%; padding: 12px 16px; font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', sans-serif; font-size: 12px; font-weight: 274; color: var(--color-primary); letter-spacing: 0.04em; text-align: center; background: transparent; border: none; cursor: pointer; transition: background 0.15s; }
-.notifications-menu__see-all:hover { background: rgba(255, 255, 255, 0.04); }
+
+.notifications-menu__content {
+  display: flex;
+  flex-direction: column;
+  padding: 8px;
+  gap: 4px;
+}
+
+.notifications-menu__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 8px 8px;
+}
+
+.notifications-menu__title {
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', sans-serif;
+  font-size: 13px;
+  font-weight: 510;
+  color: var(--color-dark-text);
+  letter-spacing: 0.04em;
+}
+
+.notifications-menu__badge {
+  font-size: 11px;
+  font-weight: 510;
+  color: var(--color-dark);
+  background: var(--color-primary);
+  border-radius: 999px;
+  padding: 1px 7px;
+  line-height: 1.6;
+}
+
+.notifications-menu__item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 8px 10px;
+  cursor: pointer;
+  background: linear-gradient(to right, var(--color-dark), var(--color-dark-card));
+  border: 1px solid var(--color-border-dark);
+  border-radius: 8px;
+  box-shadow: 0px 2px 0px 0px #000;
+  transition: border-color 0.18s ease;
+}
+
+.notifications-menu__item:hover {
+  border-color: rgb(from var(--color-primary) r g b / 0.3);
+}
+
+.notifications-menu__item-icon {
+  color: var(--color-primary);
+  flex-shrink: 0;
+}
+
+.notifications-menu__item-title {
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', sans-serif;
+  font-size: 12px;
+  font-weight: 274;
+  color: var(--color-dark-text);
+  letter-spacing: 0.04em;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.notifications-menu__unread-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  flex-shrink: 0;
+}
+
+.notifications-menu__divider {
+  height: 0.5px;
+  background: var(--color-border-dark);
+  margin: 2px 0;
+}
+
+.notifications-menu__see-all {
+  width: 100%;
+  padding: 8px 10px;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', sans-serif;
+  font-size: 12px;
+  font-weight: 274;
+  color: var(--color-primary);
+  letter-spacing: 0.04em;
+  text-align: center;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+
+.notifications-menu__see-all:hover { opacity: 0.7; }
 </style>

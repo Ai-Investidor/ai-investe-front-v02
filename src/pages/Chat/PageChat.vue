@@ -31,15 +31,6 @@
     <div
       class="chat-container-content relative flex-1 min-w-0 overflow-hidden rounded-[12px] m-[10px] max-sm:m-[4px]"
     >
-      <!-- Botão toggle sidebar (mobile) -->
-      <button
-        v-if="isMobile && !sidebarOpen"
-        class="absolute top-4 left-4 z-10 flex items-center justify-center flex-nowrap! size-10 rounded-button bg-dark-card border border-border-dark text-dark-text cursor-pointer transition-opacity duration-200 hover:opacity-80"
-        aria-label="Abrir conversas"
-        @click="sidebarOpen = true"
-      >
-        <q-icon name="chat_bubble" size="20px" />
-      </button>
 
       <!-- Conteúdo: loading / welcome / mensagens -->
       <div
@@ -157,6 +148,7 @@ export default {
 
   mounted() {
     this.chat.selectedSession.value = null;
+    this.uiStore.setChatSidebarOpen(false);
     this.onLoadSessions();
   },
 
