@@ -1,65 +1,83 @@
 <template>
-  <div class="flex items-start w-full max-w-[956px] mx-auto mb-[25px]">
+  <div class="flex mb-24">
+    <div class="flex justify-center items-start gap-4">
+      <!-- Avatar -->
 
-    <!-- Gutter esquerdo — avatar da IA fora do quadrante central, 44px fixo -->
-    <div class="flex-shrink-0 w-11 flex justify-end pr-3 pt-1">
       <q-avatar size="32px" alt="AI" class="flex-shrink-0">
-        <img :src="aiChatLogo" alt="AI" class="w-full h-full object-contain" />
+        <img
+          :src="`${aiChatLogo}`"
+          alt="AI"
+          class="w-full h-full object-contain"
+        />
       </q-avatar>
-    </div>
 
-    <!-- Coluna central — hugs content quando curto, expande até o espaço disponível quando longo -->
-    <div class="min-w-0 w-fit max-w-[calc(100%-88px)]">
-      <div class="chat-bubble-ai flex flex-col gap-4">
-
+      <!-- Mensagem -->
+      <div class="chat-bubble-ai flex flex-col gap-4 flex-1">
+        <!-- Indicador de digitação -->
         <div v-if="isTyping" class="flex gap-1.5 py-1">
-          <div class="w-2 h-2 bg-primary rounded-full animate-bounce" style="animation-delay: 0s" />
-          <div class="w-2 h-2 bg-primary rounded-full animate-bounce" style="animation-delay: 0.2s" />
-          <div class="w-2 h-2 bg-primary rounded-full animate-bounce" style="animation-delay: 0.4s" />
+          <div
+            class="w-2 h-2 bg-primary rounded-full animate-bounce"
+            style="animation-delay: 0s"
+          ></div>
+          <div
+            class="w-2 h-2 bg-primary rounded-full animate-bounce"
+            style="animation-delay: 0.2s"
+          ></div>
+          <div
+            class="w-2 h-2 bg-primary rounded-full animate-bounce"
+            style="animation-delay: 0.4s"
+          ></div>
         </div>
 
+        <!-- Conteúdo da mensagem -->
         <div
           v-else
           class="chat-prose break-words"
           v-html="formattedMessage"
-        />
+        ></div>
 
+        <!-- Timestamp -->
         <div v-if="timestamp && !isTyping" class="flex items-center gap-4">
-          <q-icon name="schedule" size="1.4rem" color="primary" />
+          <q-icon name="schedule" size="1.4rem" alt="" color="primary" />
           <span class="text-paragraph-3 text-white" style="opacity: 0.55">
             {{ formatTime(timestamp) }}
           </span>
-          <button type="button" class="copy-btn ml-auto" @click="copyMessage">
-            <q-icon :name="copied ? 'check' : 'content_copy'" size="14px" />
-            <q-tooltip anchor="top middle" self="bottom middle" :offset="[0, 6]" class="copy-tooltip">
-              {{ copied ? 'Copiado!' : 'Copiar' }}
-            </q-tooltip>
-          </button>
         </div>
       </div>
     </div>
-
-    <!-- Gutter direito — espaçador simétrico, 44px fixo -->
-    <div class="flex-shrink-0 w-11" />
-
   </div>
 </template>
 
 <script>
 import { marked } from "marked";
+import aiLogo from "@assets/imgs/ai_investe_logo.webp";
+import clockIcon from "@assets/imgs/icon-clock.svg";
 import aiChatLogo from "@assets/imgs/chat_logo.webp";
 
 export default {
   name: "CChatMessageAI",
 
   props: {
-    message: { type: String, required: true },
-    timestamp: { type: [Date, String], default: null },
-    isTyping: { type: Boolean, default: false },
+    message: {
+      type: String,
+      required: true,
+    },
+    timestamp: {
+      type: [Date, String],
+      default: null,
+    },
+    isTyping: {
+      type: Boolean,
+      default: false,
+    },
   },
 
   data() {
-    return { aiChatLogo, copied: false };
+    return {
+      aiLogo,
+      aiChatLogo,
+      clockIcon,
+    };
   },
 
   computed: {
@@ -77,15 +95,10 @@ export default {
     formatTime(date) {
       if (!date) return "";
       const d = new Date(date);
-      return d.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
-    },
-
-    async copyMessage() {
-      try {
-        await navigator.clipboard.writeText(this.message);
-        this.copied = true;
-        setTimeout(() => { this.copied = false; }, 2000);
-      } catch { /* clipboard indisponível */ }
+      return d.toLocaleTimeString("pt-BR", {
+        hour: "2-digit",
+        minute: "2-digit",
+      });
     },
   },
 };
@@ -147,34 +160,4 @@ export default {
 :deep(.chat-prose table) { width: 100%; border-collapse: collapse; margin: 0.65rem 0; font-size: 0.9em; }
 :deep(.chat-prose th) { padding: 0.4rem 0.65rem; font-weight: 600; border-bottom: 1px solid var(--color-border-dark); text-align: left; background: rgba(255,255,255,0.05); }
 :deep(.chat-prose td) { padding: 0.35rem 0.65rem; border-bottom: 1px solid rgba(255,255,255,0.05); }
-
-.copy-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 24px;
-  height: 24px;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  color: rgba(255, 255, 255, 0.35);
-  border-radius: 4px;
-  transition: color 0.15s, background 0.15s;
-  flex-shrink: 0;
-}
-.copy-btn:hover {
-  color: rgba(255, 255, 255, 0.75);
-  background: rgba(255, 255, 255, 0.06);
-}
-</style>
-
-<style>
-.copy-tooltip.q-tooltip {
-  background: var(--color-dark-card) !important;
-  color: var(--color-dark-text) !important;
-  border: 1px solid var(--color-border-dark) !important;
-  border-radius: 6px !important;
-  font-size: 11px;
-  padding: 4px 8px;
-}
 </style>

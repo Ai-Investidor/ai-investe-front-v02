@@ -1,9 +1,9 @@
 <template>
   <div class="relative flex-1 h-full min-h-svh">
     <div
-      class="flex justify-center items-center flex-col gap-6 w-full h-full max-w-2xl mx-auto px-4"
+      class="flex justify-center items-center flex-col gap-6 w-full h-full max-w-2xl mx-auto"
     >
-      <h1 class="welcome-heading text-white text-center">
+      <h1 class="welcome-heading text-white whitespace-nowrap">
         Como posso te
         <span class="welcome-heading-accent text-primary text-glow-primary">ajudar</span>
         hoje?
@@ -15,13 +15,13 @@
         de investimento
       </p>
 
-      <div class="grid grid-cols-2 gap-[15px] max-w-[539px] mx-auto w-full min-w-0">
+      <div class="grid grid-cols-2 gap-[15px] max-w-[539px] mx-auto w-full">
         <CCardAction
           icon="svguse:icons/icons.svg#icon-chat"
           title="Análise Fundamentalista"
-          description="Faça uma análise fundamentalista da Apple baseada em notícias"
+          description="Faça análise fundamentalista da Apple baseada em notícias"
           class="col-span-1"
-          @click="$emit('select-prompt', 'Faça uma análise fundamentalista da Apple baseada em notícias')"
+          @click="$emit('select-prompt', 'Faça análise fundamentalista da Apple baseada em notícias')"
         />
         <CCardAction
           icon="svguse:icons/icons.svg#icon-card-etf"
@@ -48,15 +48,14 @@
 
       <CChatInputArea
         :pending-files="pendingFiles"
-        no-bg
-        class="w-full max-w-[539px] mx-auto px-0!"
+        class="w-full px-0!"
         @send="(text) => $emit('select-prompt', text)"
         @attach="(files) => $emit('attach', files)"
         @remove-file="(i) => $emit('remove-file', i)"
         @generate-chart="$emit('generate-chart')"
       />
 
-      <p class="disclaimer-text">
+      <p class="text-paragraph-4! text-white/40! text-center!">
         AI invest é uma IA e pode cometer erros pode cometer erros.
       </p>
     </div>
@@ -88,19 +87,17 @@ export default {
 
 <style scoped>
 .welcome-heading {
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', sans-serif;
-  font-size: clamp(22px, 5vw, 35px);
+  font-size: 35px;
   font-weight: 274;
-  line-height: 1.1;
-  letter-spacing: 0.0025em;
+  line-height: 1;
+  letter-spacing: -0.09em;
 }
 
 .welcome-heading-accent {
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', sans-serif;
-  font-size: clamp(22px, 5vw, 35px);
+  font-size: 35px;
   font-weight: 590;
-  line-height: 1.1;
-  letter-spacing: 0.0025em;
+  line-height: 1;
+  letter-spacing: -0.09em;
 }
 
 .welcome-subtitle {
@@ -108,10 +105,10 @@ export default {
   font-size: 12px;
   font-weight: 274;
   line-height: 100%;
-  letter-spacing: 0.0025em;
+  letter-spacing: 0.04em;
   color: rgba(255, 255, 255, 0.5);
   text-align: center;
-  max-width: 32rem;
+  max-width: 38rem;
 }
 
 .card-prompt {
@@ -130,15 +127,5 @@ export default {
     var(--color-dark-card),
     var(--color-dark-panel)
   );
-}
-
-.disclaimer-text {
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', sans-serif;
-  font-size: 12px;
-  font-weight: 274;
-  line-height: 100%;
-  letter-spacing: 0.04em;
-  text-align: center;
-  color: rgba(255, 255, 255, 0.25);
 }
 </style>
