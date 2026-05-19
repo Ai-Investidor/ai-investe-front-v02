@@ -1,91 +1,118 @@
 <template>
   <div class="auth-layout">
-    <!-- Brand Panel — desktop only -->
-    <aside class="brand-panel">
-      <canvas ref="particleCanvas" class="particle-canvas" aria-hidden="true" />
+    <!-- Brand Panel — hidden on mobile -->
+    <aside class="auth-brand-panel">
+      <!-- Decorative background elements -->
+      <div class="auth-brand-grid" aria-hidden="true">
+        <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <pattern
+              id="grid"
+              width="40"
+              height="40"
+              patternUnits="userSpaceOnUse"
+            >
+              <path
+                d="M 40 0 L 0 0 0 40"
+                fill="none"
+                stroke="rgba(51,150,254,0.12)"
+                stroke-width="1"
+              />
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#grid)" />
+        </svg>
+      </div>
 
-      <div class="brand-content">
-        <!-- Headline -->
-        <div class="brand-headline">
-          <h2 class="brand-title">
-            Inteligência
-            <span class="brand-title--accent">artificial</span>
-            para seus investimentos
-          </h2>
+      <div
+        class="auth-brand-circle auth-brand-circle--1"
+        aria-hidden="true"
+      ></div>
+      <div
+        class="auth-brand-circle auth-brand-circle--2"
+        aria-hidden="true"
+      ></div>
+      <div
+        class="auth-brand-circle auth-brand-circle--3"
+        aria-hidden="true"
+      ></div>
+
+      <!-- Brand Content -->
+      <div class="auth-brand-content">
+        <!-- Logo -->
+        <div class="auth-brand-logo">
+          <div class="auth-brand-logo__icon">
+            <q-icon
+              name="svguse:icons/icons.svg#icon-logo"
+              size="22px"
+              color="white"
+            />
+          </div>
+          <span class="text-headline-xl auth-brand-logo__name">AI.INVEST</span>
         </div>
 
-        <!-- Subtitle -->
-        <p class="brand-subtitle">
-          Tome decisões mais inteligentes com análises em tempo real, carteiras
-          personalizadas e insights do mercado global.
-        </p>
+        <!-- Headline -->
+        <div class="auth-brand-headline">
+          <h2 class="text-headline-md text-white">
+            Inteligência artificial para seus investimentos
+          </h2>
+          <p class="text-paragraph-lg auth-brand-subtitle">
+            Tome decisões mais inteligentes com análises em tempo real,
+            carteiras personalizadas e insights do mercado global.
+          </p>
+        </div>
 
         <!-- Feature list -->
-        <ul class="brand-features" aria-label="Recursos">
-          <li class="brand-feature">
-            <div class="brand-feature__icon" aria-hidden="true">
-              <svg
-                width="16"
-                height="14"
-                viewBox="0 0 16 14"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  fill-rule="evenodd"
-                  clip-rule="evenodd"
-                  d="M1.06667 0C0.477563 0 0 0.477568 0 1.06667V12.8C0 13.3891 0.477563 13.8667 1.06667 13.8667H14.9333C15.5225 13.8667 16 13.3891 16 12.8V1.06667C16 0.477568 15.5225 0 14.9333 0H1.06667ZM8 10.2667C9.84095 10.2667 11.3333 8.77428 11.3333 6.93333C11.3333 5.09238 9.84095 3.6 8 3.6C6.15905 3.6 4.66667 5.09238 4.66667 6.93333C4.66667 8.77428 6.15905 10.2667 8 10.2667Z"
-                  fill="#E1FF06"
-                />
-              </svg>
+        <ul class="auth-brand-features">
+          <li class="auth-brand-feature">
+            <div class="auth-brand-feature__icon">
+              <q-icon name="check" size="14px" color="primary" />
             </div>
-            <span>Análise Fundamentalista</span>
+            <span class="text-paragraph-md text-white"
+              >Análise de ativos com IA em tempo real</span
+            >
           </li>
-          <li class="brand-feature">
-            <div class="brand-feature__icon" aria-hidden="true">
-              <svg
-                width="16"
-                height="14"
-                viewBox="0 0 16 14"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  fill-rule="evenodd"
-                  clip-rule="evenodd"
-                  d="M1.06667 0C0.477563 0 0 0.477568 0 1.06667V12.8C0 13.3891 0.477563 13.8667 1.06667 13.8667H14.9333C15.5225 13.8667 16 13.3891 16 12.8V1.06667C16 0.477568 15.5225 0 14.9333 0H1.06667ZM8 10.2667C9.84095 10.2667 11.3333 8.77428 11.3333 6.93333C11.3333 5.09238 9.84095 3.6 8 3.6C6.15905 3.6 4.66667 5.09238 4.66667 6.93333C4.66667 8.77428 6.15905 10.2667 8 10.2667Z"
-                  fill="#E1FF06"
-                />
-              </svg>
+          <li class="auth-brand-feature">
+            <div class="auth-brand-feature__icon">
+              <q-icon name="check" size="14px" color="primary" />
             </div>
-            <span>Análise Fundamentalista</span>
+            <span class="text-paragraph-md text-white"
+              >Carteiras personalizadas e balanceamento automático</span
+            >
           </li>
-          <li class="brand-feature">
-            <div class="brand-feature__icon" aria-hidden="true">
-              <svg
-                width="16"
-                height="14"
-                viewBox="0 0 16 14"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  fill-rule="evenodd"
-                  clip-rule="evenodd"
-                  d="M1.06667 0C0.477563 0 0 0.477568 0 1.06667V12.8C0 13.3891 0.477563 13.8667 1.06667 13.8667H14.9333C15.5225 13.8667 16 13.3891 16 12.8V1.06667C16 0.477568 15.5225 0 14.9333 0H1.06667ZM8 10.2667C9.84095 10.2667 11.3333 8.77428 11.3333 6.93333C11.3333 5.09238 9.84095 3.6 8 3.6C6.15905 3.6 4.66667 5.09238 4.66667 6.93333C4.66667 8.77428 6.15905 10.2667 8 10.2667Z"
-                  fill="#E1FF06"
-                />
-              </svg>
+          <li class="auth-brand-feature">
+            <div class="auth-brand-feature__icon">
+              <q-icon name="check" size="14px" color="primary" />
             </div>
-            <span>Análise Fundamentalista</span>
+            <span class="text-paragraph-md text-white"
+              >Insights e alertas do mercado global</span
+            >
           </li>
         </ul>
+
+        <!-- Footer note -->
+        <p class="auth-brand-trust text-paragraph-sm">
+          Mais de 10.000 investidores confiam na plataforma
+        </p>
       </div>
     </aside>
 
     <!-- Form Panel -->
-    <main class="form-panel">
-      <div class="form-inner">
+    <main class="auth-form-panel">
+      <!-- Mobile-only logo -->
+      <div class="auth-mobile-logo">
+        <div class="auth-mobile-logo__icon">
+          <q-icon
+            name="svguse:icons/icons.svg#icon-logo"
+            size="18px"
+            color="white"
+          />
+        </div>
+        <span class="auth-mobile-logo__name text-title-sm">AI.INVEST</span>
+      </div>
+
+      <!-- Page slot -->
+      <div class="auth-form-inner">
         <router-view />
       </div>
     </main>
@@ -95,197 +122,168 @@
 <script>
 export default {
   name: "AuthLayout",
-
-  data() {
-    return {
-      animationId: null,
-    };
-  },
-
-  mounted() {
-    this.initParticles();
-    window.addEventListener("resize", this.resizeCanvas);
-  },
-
-  beforeUnmount() {
-    if (this.animationId) cancelAnimationFrame(this.animationId);
-    window.removeEventListener("resize", this.resizeCanvas);
-  },
-
-  methods: {
-    initParticles() {
-      const canvas = this.$refs.particleCanvas;
-      if (!canvas) return;
-
-      const ctx = canvas.getContext("2d");
-      this.resizeCanvas();
-
-      const NODE_COUNT = 80;
-      const CONNECTION_DISTANCE = 120;
-      const nodes = [];
-
-      for (let i = 0; i < NODE_COUNT; i++) {
-        nodes.push({
-          x: Math.random() * canvas.width,
-          y: Math.random() * canvas.height,
-          vx: (Math.random() - 0.5) * 0.4,
-          vy: (Math.random() - 0.5) * 0.4,
-          radius: Math.random() * 2 + 1,
-        });
-      }
-
-      const animate = () => {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-        for (const node of nodes) {
-          node.x += node.vx;
-          node.y += node.vy;
-          if (node.x < 0 || node.x > canvas.width) node.vx *= -1;
-          if (node.y < 0 || node.y > canvas.height) node.vy *= -1;
-        }
-
-        for (let i = 0; i < nodes.length; i++) {
-          for (let j = i + 1; j < nodes.length; j++) {
-            const dx = nodes[i].x - nodes[j].x;
-            const dy = nodes[i].y - nodes[j].y;
-            const dist = Math.sqrt(dx * dx + dy * dy);
-            if (dist < CONNECTION_DISTANCE) {
-              const alpha = (1 - dist / CONNECTION_DISTANCE) * 0.12;
-              ctx.beginPath();
-              ctx.strokeStyle = `rgba(255,255,255,${alpha})`;
-              ctx.lineWidth = 0.8;
-              ctx.moveTo(nodes[i].x, nodes[i].y);
-              ctx.lineTo(nodes[j].x, nodes[j].y);
-              ctx.stroke();
-            }
-          }
-        }
-
-        for (const node of nodes) {
-          ctx.beginPath();
-          ctx.arc(node.x, node.y, node.radius, 0, Math.PI * 2);
-          ctx.fillStyle = "rgba(255,255,255,0.35)";
-          ctx.fill();
-        }
-
-        this.animationId = requestAnimationFrame(animate);
-      };
-
-      animate();
-    },
-
-    resizeCanvas() {
-      const canvas = this.$refs.particleCanvas;
-      if (!canvas) return;
-      canvas.width = canvas.offsetWidth;
-      canvas.height = canvas.offsetHeight;
-    },
-  },
 };
 </script>
 
 <style scoped>
-/* ── Root ────────────────────────────────────────── */
+/* ── Layout root ─────────────────────────────────── */
 .auth-layout {
   display: flex;
   min-height: 100dvh;
-  background-color: var(--color-dark);
-  position: relative;
-  z-index: 1;
+  background-color: var(--color-light-page);
 }
 
 /* ── Brand Panel ─────────────────────────────────── */
-.brand-panel {
+.auth-brand-panel {
   position: relative;
   display: none;
-  width: 64%;
+  flex-direction: column;
+  width: 45%;
   flex-shrink: 0;
-  background-color: var(--color-dark);
+  background: linear-gradient(
+    160deg,
+    var(--color-primary-dark2) 0%,
+    var(--color-primary-dark) 40%,
+    var(--color-primary-darker) 100%
+  );
   overflow: hidden;
-  z-index: 1;
 }
 
-.particle-canvas {
+/* ── Decorative grid overlay ─────────────────────── */
+.auth-brand-grid {
   position: absolute;
   inset: 0;
-  width: 100%;
-  height: 100%;
+  pointer-events: none;
+  opacity: 0.6;
 }
 
-.brand-content {
+/* ── Decorative circles ──────────────────────────── */
+.auth-brand-circle {
+  position: absolute;
+  border-radius: 9999px;
+  pointer-events: none;
+}
+
+.auth-brand-circle--1 {
+  width: 320px;
+  height: 320px;
+  background: radial-gradient(
+    circle,
+    rgba(51, 150, 254, 0.18) 0%,
+    transparent 70%
+  );
+  top: -80px;
+  right: -80px;
+}
+
+.auth-brand-circle--2 {
+  width: 480px;
+  height: 480px;
+  background: radial-gradient(
+    circle,
+    rgba(12, 55, 108, 0.5) 0%,
+    transparent 70%
+  );
+  bottom: -120px;
+  left: -120px;
+}
+
+.auth-brand-circle--3 {
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(
+    circle,
+    rgba(51, 150, 254, 0.1) 0%,
+    transparent 70%
+  );
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* ── Brand content ───────────────────────────────── */
+.auth-brand-content {
   position: relative;
   z-index: 1;
   display: flex;
   flex-direction: column;
-  gap: 51px;
-  justify-content: center;
-  padding: 10px 10px 10px 88px;
+  gap: 40px;
+  padding: 48px 40px;
   height: 100%;
+  justify-content: center;
+}
+
+/* ── Logo ────────────────────────────────────────── */
+.auth-brand-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.auth-brand-logo__icon {
+  width: 40px;
+  height: 40px;
+  background-color: var(--color-primary);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 0 20px rgba(51, 150, 254, 0.4);
+}
+
+.auth-brand-logo__name {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: -0.02em;
 }
 
 /* ── Headline ────────────────────────────────────── */
-.brand-headline {
-  max-width: 600px;
-  width: max-content;
+.auth-brand-subtitle {
+  color: rgba(255, 255, 255, 0.65);
+  margin-top: 16px;
+  line-height: 1.6;
 }
 
-.brand-title {
-  font-size: 48px;
-  font-weight: 300;
-  line-height: 1.2;
-  letter-spacing: 0.04px;
-  color: #ffffff;
-  margin: 0;
-}
-
-.brand-title--accent {
-  font-weight: 600;
-  color: var(--color-primary);
-  filter: drop-shadow(0 0 16px var(--color-primary));
-}
-
-/* ── Subtitle ────────────────────────────────────── */
-.brand-subtitle {
-  max-width: 400px;
-  font-size: 24px;
-  font-weight: 300;
-  line-height: 1.5;
-  letter-spacing: 0.04px;
-  color: var(--color-dark-text-subtle);
-  margin: 0;
-}
-
-/* ── Features ────────────────────────────────────── */
-.brand-features {
+/* ── Features list ───────────────────────────────── */
+.auth-brand-features {
   list-style: none;
   padding: 0;
   margin: 0;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   gap: 16px;
 }
 
-.brand-feature {
+.auth-brand-feature {
   display: flex;
-  align-items: center;
-  gap: 9px;
-  font-size: 12px;
-  font-weight: 500;
-  letter-spacing: 0.04px;
-  color: #ffffff;
+  align-items: flex-start;
+  gap: 12px;
 }
 
-.brand-feature__icon {
-  width: 16px;
-  height: 16px;
-  flex-shrink: 0;
+.auth-brand-feature__icon {
+  width: 24px;
+  height: 24px;
+  background-color: rgba(51, 150, 254, 0.15);
+  border: 1px solid rgba(51, 150, 254, 0.3);
+  border-radius: 6px;
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+/* ── Trust note ──────────────────────────────────── */
+.auth-brand-trust {
+  color: rgba(255, 255, 255, 0.4);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: 24px;
 }
 
 /* ── Form Panel ──────────────────────────────────── */
-.form-panel {
+.auth-form-panel {
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -293,41 +291,83 @@ export default {
   justify-content: center;
   padding: 32px 24px;
   min-height: 100dvh;
-  background-color: var(--color-primary);
-  position: relative;
-  z-index: 10 !important;
+  background-color: var(--color-light);
+  overflow-y: auto;
 }
 
-.form-inner {
+.auth-form-inner {
   width: 100%;
-  max-width: 461px;
+  max-width: 400px;
+}
+
+/* ── Mobile logo ─────────────────────────────────── */
+.auth-mobile-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 40px;
+}
+
+.auth-mobile-logo__icon {
+  width: 36px;
+  height: 36px;
+  background-color: var(--color-primary-dark);
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.auth-mobile-logo__name {
+  color: var(--color-primary-dark);
+  font-weight: 800;
+  letter-spacing: -0.02em;
 }
 
 /* ── Responsive ──────────────────────────────────── */
-@media (min-width: 768px) and (max-width: 1179px) {
-  .brand-panel {
-    display: flex;
-    width: 45%;
+
+/* Tablet: 600px+ */
+@media (min-width: 600px) {
+  .auth-layout {
+    background-color: var(--color-light-page);
   }
 
-  .brand-content {
+  .auth-form-panel {
+    border-radius: 0;
+  }
+}
+
+/* Desktop: 1180px+ */
+@media (min-width: 1180px) {
+  .auth-brand-panel {
+    display: flex;
+    width: 48%;
+  }
+
+  .auth-form-panel {
+    background-color: var(--color-light);
+  }
+
+  .auth-mobile-logo {
+    display: none;
+  }
+}
+
+/* Tablet range: show brand panel smaller */
+@media (min-width: 768px) and (max-width: 1179px) {
+  .auth-brand-panel {
+    display: flex;
+    width: 40%;
+  }
+
+  .auth-brand-content {
     padding: 40px 28px;
     gap: 32px;
   }
 
-  .brand-title {
-    font-size: 36px;
-  }
-
-  .brand-subtitle {
-    font-size: 18px;
-  }
-}
-
-@media (min-width: 1180px) {
-  .brand-panel {
-    display: flex;
-    width: 64%;
+  .auth-mobile-logo {
+    display: none;
   }
 }
 </style>

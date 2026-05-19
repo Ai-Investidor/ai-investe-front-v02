@@ -83,7 +83,7 @@
           type="file"
           multiple
           class="hidden"
-          accept=".pdf,.doc,.docx,.txt,.csv,.xls,.xlsx,.ppt,.pptx,.md"
+          accept=".pdf,.doc,.docx,.txt,.csv,.xls,.xlsx,.ppt,.pptx"
           @change="handleFileChange"
         />
         <input

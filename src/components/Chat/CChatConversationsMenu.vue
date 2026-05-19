@@ -15,7 +15,7 @@
     >
       <!-- Mensagens anexadas -->
       <div
-        class="flex-1 h-full min-h-0 overflow-y-scroll! overflow-x-hidden! border-l-2 border-border-pinned pl-2 flex flex-flex-row gap-0.5 mb-2 dashed-border-left"
+        class="overflow-y-auto overflow-x-hidden! border-l-2 border-border-pinned pl-2 flex flex-col gap-0.5 mb-2 dashed-border-left"
       >
         <div
           v-for="conversation in pinnedConversations"

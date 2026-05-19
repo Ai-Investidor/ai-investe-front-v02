@@ -1,8 +1,8 @@
 <template>
-  <div class="relative flex-1! min-h-0! flex! flex-col!">
+  <div class="relative">
     <div
       ref="listRef"
-      class="chat-message-list flex-1 min-h-0 overflow-y-auto pt-6 pb-0 flex flex-col"
+      class="chat-message-list absolute inset-0 overflow-y-auto pt-6 pb-0 flex flex-col"
       @scroll="onScroll"
     >
       <div class="flex-1" />

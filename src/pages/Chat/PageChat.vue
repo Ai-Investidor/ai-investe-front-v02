@@ -270,7 +270,7 @@ export default {
   grid-row: content;
   min-height: 0;
   min-width: 0;
-  overflow: hidden;
+  position: relative;
 }
 
 .chat-area-input {

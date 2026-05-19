@@ -20,7 +20,7 @@
 
         <div
           v-else
-          class="text-paragraph-1 whitespace-pre-wrap break-words"
+          class="chat-prose break-words"
           v-html="formattedMessage"
         />
 
@@ -92,29 +92,61 @@ export default {
 </script>
 
 <style scoped>
-:deep(p) { margin-bottom: 0.5rem; }
-:deep(p:last-child) { margin-bottom: 0; }
-:deep(ul), :deep(ol) { margin-left: 1.5rem; margin-top: 0.5rem; margin-bottom: 0.5rem; }
-:deep(li) { margin-bottom: 0.25rem; }
-:deep(strong) { font-weight: 600; }
-:deep(code) {
-  background-color: rgba(0, 0, 0, 0.3);
-  padding: 0.2rem 0.4rem;
-  border-radius: 0.25rem;
-  font-size: 0.9em;
+.chat-prose {
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.65;
+  letter-spacing: 0.02px;
+  color: var(--color-dark-text);
+}
+
+:deep(.chat-prose p) { margin-bottom: 0.85rem; }
+:deep(.chat-prose p:last-child) { margin-bottom: 0; }
+
+:deep(.chat-prose h1), :deep(.chat-prose h2),
+:deep(.chat-prose h3), :deep(.chat-prose h4) {
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', sans-serif;
+  font-weight: 600;
+  line-height: 1.3;
+  margin-top: 1.4rem;
+  margin-bottom: 0.55rem;
+}
+:deep(.chat-prose h1) { font-size: 1.3em; }
+:deep(.chat-prose h2) { font-size: 1.15em; }
+:deep(.chat-prose h3) { font-size: 1.05em; }
+
+:deep(.chat-prose ul), :deep(.chat-prose ol) { margin-left: 1.4rem; margin-top: 0.55rem; margin-bottom: 0.55rem; }
+:deep(.chat-prose li) { margin-bottom: 0.4rem; }
+:deep(.chat-prose li::marker) { color: var(--color-primary); }
+
+:deep(.chat-prose strong) { font-weight: 600; }
+:deep(.chat-prose em) { font-style: italic; opacity: 0.85; }
+
+:deep(.chat-prose code) {
+  background-color: rgba(255, 255, 255, 0.07);
+  padding: 0.15rem 0.35rem;
+  border-radius: 4px;
+  font-size: 0.88em;
   font-family: "Courier New", monospace;
-  color: #f8f8f2;
+  color: var(--color-primary);
 }
-:deep(pre) {
-  background-color: rgba(0, 0, 0, 0.3);
-  padding: 0.75rem;
-  border-radius: 0.5rem;
+:deep(.chat-prose pre) {
+  background-color: rgba(0, 0, 0, 0.35);
+  border: 1px solid var(--color-border-dark);
+  padding: 0.85rem;
+  border-radius: 8px;
   overflow-x: auto;
-  margin-top: 0.5rem;
-  margin-bottom: 0.5rem;
+  margin-top: 0.65rem;
+  margin-bottom: 0.65rem;
 }
-:deep(pre code) { background-color: transparent; padding: 0; }
-:deep(a) { color: inherit; text-decoration: underline; opacity: 0.8; }
+:deep(.chat-prose pre code) { background: transparent; padding: 0; color: #f8f8f2; font-size: 0.85em; }
+:deep(.chat-prose blockquote) { border-left: 3px solid var(--color-primary); padding-left: 0.85rem; margin: 0.65rem 0; opacity: 0.8; }
+:deep(.chat-prose a) { color: var(--color-primary); text-decoration: underline; opacity: 0.9; }
+:deep(.chat-prose hr) { border: none; border-top: 1px solid var(--color-border-dark); margin: 0.85rem 0; }
+:deep(.chat-prose table) { width: 100%; border-collapse: collapse; margin: 0.65rem 0; font-size: 0.9em; }
+:deep(.chat-prose th) { padding: 0.4rem 0.65rem; font-weight: 600; border-bottom: 1px solid var(--color-border-dark); text-align: left; background: rgba(255,255,255,0.05); }
+:deep(.chat-prose td) { padding: 0.35rem 0.65rem; border-bottom: 1px solid rgba(255,255,255,0.05); }
 
 .copy-btn {
   display: flex;
