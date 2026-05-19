@@ -110,6 +110,28 @@
       </div>
     </q-form>
 
+    <!-- Login Button -->
+    <button
+      type="button"
+      class="register-btn"
+      :disabled="authStore.loading"
+      aria-label="Entrar"
+      @click="handleLogin"
+    >
+      <span class="register-btn__text">Entrar na conta</span>
+      <div class="register-btn__arrow" aria-hidden="true">
+        <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+          <path
+            d="M2 8L8 2M8 2H3M8 2V7"
+            stroke="white"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </div>
+    </button>
+
     <!-- Forgot password -->
     <p class="login-forgot">
       Esqueceu a senha?
@@ -363,8 +385,10 @@ export default {
   height: 40px;
   padding: 0 7px 0 23px;
   background-color: #ffffff;
+  border: none;
   border-radius: var(--radius-full);
   text-decoration: none;
+  cursor: pointer;
   transition: opacity 0.2s ease;
 }
 
