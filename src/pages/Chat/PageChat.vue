@@ -3,7 +3,7 @@
     :style-fn="
       (offset) => ({ height: `calc(100vh - ${offset}px)`, minHeight: '0' })
     "
-    class="relative flex flex-row overflow-hidden bg-dark"
+    class="relative flex flex-row overflow-hidden chat-welcome-bg"
   >
     <!-- Backdrop mobile -->
     <transition name="fade">
@@ -28,16 +28,9 @@
 
     <!-- Coluna 3: área principal -->
 
-    <div class="chat-container-content relative flex-1 min-w-0">
-      <!-- Botão toggle sidebar (mobile) -->
-      <button
-        v-if="isMobile && !sidebarOpen"
-        class="absolute top-4 left-4 z-10 flex items-center justify-center flex-nowrap! size-10 rounded-button bg-dark-card border border-border-dark text-dark-text cursor-pointer transition-opacity duration-200 hover:opacity-80"
-        aria-label="Abrir conversas"
-        @click="sidebarOpen = true"
-      >
-        <q-icon name="chat_bubble" size="20px" />
-      </button>
+    <div
+      class="chat-container-content relative flex-1 min-w-0 overflow-hidden rounded-[12px] m-[10px] max-sm:m-[4px]"
+    >
 
       <!-- Conteúdo: loading / welcome / mensagens -->
       <div
@@ -52,30 +45,42 @@
           !chat.hasActiveConversation.value || chat.messages.value.length === 0
         "
         class="chat-area-content overflow-y-auto"
+        :pending-files="chat.pendingFiles.value"
         @select-prompt="onSelectPrompt"
+        @attach="onAttachFiles"
+        @remove-file="onRemoveFile"
+        @generate-chart="onGenerateChart"
       />
 
-      <CChatMessageList
-        v-else
-        ref="messageList"
-        :messages="chat.messages.value"
-        :is-typing="chat.isTyping.value"
-        :has-more-messages="chat.hasMoreMessages.value"
-        :conversation-id="chat.activeConversationId.value"
-        :on-load-more-messages="chat.loadMoreMessages"
-        class="chat-message-wrapper"
-      />
-
-      <!-- Input sempre visível no rodapé -->
-      <div class="chat-area-input">
-        <CChatInputArea
-          :disabled="chat.isTyping.value"
-          :pending-files="chat.pendingFiles.value"
-          @send="sendNewMessage"
-          @attach="onAttachFiles"
-          @remove-file="onRemoveFile"
+      <template v-else>
+        <CChatMessageList
+          ref="messageList"
+          :messages="chat.messages.value"
+          :is-typing="chat.isTyping.value"
+          :has-more-messages="chat.hasMoreMessages.value"
+          :conversation-id="chat.activeConversationId.value"
+          :on-load-more-messages="chat.loadMoreMessages"
+          class="chat-message-wrapper"
         />
-      </div>
+
+        <div class="chat-area-input shrink-0">
+          <div class="w-full max-w-[900px] mx-auto">
+            <CChatInputArea
+              :disabled="chat.isTyping.value"
+              :pending-files="chat.pendingFiles.value"
+              no-bg
+              class="px-4!"
+              @send="sendNewMessage"
+              @attach="onAttachFiles"
+              @remove-file="onRemoveFile"
+              @generate-chart="onGenerateChart"
+            />
+            <p class="chat-disclaimer">
+              AI invest é uma IA e pode cometer erros pode cometer erros.
+            </p>
+          </div>
+        </div>
+      </template>
     </div>
   </q-page>
 </template>
@@ -134,13 +139,16 @@ export default {
     isMobile: {
       immediate: true,
       handler(mobile) {
-        this.uiStore.setChatSidebarOpen(!mobile);
+        if (mobile) {
+          this.uiStore.setChatSidebarOpen(false);
+        }
       },
     },
   },
 
   mounted() {
     this.chat.selectedSession.value = null;
+    this.uiStore.setChatSidebarOpen(false);
     this.onLoadSessions();
   },
 
@@ -178,6 +186,10 @@ export default {
 
     onRemoveFile(index) {
       this.chat.removeFile(index);
+    },
+
+    onGenerateChart() {
+      // TODO: implement chart generation flow
     },
 
     openNewChat() {
@@ -225,8 +237,22 @@ export default {
   grid-template-rows: [content] 1fr [input] auto;
   grid-template-columns: minmax(0, 1fr);
 
-  height: 100%;
   overflow: hidden;
+
+  background: linear-gradient(315deg, #151515 0%, #000000 100%);
+}
+
+.chat-container-content::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url('../../assets/imgs/ai_investe_logo.webp');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 95%;
+  opacity: 0.01;
+  pointer-events: none;
+  z-index: 0;
 }
 
 .chat-area-content {
@@ -249,7 +275,19 @@ export default {
 
 .chat-area-input {
   grid-row: input;
-  min-height: 0;
+  min-height: auto;
   min-width: 0;
+}
+
+.chat-disclaimer {
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', sans-serif;
+  font-size: 12px;
+  font-weight: 274;
+  line-height: 100%;
+  letter-spacing: 0.04em;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.25);
+  margin-top: 25px !important;
+  padding-bottom: 55px;
 }
 </style>

@@ -1,8 +1,11 @@
 import { ref, computed } from "vue";
 import { useChatService } from "@services/chat.service";
+import { safeJsonParse } from "src/utils/parse..utils";
+import { useAuthStore } from "src/stores/auth.store";
 
 export function useChat() {
   const chatService = useChatService();
+  const authStore = useAuthStore();
 
   // ── Estado ────────────────────────────────────────────────────────────────
 
@@ -24,7 +27,28 @@ export function useChat() {
       null,
   );
 
-  const messages = computed(() => activeConversation.value?.messages ?? []);
+  const messages = computed(() => {
+    const contentMessages = [];
+
+    activeConversation.value?.messages?.forEach((msg) => {
+      const parsed = safeJsonParse(msg?.text);
+      // debugger;
+      if (parsed && msg.sender === "ai" && parsed?.error?.code === 503) {
+        contentMessages.push({
+          ...msg,
+          text: "Nossa ia está atualmente com alta demanda. Picos de demanda costumam ser temporários. Por favor, tente novamente mais tarde.",
+        });
+      } else if (msg.sender === "user") {
+        contentMessages.push({ ...msg, avatar: authStore?.userAvatar });
+      } else {
+        contentMessages.push(msg);
+      }
+
+      // debugger;
+    });
+
+    return contentMessages ?? [];
+  });
 
   const hasActiveConversation = computed(
     () => activeConversationId.value !== null,
@@ -233,7 +257,8 @@ export function useChat() {
     isTyping.value = true;
 
     try {
-      const sessionId = activeConversationId.value;
+      // selectedSession contém apenas UUIDs reais do backend (null para novas conversas)
+      const sessionId = selectedSession.value;
 
       const form = new FormData();
       form.append("message", trimmed);
@@ -243,6 +268,16 @@ export function useChat() {
 
       const responseData = await chatService.sendMessage(form);
 
+      // Captura session_id retornado pelo backend para conversas novas
+      const backendSessionId = responseData?.session_id ?? responseData?.chat_session_id;
+      if (backendSessionId && !selectedSession.value) {
+        const oldId = activeConversationId.value;
+        const convIndex = conversations.value.findIndex((c) => c.id === oldId);
+        if (convIndex >= 0) conversations.value[convIndex].id = backendSessionId;
+        activeConversationId.value = backendSessionId;
+        selectedSession.value = backendSessionId;
+      }
+
       const aiText =
         responseData?.message ??
         responseData?.text ??
@@ -250,7 +285,10 @@ export function useChat() {
         responseData?.response ??
         "Não foi possível obter uma resposta.";
 
-      conv.messages.push({
+      const targetConv = conversations.value.find(
+        (c) => c.id === activeConversationId.value,
+      );
+      (targetConv ?? conv).messages.push({
         id: String(Date.now() + 1),
         sender: "ai",
         text: aiText,

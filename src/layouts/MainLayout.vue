@@ -1,5 +1,5 @@
 <template>
-  <q-layout view="LHH Lpp lFf">
+  <q-layout view="lHh Lpr lff">
     <CHeader />
 
     <CSidebar />

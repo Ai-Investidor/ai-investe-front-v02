@@ -20,7 +20,7 @@
               d="M18 0H2C0.9 0 0.00999999 0.9 0.00999999 2L0 20L4 16H18C19.1 16 20 15.1 20 14V2C20 0.9 19.1 0 18 0ZM4 7H16V9H4V7ZM12 12H4V10H12V12ZM16 6H4V4H16V6Z"
               fill="white" />
           </svg>
-
+          <q-tooltip anchor="center right" self="center left" :offset="[12, 0]" class="icon-menu-tooltip">IA Chat</q-tooltip>
         </button>
 
         <button type="button" class="w-[32px] h-[32px] rounded-lg flex items-center justify-center transition-colors"
@@ -31,7 +31,7 @@
               d="M4 20C2.9 20 1.95833 19.5104 1.175 18.5312C0.391667 17.5521 0 16.375 0 15V5C0 3.625 0.391667 2.44792 1.175 1.46875C1.95833 0.489584 2.9 0 4 0H16C17.1 0 18.0417 0.489584 18.825 1.46875C19.6083 2.44792 20 3.625 20 5V15C20 16.375 19.6083 17.5521 18.825 18.5312C18.0417 19.5104 17.1 20 16 20H4ZM4 5H16C16.3667 5 16.7167 5.05208 17.05 5.15625C17.3833 5.26042 17.7 5.42708 18 5.65625V5C18 4.3125 17.8043 3.72417 17.413 3.235C17.0217 2.74583 16.5507 2.50083 16 2.5H4C3.45 2.5 2.97933 2.745 2.588 3.235C2.19667 3.725 2.00067 4.31333 2 5V5.65625C2.3 5.42708 2.61667 5.26042 2.95 5.15625C3.28333 5.05208 3.63333 5 4 5ZM2.15 9.0625L13.275 12.4375C13.425 12.4792 13.575 12.4792 13.725 12.4375C13.875 12.3958 14.0167 12.3125 14.15 12.1875L17.625 8.5625C17.4417 8.25 17.2083 7.995 16.925 7.7975C16.6417 7.6 16.3333 7.50083 16 7.5H4C3.56667 7.5 3.18767 7.64083 2.863 7.9225C2.53833 8.20417 2.30067 8.58417 2.15 9.0625Z"
               fill="white" />
           </svg>
-
+          <q-tooltip anchor="center right" self="center left" :offset="[12, 0]" class="icon-menu-tooltip">Portfólio</q-tooltip>
         </button>
 
         <button type="button" class="w-[32px] h-[32px] rounded-lg flex items-center justify-center transition-colors"
@@ -41,7 +41,7 @@
             <path d="M14 8.78L18.24 1.45L19.97 2.45L14.74 11.5L8.23 7.75L3.46 16H20V18H0V0H2V14.54L7.5 5L14 8.78Z"
               fill="white" />
           </svg>
-
+          <q-tooltip anchor="center right" self="center left" :offset="[12, 0]" class="icon-menu-tooltip">Análise</q-tooltip>
         </button>
       </div>
     </div>
@@ -72,6 +72,7 @@
             d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
         </svg>
+        <q-tooltip anchor="center right" self="center left" :offset="[12, 0]" class="icon-menu-tooltip">Configurações</q-tooltip>
       </button>
 
       <button type="button"
@@ -81,6 +82,7 @@
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
             d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
         </svg>
+        <q-tooltip anchor="center right" self="center left" :offset="[12, 0]" class="icon-menu-tooltip">Perfil</q-tooltip>
       </button>
     </div>
   </aside>
@@ -104,3 +106,16 @@ export default {
   emits: ['toggle-theme', 'open-settings', 'open-profile', 'navigate'],
 }
 </script>
+
+<style>
+.icon-menu-tooltip.q-tooltip {
+  background: var(--color-dark-card) !important;
+  color: var(--color-dark-text) !important;
+  border: 1px solid var(--color-border-dark) !important;
+  border-radius: 6px !important;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', sans-serif;
+  font-size: 12px;
+  font-weight: 274;
+  padding: 5px 10px;
+}
+</style>
