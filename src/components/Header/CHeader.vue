@@ -1,31 +1,8 @@
 <template>
-  <q-header class="flex items-stretch shrink-0 h-15 bg-dark">
+  <q-header class="flex items-stretch shrink-0 h-15 header-bg">
 
-    <!-- LEFT: Logo + Menu toggle -->
-    <div
-      class="flex items-center shrink-0 bg-black rounded-br-2xl transition-all duration-250 w-59"
-      :class="chatSidebarOpen ? 'pl-18 gap-11' : 'pl-3 gap-3'"
-    >
-      <transition name="logo" mode="out-in">
-        <router-link
-          v-if="chatSidebarOpen"
-          key="logo-full"
-          to="/"
-          class="h-full cursor-pointer overflow-hidden max-w-24 max-h-15"
-        >
-          <q-img :src="IconLogo" fit="contain" class="w-full h-full" />
-        </router-link>
-
-        <router-link
-          v-else
-          key="logo-small"
-          to="/"
-          class="flex items-center cursor-pointer shrink-0"
-        >
-          <img :src="IconLogoSmall" class="h-9 w-auto object-contain" alt="" />
-        </router-link>
-      </transition>
-
+    <!-- LEFT: Menu toggle -->
+    <div class="flex items-center shrink-0 px-3 gap-2">
       <button
         type="button"
         class="menu-toggle-btn"
@@ -35,12 +12,75 @@
       >
         <img :src="IconMenuToggle" alt="" aria-hidden="true" />
       </button>
+
+      <!-- Hamburger Menu (mobile only) -->
+      <button
+        v-if="isMobile"
+        type="button"
+        class="flex items-center justify-center size-8 rounded-button bg-dark-card border border-border-dark text-dark-text cursor-pointer hover:opacity-80 transition-opacity"
+        aria-label="Menu de navegação"
+      >
+        <q-icon name="menu" size="20px" />
+        <q-menu anchor="top left" self="top left" :offset="[0, 8]" class="header-mobile-menu">
+          <div class="header-mobile-menu__content">
+            <!-- Navigation section -->
+            <q-item
+              v-close-popup
+              clickable
+              class="header-mobile-menu__item"
+              @click="navigateToChat"
+            >
+              <q-item-section side>
+                <img :src="IconChat" class="w-4 h-4 object-contain" />
+              </q-item-section>
+              <q-item-section>IA Chat</q-item-section>
+            </q-item>
+
+            <q-item
+              v-close-popup
+              clickable
+              class="header-mobile-menu__item"
+            >
+              <q-item-section side>
+                <q-icon name="notifications" size="16px" />
+              </q-item-section>
+              <q-item-section>Alertas</q-item-section>
+            </q-item>
+
+            <q-item
+              v-close-popup
+              clickable
+              class="header-mobile-menu__item"
+            >
+              <q-item-section side>
+                <img :src="IconCards" class="w-4 h-4 object-contain" />
+              </q-item-section>
+              <q-item-section>Portfólio</q-item-section>
+            </q-item>
+
+            <q-separator class="header-mobile-menu__separator" />
+
+            <!-- Actions section -->
+            <q-item
+              v-close-popup
+              clickable
+              class="header-mobile-menu__item"
+              @click="toggleConversations"
+            >
+              <q-item-section side>
+                <q-icon name="visibility" size="16px" />
+              </q-item-section>
+              <q-item-section>{{ chatSidebarOpen ? 'Ocultar' : 'Mostrar' }} conversas</q-item-section>
+            </q-item>
+          </div>
+        </q-menu>
+      </button>
     </div>
 
     <!-- RIGHT: Breadcrumb + Search (centrado) + User -->
-    <div class="relative flex-1 flex items-center justify-between bg-chat-bg px-4">
+    <div class="relative flex-1 flex items-center justify-between bg-transparent px-4">
       <!-- Breadcrumb -->
-      <div class="flex items-center min-w-0">
+      <div class="flex items-center min-w-0 max-sm:hidden">
 
         <q-breadcrumbs active-color="grey-5">
           <q-breadcrumbs-el icon="home" />
@@ -52,9 +92,9 @@
         </q-breadcrumbs>
       </div>
 
-      <!-- CENTER: Search — centrado na área de conteúdo -->
+      <!-- CENTER: Search -->
       <div
-        class="absolute left-[45%] top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-[420px] pointer-events-none max-sm:hidden"
+        class="absolute left-[48.5%] top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-[420px] pointer-events-none max-sm:hidden"
       >
         <div
           class="flex items-center w-full h-9 bg-dark border border-border-input rounded-lg overflow-hidden pointer-events-auto"
@@ -75,10 +115,41 @@
         </div>
       </div>
 
+      <!-- Mobile Search Button -->
+      <button
+        v-if="isMobile"
+        type="button"
+        class="hidden max-sm:flex items-center justify-center size-8 rounded-button bg-dark-card border border-border-dark text-dark-text cursor-pointer hover:opacity-80 transition-opacity absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2"
+        aria-label="Pesquisar"
+      >
+        <q-icon name="search" size="18px" />
+        <q-menu anchor="bottom center" self="top center" :offset="[0, 8]" class="header-search-menu">
+          <div class="header-search-menu__content">
+            <input
+              v-model="searchQuery"
+              type="text"
+              placeholder="Pesquisar histórico"
+              class="header-search-menu__input"
+              @keydown.enter="onSearch"
+              autofocus
+            />
+            <button
+              type="button"
+              class="header-search-menu__button"
+              @click="onSearch"
+            >
+              <q-icon name="search" size="16px" />
+            </button>
+          </div>
+        </q-menu>
+      </button>
+
+      <div class="flex-1 max-sm:hidden" />
+
       <!-- User -->
       <div class="flex items-center gap-4 shrink-0">
         <div class="flex flex-col items-end max-sm:hidden">
-          <span class="text-paragraph-3 text-dark-text truncate max-w-32">
+          <span class="user-display-name truncate max-w-32">
             {{ userDisplayName }}
           </span>
           <span class="text-paragraph-4 text-dark-text-muted whitespace-nowrap">
@@ -167,9 +238,9 @@ import { useAuthStore } from "@stores/auth.store";
 import { useUiStore } from "@stores/ui.store";
 import { useRouter } from "vue-router";
 import useAuth from "@composables/useAuth";
-import IconLogo from "@assets/imgs/logo_invest.webp";
-import IconLogoSmall from "@assets/imgs/logo-small.svg";
 import IconMenuToggle from "@assets/icons/icon-menu-toggle.svg";
+import IconChat from "@assets/icons/icon-chat.svg";
+import IconCards from "@assets/icons/icon-cards.svg";
 
 export default {
   name: "CHeader",
@@ -182,13 +253,17 @@ export default {
   data() {
     return {
       searchQuery: "",
-      IconLogo,
-      IconLogoSmall,
       IconMenuToggle,
+      IconChat,
+      IconCards,
     };
   },
 
   computed: {
+    isMobile() {
+      return this.$q.screen.lt.md;
+    },
+
     userAvatar() {
       return useAuthStore().userAvatar || "";
     },
@@ -245,6 +320,18 @@ export default {
       useUiStore().toggleChatSidebar();
     },
 
+    navigateToChat() {
+      if (this.$route.path === "/ia-chat") {
+        this.toggleChatSidebar();
+      } else {
+        this.$router.push("/ia-chat");
+      }
+    },
+
+    toggleConversations() {
+      useUiStore().toggleChatSidebar();
+    },
+
     onProfile() {
       this.$router.push("/perfil");
     },
@@ -258,6 +345,21 @@ export default {
 
 <style scoped>
 @reference "../../css/tailwind.css";
+
+.user-display-name {
+  font-family: "Lato", sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 1.5;
+  letter-spacing: 0.005em;
+  text-align: right;
+  vertical-align: middle;
+  color: var(--color-dark-text);
+}
+
+.header-bg {
+  background: linear-gradient(135deg, rgba(9, 10, 10, 1) 0%, rgba(0, 0, 0, 1) 100%);
+}
 
 .header-search-input {
   @apply flex-1 h-full bg-transparent outline-none px-3;
@@ -292,14 +394,20 @@ export default {
   opacity: 0.7;
 }
 
-.logo-enter-active,
-.logo-leave-active {
-  transition: opacity 0.2s ease;
+.header-search-menu__input {
+  @apply flex-1 bg-transparent outline-none px-3 py-2;
+  width: 100%;
+  font-family: var(--font-family-sans);
+  font-size: var(--font-size-sm);
+  color: var(--color-dark-text);
+
+  &::placeholder {
+    color: var(--color-dark-text-placeholder);
+  }
 }
 
-.logo-enter-from,
-.logo-leave-to {
-  opacity: 0;
+.header-search-menu__button {
+  @apply flex items-center justify-center shrink-0 px-3 bg-transparent border-none cursor-pointer text-dark-text hover:opacity-70 transition-opacity;
 }
 
 </style>
@@ -314,6 +422,59 @@ export default {
   max-width: 260px !important;
   overflow: hidden !important;
   font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', sans-serif;
+}
+
+.header-mobile-menu.q-menu {
+  background: var(--color-dark-card) !important;
+  border: 0.5px solid var(--color-border-dark) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4) !important;
+  width: 200px !important;
+  overflow: hidden !important;
+}
+
+.header-mobile-menu__content {
+  padding: 4px;
+  display: flex;
+  flex-direction: column;
+}
+
+.header-mobile-menu__item.q-item {
+  border-radius: 8px;
+  color: var(--color-dark-text-secondary) !important;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', sans-serif;
+  font-size: 13px;
+  font-weight: 274;
+  letter-spacing: 0.04em;
+  min-height: 40px;
+  margin: 2px 4px;
+  transition: background 0.15s;
+}
+
+.header-mobile-menu__item.q-item:hover {
+  background: rgba(255, 255, 255, 0.05) !important;
+  color: var(--color-dark-text) !important;
+}
+
+.header-mobile-menu__separator {
+  background: var(--color-border-dark) !important;
+  margin: 4px 0 !important;
+}
+
+.header-search-menu.q-menu {
+  background: var(--color-dark-card) !important;
+  border: 0.5px solid var(--color-border-dark) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4) !important;
+  width: 280px !important;
+  overflow: hidden !important;
+}
+
+.header-search-menu__content {
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .profile-menu__content {
@@ -417,4 +578,5 @@ export default {
   width: 100%;
   color: inherit;
 }
+
 </style>

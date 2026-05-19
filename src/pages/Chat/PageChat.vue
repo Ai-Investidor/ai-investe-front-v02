@@ -29,7 +29,7 @@
     <!-- Coluna 3: área principal -->
 
     <div
-      class="chat-container-content relative flex-1 min-w-0 overflow-hidden rounded-md"
+      class="chat-container-content relative flex-1 min-w-0 overflow-hidden rounded-[12px] m-[10px] max-sm:m-[4px]"
     >
       <!-- Botão toggle sidebar (mobile) -->
       <button
@@ -72,15 +72,22 @@
           class="chat-message-wrapper"
         />
 
-        <div class="chat-area-input">
-          <CChatInputArea
-            :disabled="chat.isTyping.value"
-            :pending-files="chat.pendingFiles.value"
-            @send="sendNewMessage"
-            @attach="onAttachFiles"
-            @remove-file="onRemoveFile"
-            @generate-chart="onGenerateChart"
-          />
+        <div class="chat-area-input shrink-0">
+          <div class="w-full max-w-[900px] mx-auto">
+            <CChatInputArea
+              :disabled="chat.isTyping.value"
+              :pending-files="chat.pendingFiles.value"
+              no-bg
+              class="px-4!"
+              @send="sendNewMessage"
+              @attach="onAttachFiles"
+              @remove-file="onRemoveFile"
+              @generate-chart="onGenerateChart"
+            />
+            <p class="chat-disclaimer">
+              AI invest é uma IA e pode cometer erros pode cometer erros.
+            </p>
+          </div>
         </div>
       </template>
     </div>
@@ -238,8 +245,22 @@ export default {
   grid-template-rows: [content] 1fr [input] auto;
   grid-template-columns: minmax(0, 1fr);
 
-  height: 100%;
   overflow: hidden;
+
+  background: linear-gradient(315deg, #151515 0%, #000000 100%);
+}
+
+.chat-container-content::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url('../../assets/imgs/ai_investe_logo.webp');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 95%;
+  opacity: 0.01;
+  pointer-events: none;
+  z-index: 0;
 }
 
 .chat-area-content {
@@ -262,7 +283,19 @@ export default {
 
 .chat-area-input {
   grid-row: input;
-  min-height: 0;
+  min-height: auto;
   min-width: 0;
+}
+
+.chat-disclaimer {
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', sans-serif;
+  font-size: 12px;
+  font-weight: 274;
+  line-height: 100%;
+  letter-spacing: 0.04em;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.25);
+  margin-top: 25px !important;
+  padding-bottom: 55px;
 }
 </style>

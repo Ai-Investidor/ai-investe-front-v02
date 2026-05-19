@@ -1,6 +1,7 @@
 <template>
   <div
-    class="flex flex-col items-center gap-4 py-3 px-7.5 max-sm:px-2 bg-dark! shrink-0 w-full min-w-0"
+    class="flex flex-col items-center gap-4 py-3 px-7.5 max-sm:px-2 shrink-0 w-full min-w-0"
+    :class="noBg ? 'bg-transparent' : 'bg-dark!'"
   >
     <!-- Wrapper: chips + input -->
     <div class="flex flex-col gap-2 w-full min-w-0 max-w-225">
@@ -111,7 +112,7 @@
           :class="
             canSend
               ? 'bg-search-btn text-light-text'
-              : 'bg-dark-elevated text-dark-text-muted'
+              : 'bg-dark-elevated text-white/60'
           "
           :disabled="disabled || !canSend"
           aria-label="Enviar mensagem"
@@ -160,6 +161,10 @@ export default {
 
   props: {
     disabled: {
+      type: Boolean,
+      default: false,
+    },
+    noBg: {
       type: Boolean,
       default: false,
     },
