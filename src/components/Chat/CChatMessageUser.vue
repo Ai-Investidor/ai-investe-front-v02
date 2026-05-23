@@ -7,21 +7,40 @@
     <!-- Coluna central — preenche os 900px restantes, bubble alinhado à direita -->
     <div class="flex-1 min-w-0 flex justify-end">
       <div class="chat-bubble-user flex flex-col gap-3 max-w-[80%] lg:max-w-[70%]">
-        <!-- Thumbnails de imagens anexadas -->
-        <div v-if="imageFiles.length > 0" class="flex flex-wrap gap-2 justify-end">
-          <button
-            v-for="(file, i) in imageFiles"
-            :key="i"
-            type="button"
-            class="image-thumb"
-            @click="openLightbox(i)"
-          >
-            <img
-              :src="file.previewUrl"
-              :alt="file.name"
-              class="w-full h-full object-cover"
-            />
-          </button>
+        <!-- Arquivos anexados: imagens e documentos no mesmo scroll horizontal -->
+        <div
+          v-if="allFiles.length > 0"
+          ref="thumbRow"
+          class="thumb-row"
+          @mousedown="onDragStart"
+        >
+          <template v-for="(file, i) in allFiles" :key="i">
+            <!-- Imagem -->
+            <button
+              v-if="file.previewUrl"
+              type="button"
+              class="image-thumb"
+              @click="openLightbox(imageIndexOf(i))"
+            >
+              <img
+                :src="file.previewUrl"
+                :alt="file.name"
+                class="w-full h-full object-cover"
+                draggable="false"
+              />
+            </button>
+
+            <!-- Documento -->
+            <div
+              v-else
+              class="doc-card"
+              :title="file.name"
+            >
+              <q-icon :name="docIcon(file.type)" size="26px" class="text-primary" />
+              <span class="doc-card__name">{{ file.name }}</span>
+              <span class="doc-card__size">{{ formatSize(file.size) }}</span>
+            </div>
+          </template>
         </div>
 
         <div v-if="message" class="text-paragraph-1 whitespace-pre-wrap break-words">{{ message }}</div>
@@ -109,12 +128,16 @@ export default {
   data() {
     return {
       lightboxIndex: null,
+      dragState: null,
     };
   },
 
   computed: {
+    allFiles() {
+      return this.files ?? [];
+    },
     imageFiles() {
-      return (this.files ?? []).filter((f) => f.previewUrl);
+      return this.allFiles.filter((f) => f.previewUrl);
     },
   },
 
@@ -150,6 +173,54 @@ export default {
       if (e.key === "ArrowRight") this.nextImage();
     },
 
+    onDragStart(e) {
+      const el = this.$refs.thumbRow;
+      if (!el) return;
+      this.dragState = { startX: e.pageX, scrollLeft: el.scrollLeft, moved: false };
+      el.classList.add("is-dragging");
+
+      const onMove = (ev) => {
+        if (!this.dragState) return;
+        const dx = ev.pageX - this.dragState.startX;
+        if (Math.abs(dx) > 4) this.dragState.moved = true;
+        el.scrollLeft = this.dragState.scrollLeft - dx;
+      };
+
+      const onUp = (ev) => {
+        if (this.dragState?.moved) ev.stopImmediatePropagation();
+        el.classList.remove("is-dragging");
+        this.dragState = null;
+        window.removeEventListener("mousemove", onMove);
+        window.removeEventListener("mouseup", onUp, true);
+      };
+
+      window.addEventListener("mousemove", onMove);
+      window.addEventListener("mouseup", onUp, true);
+    },
+
+    imageIndexOf(globalIndex) {
+      let imgCount = 0;
+      for (let i = 0; i < globalIndex; i++) {
+        if (this.allFiles[i]?.previewUrl) imgCount++;
+      }
+      return imgCount;
+    },
+
+    docIcon(type) {
+      if (type === "application/pdf") return "picture_as_pdf";
+      if (type.includes("word") || type.includes("document")) return "description";
+      if (type.includes("sheet") || type.includes("excel") || type.includes("csv")) return "table_chart";
+      if (type.includes("presentation") || type.includes("powerpoint")) return "slideshow";
+      return "insert_drive_file";
+    },
+
+    formatSize(bytes) {
+      if (!bytes) return "";
+      if (bytes < 1024) return `${bytes} B`;
+      if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+      return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+    },
+
     formatTime(date) {
       if (!date) return "";
       const d = new Date(date);
@@ -160,6 +231,61 @@ export default {
 </script>
 
 <style scoped>
+.doc-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  width: 72px;
+  height: 72px;
+  flex-shrink: 0;
+  padding: 6px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  text-decoration: none;
+  cursor: default;
+  overflow: hidden;
+}
+
+.doc-card__name {
+  font-size: 10px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.8);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+  text-align: center;
+}
+
+.doc-card__size {
+  font-size: 9px;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.thumb-row {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  overflow-x: auto;
+  overflow-y: visible;
+  width: 100%;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  cursor: grab;
+  user-select: none;
+}
+
+.thumb-row::-webkit-scrollbar {
+  display: none;
+}
+
+.thumb-row.is-dragging {
+  cursor: grabbing;
+}
+
 .image-thumb {
   width: 72px;
   height: 72px;
