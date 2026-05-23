@@ -715,3 +715,34 @@
     transform: scale(1);
   }
 }
+
+/* ── Chat scrollbar ──────────────────────────────────────────────────────── */
+/* Firefox only — scrollbar-width must NOT be set in Chrome 121+ or webkit-* rules are ignored */
+@-moz-document url-prefix() {
+  .chat-message-list {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-primary) transparent;
+  }
+}
+
+/* Chrome / Safari */
+.chat-message-list::-webkit-scrollbar {
+  width: 10px;
+}
+
+.chat-message-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.chat-message-list::-webkit-scrollbar-thumb {
+  background-color: var(--color-primary);
+  border-radius: 99px;
+  border-right: 4px solid transparent;
+  background-clip: padding-box;
+}
+
+.chat-message-list::-webkit-scrollbar-button {
+  display: none;
+  height: 0;
+  width: 0;
+}

@@ -49,8 +49,9 @@
         icon="keyboard_arrow_down"
         round
         unelevated
-        class="absolute bottom-16 left-1/2 -translate-x-1/2 z-10 shadow-md"
+        class="absolute bottom-16 left-1/2 -translate-x-1/2 z-10 shadow-md scroll-btn"
         color="primary"
+        text-color="dark"
         @click="scrollToBottom"
       />
     </transition>
