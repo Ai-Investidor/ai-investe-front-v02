@@ -133,7 +133,7 @@
 
               <q-separator class="profile-menu__separator" />
 
-              <q-item
+              <!-- <q-item
                 v-close-popup
                 clickable
                 class="profile-menu__item"
@@ -143,7 +143,7 @@
                   <q-icon name="svguse:icons/icons.svg#icon-profile" size="24px" />
                   <span>Perfil</span>
                 </div>
-              </q-item>
+              </q-item> -->
 
               <q-separator class="profile-menu__separator" />
 

@@ -172,9 +172,13 @@ export default {
       type: Array,
       default: () => [],
     },
+    restoreMessage: {
+      type: String,
+      default: "",
+    },
   },
 
-  emits: ["send", "attach", "remove-file", "generate-chart"],
+  emits: ["send", "attach", "remove-file", "generate-chart", "message-restored"],
 
   data() {
     return {
@@ -195,6 +199,15 @@ export default {
         this.$nextTick(() => {
           this.$refs.textareaRef?.focus();
         });
+      }
+    },
+    restoreMessage(val) {
+      if (val) {
+        this.message = val;
+        this.$nextTick(() => {
+          this.handleInput();
+        });
+        this.$emit("message-restored");
       }
     },
   },
