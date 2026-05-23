@@ -185,30 +185,3 @@ export default {
   opacity: 0;
 }
 </style>
-
-<style>
-/* Scrollbar — global porque ::-webkit-scrollbar-* não funciona com scoped */
-.chat-message-list {
-  scrollbar-width: thin;
-  scrollbar-color: var(--color-primary) transparent;
-}
-
-.chat-message-list::-webkit-scrollbar {
-  width: 4px;
-}
-
-.chat-message-list::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.chat-message-list::-webkit-scrollbar-thumb {
-  background-color: var(--color-primary);
-  border-radius: 99px;
-}
-
-.chat-message-list::-webkit-scrollbar-button {
-  display: none;
-  height: 0;
-  width: 0;
-}
-</style>
