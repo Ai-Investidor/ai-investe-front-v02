@@ -118,21 +118,31 @@
       </router-link>
     </p>
 
-    <!-- Register CTA -->
-    <router-link to="/cadastro" class="register-btn" aria-label="Criar conta">
-      <span class="register-btn__text">Faça seu cadastro</span>
-      <div class="register-btn__arrow" aria-hidden="true">
-        <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
-          <path
-            d="M2 8L8 2M8 2H3M8 2V7"
-            stroke="white"
-            stroke-width="1.5"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          />
-        </svg>
-      </div>
-    </router-link>
+    <!-- Actions row: Login + Register -->
+    <div class="login-actions">
+      <button
+        type="button"
+        class="login-btn"
+        @click="handleLogin"
+      >
+        <span class="login-btn__text">Acessar Conta</span>
+      </button>
+
+      <router-link to="/cadastro" class="register-btn" aria-label="Criar conta">
+        <span class="register-btn__text">Faça seu cadastro</span>
+        <div class="register-btn__arrow" aria-hidden="true">
+          <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+            <path
+              d="M2 8L8 2M8 2H3M8 2V7"
+              stroke="white"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </div>
+      </router-link>
+    </div>
   </div>
 </template>
 
@@ -197,15 +207,6 @@ export default {
   align-items: center;
   width: 100%;
   max-width: 462px;
-
-  position: absolute;
-
-  left: -40%;
-  top: 50%;
-
-  transform: translateY(-50%);
-
-  z-index: 999 !important;
 }
 
 /* ── Logo ────────────────────────────────────────── */
@@ -354,12 +355,44 @@ export default {
   color: var(--color-primary);
 }
 
+/* ── Actions row ─────────────────────────────────── */
+.login-actions {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+}
+
+/* ── Login Button ────────────────────────────────── */
+.login-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  height: 40px;
+  padding: 0 16px;
+  background-color: #ffffff;
+  border: none;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.login-btn:hover {
+  opacity: 0.9;
+}
+
+.login-btn__text {
+  font-size: 14px;
+  font-weight: 500;
+  color: #000000;
+}
+
 /* ── Register CTA ────────────────────────────────── */
 .register-btn {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 100%;
+  flex: 1;
   height: 40px;
   padding: 0 7px 0 23px;
   background-color: #ffffff;
@@ -387,13 +420,5 @@ export default {
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-}
-
-@media (max-width: 767px) {
-  .login-card {
-    position: static;
-    transform: none;
-    max-width: 100%;
-  }
 }
 </style>
