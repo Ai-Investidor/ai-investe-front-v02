@@ -11,23 +11,19 @@
     <!-- Lista de conversas -->
     <div
       ref="conversationsList"
-      class="flex-1 overflow-x-hidden! flex flex-col pb-3 pl-10! pr-2"
+      class="flex-1 min-h-0 overflow-y-auto overflow-x-hidden px-2 pb-3 flex flex-col"
     >
       <!-- Mensagens anexadas -->
       <div
-        class="overflow-y-auto overflow-x-hidden! border-l-2 border-border-pinned pl-2 flex flex-col gap-0.5 mb-2 dashed-border-left"
+        class="border-l-2 border-border-pinned pl-2 flex flex-col gap-0.5 mb-2 dashed-border-left"
       >
-        <div
+        <CChatConversationItem
           v-for="conversation in pinnedConversations"
           :key="`pinned-${conversation.id}`"
-          class="max-w-40"
-        >
-          <CChatConversationItem
-            :conversation="conversation"
-            :active="conversation.session_id === activeConversationId"
-            @select="$emit('select-conversation', $event)"
-          />
-        </div>
+          :conversation="conversation"
+          :active="conversation.session_id === activeConversationId"
+          @select="$emit('select-conversation', $event)"
+        />
       </div>
 
       <!-- Mensagens não anexadas -->
