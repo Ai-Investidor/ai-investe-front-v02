@@ -1,8 +1,10 @@
 <template>
   <div class="auth-layout">
+    <!-- Partículas cobrindo todo o fundo -->
+    <canvas ref="particleCanvas" class="particle-canvas" aria-hidden="true" />
+
     <!-- Brand Panel — desktop only -->
     <aside class="brand-panel">
-      <canvas ref="particleCanvas" class="particle-canvas" aria-hidden="true" />
 
       <div class="brand-content">
         <!-- Headline -->
@@ -39,7 +41,7 @@
                 />
               </svg>
             </div>
-            <span>Análise Fundamentalista</span>
+            <span>Análise de ativos</span>
           </li>
           <li class="brand-feature">
             <div class="brand-feature__icon" aria-hidden="true">
@@ -58,7 +60,7 @@
                 />
               </svg>
             </div>
-            <span>Análise Fundamentalista</span>
+            <span>Carteiras personalizadas</span>
           </li>
           <li class="brand-feature">
             <div class="brand-feature__icon" aria-hidden="true">
@@ -77,7 +79,7 @@
                 />
               </svg>
             </div>
-            <span>Análise Fundamentalista</span>
+            <span>Insights e alertas do mercado</span>
           </li>
         </ul>
       </div>
@@ -177,8 +179,9 @@ export default {
     resizeCanvas() {
       const canvas = this.$refs.particleCanvas;
       if (!canvas) return;
-      canvas.width = canvas.offsetWidth;
-      canvas.height = canvas.offsetHeight;
+      const el = this.$el;
+      canvas.width = el ? el.offsetWidth : window.innerWidth;
+      canvas.height = el ? el.offsetHeight : window.innerHeight;
     },
   },
 };
@@ -188,10 +191,21 @@ export default {
 /* ── Root ────────────────────────────────────────── */
 .auth-layout {
   display: flex;
+  height: 100dvh;
   min-height: 100dvh;
   background-color: var(--color-dark);
   position: relative;
-  z-index: 1;
+  overflow: hidden;
+}
+
+/* ── Particle Canvas ─────────────────────────────── */
+.particle-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
 }
 
 /* ── Brand Panel ─────────────────────────────────── */
@@ -200,16 +214,9 @@ export default {
   display: none;
   width: 64%;
   flex-shrink: 0;
-  background-color: var(--color-dark);
+  background: transparent;
   overflow: hidden;
   z-index: 1;
-}
-
-.particle-canvas {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
 }
 
 .brand-content {
@@ -292,10 +299,11 @@ export default {
   align-items: center;
   justify-content: center;
   padding: 32px 24px;
-  min-height: 100dvh;
-  background-color: var(--color-primary);
+  height: 100%;
+  overflow-y: auto;
+  background: transparent;
   position: relative;
-  z-index: 10 !important;
+  z-index: 2;
 }
 
 .form-inner {
@@ -304,23 +312,9 @@ export default {
 }
 
 /* ── Responsive ──────────────────────────────────── */
-@media (min-width: 768px) and (max-width: 1179px) {
-  .brand-panel {
-    display: flex;
-    width: 45%;
-  }
-
-  .brand-content {
-    padding: 40px 28px;
-    gap: 32px;
-  }
-
-  .brand-title {
-    font-size: 36px;
-  }
-
-  .brand-subtitle {
-    font-size: 18px;
+@media (min-width: 768px) {
+  .form-panel {
+    padding: 32px;
   }
 }
 
