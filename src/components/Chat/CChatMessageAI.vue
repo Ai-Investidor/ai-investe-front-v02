@@ -107,20 +107,21 @@ export default {
 :deep(.chat-prose h1), :deep(.chat-prose h2),
 :deep(.chat-prose h3), :deep(.chat-prose h4) {
   font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', sans-serif;
-  font-weight: 600;
-  line-height: 1.3;
-  margin-top: 1.4rem;
-  margin-bottom: 0.55rem;
+  line-height: 1.25;
+  margin-top: 1.8rem;
+  margin-bottom: 0.75rem;
+  color: #ffffff;
 }
-:deep(.chat-prose h1) { font-size: 1.3em; }
-:deep(.chat-prose h2) { font-size: 1.15em; }
-:deep(.chat-prose h3) { font-size: 1.05em; }
+:deep(.chat-prose h1) { font-size: 1.55em; font-weight: 700; }
+:deep(.chat-prose h2) { font-size: 1.3em;  font-weight: 700; }
+:deep(.chat-prose h3) { font-size: 1.12em; font-weight: 600; }
+:deep(.chat-prose h4) { font-size: 1em;    font-weight: 600; opacity: 0.85; }
 
 :deep(.chat-prose ul), :deep(.chat-prose ol) { margin-left: 1.4rem; margin-top: 0.55rem; margin-bottom: 0.55rem; }
 :deep(.chat-prose li) { margin-bottom: 0.4rem; }
 :deep(.chat-prose li::marker) { color: var(--color-primary); }
 
-:deep(.chat-prose strong) { font-weight: 600; }
+:deep(.chat-prose strong) { font-weight: 600; color: rgba(255, 255, 255, 0.95); }
 :deep(.chat-prose em) { font-style: italic; opacity: 0.85; }
 
 :deep(.chat-prose code) {
