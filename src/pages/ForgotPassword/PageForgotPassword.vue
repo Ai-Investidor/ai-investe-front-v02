@@ -199,12 +199,6 @@ export default {
   align-items: center;
   width: 100%;
   max-width: 462px;
-
-  position: absolute;
-  left: -40%;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 999 !important;
 }
 
 /* ── Logo ────────────────────────────────────────── */
@@ -389,8 +383,6 @@ export default {
 /* ── Responsive ──────────────────────────────────── */
 @media (max-width: 767px) {
   .forgot-card {
-    position: static;
-    transform: none;
     max-width: 100%;
   }
 }
