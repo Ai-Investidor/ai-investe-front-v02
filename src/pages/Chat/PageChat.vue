@@ -68,12 +68,14 @@
             <CChatInputArea
               :disabled="chat.isTyping.value"
               :pending-files="chat.pendingFiles.value"
+              :restore-message="chat.failedMessage.value"
               no-bg
               class="px-4!"
               @send="sendNewMessage"
               @attach="onAttachFiles"
               @remove-file="onRemoveFile"
               @generate-chart="onGenerateChart"
+              @message-restored="chat.clearFailedMessage()"
             />
             <p class="chat-disclaimer">
               AI invest é uma IA e pode cometer erros pode cometer erros.

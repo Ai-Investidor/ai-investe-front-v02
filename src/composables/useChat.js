@@ -18,6 +18,7 @@ export function useChat() {
   const messagePagination = ref(null);
   const pendingFiles = ref([]);
   const selectedSession = ref(null);
+  const failedMessage = ref("");
 
   // ── Computed ──────────────────────────────────────────────────────────────
 
@@ -285,6 +286,11 @@ export function useChat() {
         responseData?.response ??
         "Não foi possível obter uma resposta.";
 
+      const errorParsed = safeJsonParse(aiText);
+      if (errorParsed?.error?.code === 503) {
+        failedMessage.value = trimmed;
+      }
+
       const targetConv = conversations.value.find(
         (c) => c.id === activeConversationId.value,
       );
@@ -295,6 +301,7 @@ export function useChat() {
         timestamp: new Date(),
       });
     } catch {
+      failedMessage.value = trimmed;
       conv.messages.push({
         id: String(Date.now() + 1),
         sender: "ai",
@@ -305,6 +312,10 @@ export function useChat() {
     } finally {
       isTyping.value = false;
     }
+  }
+
+  function clearFailedMessage() {
+    failedMessage.value = "";
   }
 
   // ── Utilitários ───────────────────────────────────────────────────────────
@@ -367,6 +378,8 @@ export function useChat() {
 
     // Envio
     sendMessage,
+    failedMessage,
+    clearFailedMessage,
 
     // Utils
     formatForDisplay,
