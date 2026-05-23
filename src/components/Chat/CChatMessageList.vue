@@ -203,4 +203,8 @@ export default {
   background-color: var(--color-primary);
   border-radius: 99px;
 }
+
+.chat-message-list::-webkit-scrollbar-button {
+  display: none;
+}
 </style>
