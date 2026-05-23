@@ -10,12 +10,12 @@
 
     <!-- Coluna central — hugs content quando curto, expande até o espaço disponível quando longo -->
     <div class="min-w-0 w-fit max-w-[calc(100%-88px)]">
-      <div class="chat-bubble-ai flex flex-col gap-4">
+      <div :class="isTyping ? null : 'chat-bubble-ai flex flex-col gap-4'">
 
-        <div v-if="isTyping" class="flex gap-1.5 py-1">
-          <div class="w-2 h-2 bg-primary rounded-full animate-bounce" style="animation-delay: 0s" />
-          <div class="w-2 h-2 bg-primary rounded-full animate-bounce" style="animation-delay: 0.2s" />
-          <div class="w-2 h-2 bg-primary rounded-full animate-bounce" style="animation-delay: 0.4s" />
+        <div v-if="isTyping" class="chat-typing-loader">
+          <div class="chat-typing-dot dot-1" />
+          <div class="chat-typing-dot dot-2" />
+          <div class="chat-typing-dot dot-3" />
         </div>
 
         <div
@@ -147,6 +147,46 @@ export default {
 :deep(.chat-prose table) { width: 100%; border-collapse: collapse; margin: 0.65rem 0; font-size: 0.9em; }
 :deep(.chat-prose th) { padding: 0.4rem 0.65rem; font-weight: 600; border-bottom: 1px solid var(--color-border-dark); text-align: left; background: rgba(255,255,255,0.05); }
 :deep(.chat-prose td) { padding: 0.35rem 0.65rem; border-bottom: 1px solid rgba(255,255,255,0.05); }
+
+.chat-typing-loader {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  animation: chat-rotate 1.2s linear infinite;
+}
+
+.chat-typing-dot {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  margin: -4px 0 0 -4px;
+}
+
+.dot-1 {
+  background: var(--color-primary);
+  opacity: 1;
+  transform: rotate(0deg) translateY(-14px);
+}
+
+.dot-2 {
+  background: var(--color-primary);
+  opacity: 0.55;
+  transform: rotate(120deg) translateY(-14px);
+}
+
+.dot-3 {
+  background: var(--color-primary);
+  opacity: 0.2;
+  transform: rotate(240deg) translateY(-14px);
+}
+
+@keyframes chat-rotate {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
 
 .copy-btn {
   display: flex;
