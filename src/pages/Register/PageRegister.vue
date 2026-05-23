@@ -335,14 +335,6 @@ export default {
   align-items: center;
   width: 100%;
   max-width: 462px;
-  max-height: calc(100dvh - 32px);
-  overflow-y: auto;
-
-  position: absolute;
-  left: -40%;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 999 !important;
 }
 
 /* ── Logo ────────────────────────────────────────── */
@@ -567,11 +559,7 @@ export default {
 /* ── Responsive ──────────────────────────────────── */
 @media (max-width: 767px) {
   .register-card {
-    position: static;
-    transform: none;
     max-width: 100%;
-    max-height: none;
-    overflow-y: visible;
   }
 }
 </style>
