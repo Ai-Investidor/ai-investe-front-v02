@@ -323,5 +323,18 @@ export default {
     display: flex;
     width: 64%;
   }
+
+  .form-panel {
+    overflow: visible;
+  }
+
+  .form-inner {
+    position: absolute;
+    right: 313px;
+    top: 50%;
+    transform: translateY(-50%);
+    max-height: calc(100dvh - 64px);
+    overflow-y: auto;
+  }
 }
 </style>
