@@ -104,6 +104,7 @@
           rows="1"
           @keydown="handleKeyDown"
           @input="handleInput"
+          @paste="handlePaste"
         />
 
         <!-- Botão enviar -->
@@ -265,6 +266,22 @@ export default {
 
     handleRemoveFile(index) {
       this.$emit("remove-file", index);
+    },
+
+    handlePaste(event) {
+      if (this.disabled) return;
+      const items = event.clipboardData?.items ?? [];
+      const imageFiles = [];
+      for (const item of items) {
+        if (item.kind === "file" && item.type.startsWith("image/")) {
+          const file = item.getAsFile();
+          if (file) imageFiles.push(file);
+        }
+      }
+      if (imageFiles.length > 0) {
+        event.preventDefault();
+        this.$emit("attach", imageFiles);
+      }
     },
   },
 };

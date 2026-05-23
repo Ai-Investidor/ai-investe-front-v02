@@ -247,6 +247,7 @@ export function useChat() {
         name: f.name,
         size: f.size,
         type: f.type,
+        previewUrl: f.type.startsWith("image/") ? URL.createObjectURL(f) : null,
       })),
       timestamp: new Date(),
     };

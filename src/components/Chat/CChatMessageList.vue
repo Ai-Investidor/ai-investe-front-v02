@@ -28,6 +28,7 @@
             :sender="msg.sender"
             :timestamp="msg.timestamp"
             :avatar="msg?.avatar"
+            :files="msg.files"
           />
 
           <CChatMessage
