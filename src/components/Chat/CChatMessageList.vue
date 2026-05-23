@@ -197,17 +197,10 @@ export default {
 
 .chat-message-list::-webkit-scrollbar-track {
   background: transparent;
-  margin: 4px 0;
 }
 
 .chat-message-list::-webkit-scrollbar-thumb {
   background-color: var(--color-primary);
   border-radius: 99px;
-  border-right: 4px solid transparent;
-  background-clip: padding-box;
-}
-
-.chat-message-list::-webkit-scrollbar-button {
-  display: none;
 }
 </style>
