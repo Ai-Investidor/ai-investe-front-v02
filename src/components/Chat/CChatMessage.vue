@@ -10,17 +10,21 @@
     :message="message"
     :timestamp="timestamp"
     :avatar="avatar"
+    :files="files"
   />
 </template>
 
 <script>
-import CChatMessageAI from "components/Chat/CChatMessageAI.vue";
-import CChatMessageUser from "components/Chat/CChatMessageUser.vue";
+import CChatMessageAI from "@components/Chat/CChatMessageAI.vue";
+import CChatMessageUser from "@components/Chat/CChatMessageUser.vue";
 
 export default {
   name: "CChatMessage",
 
-  components: { CChatMessageAI, CChatMessageUser },
+  components: {
+    CChatMessageAI,
+    CChatMessageUser,
+  },
 
   props: {
     message: {
@@ -42,7 +46,11 @@ export default {
     },
     avatar: {
       type: String,
-      default: "",
+      default: null,
+    },
+    files: {
+      type: Array,
+      default: () => [],
     },
   },
 };

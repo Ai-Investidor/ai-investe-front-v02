@@ -7,7 +7,19 @@
     <!-- Coluna central — preenche os 900px restantes, bubble alinhado à direita -->
     <div class="flex-1 min-w-0 flex justify-end">
       <div class="chat-bubble-user flex flex-col gap-4 max-w-[80%] lg:max-w-[70%]">
-        <div class="text-paragraph-1 whitespace-pre-wrap break-words">{{ message }}</div>
+        <!-- Previews de imagens anexadas -->
+        <div v-if="imageFiles.length > 0" class="flex flex-wrap gap-2">
+          <img
+            v-for="(file, i) in imageFiles"
+            :key="i"
+            :src="file.previewUrl"
+            :alt="file.name"
+            class="max-h-48 max-w-full rounded-lg object-contain border border-white/10 cursor-pointer"
+            @click="openPreview(file.previewUrl)"
+          />
+        </div>
+
+        <div v-if="message" class="text-paragraph-1 whitespace-pre-wrap break-words">{{ message }}</div>
 
         <div v-if="timestamp" class="flex items-center gap-4">
           <q-icon name="schedule" size="1.4rem" color="primary" />
@@ -34,12 +46,23 @@ export default {
   name: "CChatMessageUser",
 
   props: {
-    message: { type: String, required: true },
+    message: { type: String, default: "" },
     timestamp: { type: [Date, String], default: null },
     avatar: { type: String, default: "" },
+    files: { type: Array, default: () => [] },
+  },
+
+  computed: {
+    imageFiles() {
+      return (this.files ?? []).filter((f) => f.previewUrl);
+    },
   },
 
   methods: {
+    openPreview(url) {
+      window.open(url, "_blank");
+    },
+
     formatTime(date) {
       if (!date) return "";
       const d = new Date(date);
