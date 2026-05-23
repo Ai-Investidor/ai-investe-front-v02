@@ -184,8 +184,10 @@ export default {
 .fade-leave-to {
   opacity: 0;
 }
+</style>
 
-/* Scrollbar verde */
+<style>
+/* Scrollbar — global porque ::-webkit-scrollbar-* não funciona com scoped */
 .chat-message-list {
   scrollbar-width: thin;
   scrollbar-color: var(--color-primary) transparent;
@@ -206,5 +208,7 @@ export default {
 
 .chat-message-list::-webkit-scrollbar-button {
   display: none;
+  height: 0;
+  width: 0;
 }
 </style>
