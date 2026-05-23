@@ -49,8 +49,9 @@
         icon="keyboard_arrow_down"
         round
         unelevated
-        class="absolute bottom-16 left-1/2 -translate-x-1/2 z-10 shadow-md"
+        class="absolute bottom-16 left-1/2 -translate-x-1/2 z-10 shadow-md scroll-btn"
         color="primary"
+        text-color="dark"
         @click="scrollToBottom"
       />
     </transition>
@@ -182,5 +183,24 @@ export default {
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
+}
+
+/* Scrollbar verde */
+.chat-message-list {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-primary) transparent;
+}
+
+.chat-message-list::-webkit-scrollbar {
+  width: 4px;
+}
+
+.chat-message-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.chat-message-list::-webkit-scrollbar-thumb {
+  background-color: var(--color-primary);
+  border-radius: 99px;
 }
 </style>
