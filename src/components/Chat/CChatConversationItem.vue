@@ -82,7 +82,8 @@ export default {
 
   computed: {
     label() {
-      return this.conversation.title ?? this.fallbackTitle;
+      const title = this.conversation.title ?? this.fallbackTitle;
+      return title.length > 22 ? title.slice(0, 22) + "…" : title;
     },
     hasAttachment() {
       return !!(

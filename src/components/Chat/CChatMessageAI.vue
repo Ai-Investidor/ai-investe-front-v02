@@ -24,11 +24,7 @@
           v-html="formattedMessage"
         />
 
-        <div v-if="timestamp && !isTyping" class="flex items-center gap-4">
-          <q-icon name="schedule" size="1.4rem" color="primary" />
-          <span class="text-paragraph-3 text-white" style="opacity: 0.55">
-            {{ formatTime(timestamp) }}
-          </span>
+        <div v-if="!isTyping" class="flex items-center">
           <button type="button" class="copy-btn ml-auto" @click="copyMessage">
             <q-icon :name="copied ? 'check' : 'content_copy'" size="14px" />
             <q-tooltip anchor="top middle" self="bottom middle" :offset="[0, 6]" class="copy-tooltip">
