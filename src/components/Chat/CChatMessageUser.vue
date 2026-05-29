@@ -45,12 +45,6 @@
 
         <div v-if="message" class="text-paragraph-1 whitespace-pre-wrap break-words">{{ message }}</div>
 
-        <div v-if="timestamp" class="flex items-center gap-4">
-          <q-icon name="schedule" size="1.4rem" color="primary" />
-          <span class="text-paragraph-3 text-white" style="opacity: 0.55">
-            {{ formatTime(timestamp) }}
-          </span>
-        </div>
       </div>
     </div>
 

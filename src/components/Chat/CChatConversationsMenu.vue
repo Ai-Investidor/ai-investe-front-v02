@@ -11,7 +11,7 @@
     <!-- Lista de conversas -->
     <div
       ref="conversationsList"
-      class="flex-1 min-h-0 overflow-y-auto overflow-x-hidden px-2 pb-3 flex flex-col"
+      class="flex-1 min-h-0 overflow-y-auto overflow-x-hidden px-2 pt-3 pb-3 flex flex-col"
     >
       <!-- Mensagens anexadas -->
       <div
