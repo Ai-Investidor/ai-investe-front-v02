@@ -20,9 +20,9 @@ export default defineBoot(({ app, store }) => {
   app.config.globalProperties.$axios = axios;
 
   api.interceptors.request.use((config) => {
-    // temporario ate implementar jwt token
     const authStore = useAuthStore(store);
-    config.headers.set("X-User-Id", authStore.user?.id);
+    const token = authStore.session?.access_token;
+    if (token) config.headers.set("Authorization", `Bearer ${token}`);
 
     return config;
   });
