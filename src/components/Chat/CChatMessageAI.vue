@@ -1,6 +1,5 @@
 <template>
   <div class="flex items-start w-full max-w-[956px] mx-auto mb-[25px]">
-
     <!-- Gutter esquerdo — avatar da IA fora do quadrante central, 44px fixo -->
     <div class="flex-shrink-0 w-11 flex justify-end pr-3 pt-1">
       <q-avatar size="32px" alt="AI" class="flex-shrink-0">
@@ -11,24 +10,24 @@
     <!-- Coluna central — hugs content quando curto, expande até o espaço disponível quando longo -->
     <div class="min-w-0 w-fit max-w-[calc(100%-88px)]">
       <div :class="isTyping ? null : 'chat-bubble-ai flex flex-col gap-4'">
-
         <div v-if="isTyping" class="chat-typing-loader">
           <div class="chat-typing-dot dot-1" />
           <div class="chat-typing-dot dot-2" />
           <div class="chat-typing-dot dot-3" />
         </div>
 
-        <div
-          v-else
-          class="chat-prose break-words"
-          v-html="formattedMessage"
-        />
+        <div v-else class="chat-prose break-words" v-html="formattedMessage" />
 
         <div v-if="!isTyping" class="flex items-center">
           <button type="button" class="copy-btn ml-auto" @click="copyMessage">
             <q-icon :name="copied ? 'check' : 'content_copy'" size="14px" />
-            <q-tooltip anchor="top middle" self="bottom middle" :offset="[0, 6]" class="copy-tooltip">
-              {{ copied ? 'Copiado!' : 'Copiar' }}
+            <q-tooltip
+              anchor="top middle"
+              self="bottom middle"
+              :offset="[0, 6]"
+              class="copy-tooltip"
+            >
+              {{ copied ? "Copiado!" : "Copiar" }}
             </q-tooltip>
           </button>
         </div>
@@ -37,13 +36,12 @@
 
     <!-- Gutter direito — espaçador simétrico, 44px fixo -->
     <div class="flex-shrink-0 w-11" />
-
   </div>
 </template>
 
 <script>
 import { marked } from "marked";
-import aiChatLogo from "@assets/imgs/chat_logo.webp";
+import aiChatLogo from "@assets/icons/icon-reposta.svg";
 
 export default {
   name: "CChatMessageAI",
@@ -73,15 +71,22 @@ export default {
     formatTime(date) {
       if (!date) return "";
       const d = new Date(date);
-      return d.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
+      return d.toLocaleTimeString("pt-BR", {
+        hour: "2-digit",
+        minute: "2-digit",
+      });
     },
 
     async copyMessage() {
       try {
         await navigator.clipboard.writeText(this.message);
         this.copied = true;
-        setTimeout(() => { this.copied = false; }, 2000);
-      } catch { /* clipboard indisponível */ }
+        setTimeout(() => {
+          this.copied = false;
+        }, 2000);
+      } catch {
+        /* clipboard indisponível */
+      }
     },
   },
 };
@@ -89,7 +94,9 @@ export default {
 
 <style scoped>
 .chat-prose {
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', sans-serif;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display",
+    sans-serif;
   font-size: 15px;
   font-weight: 400;
   line-height: 1.65;
@@ -97,28 +104,64 @@ export default {
   color: var(--color-dark-text);
 }
 
-:deep(.chat-prose p) { margin-bottom: 0.85rem; }
-:deep(.chat-prose p:last-child) { margin-bottom: 0; }
+:deep(.chat-prose p) {
+  margin-bottom: 0.85rem;
+}
+:deep(.chat-prose p:last-child) {
+  margin-bottom: 0;
+}
 
-:deep(.chat-prose h1), :deep(.chat-prose h2),
-:deep(.chat-prose h3), :deep(.chat-prose h4) {
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', sans-serif;
+:deep(.chat-prose h1),
+:deep(.chat-prose h2),
+:deep(.chat-prose h3),
+:deep(.chat-prose h4) {
+  font-family:
+    -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display",
+    sans-serif;
   line-height: 1.25;
   margin-top: 1.8rem;
   margin-bottom: 0.75rem;
   color: #ffffff;
 }
-:deep(.chat-prose h1) { font-size: 1.55em; font-weight: 700; }
-:deep(.chat-prose h2) { font-size: 1.3em;  font-weight: 700; }
-:deep(.chat-prose h3) { font-size: 1.12em; font-weight: 600; }
-:deep(.chat-prose h4) { font-size: 1em;    font-weight: 600; opacity: 0.85; }
+:deep(.chat-prose h1) {
+  font-size: 1.55em;
+  font-weight: 700;
+}
+:deep(.chat-prose h2) {
+  font-size: 1.3em;
+  font-weight: 700;
+}
+:deep(.chat-prose h3) {
+  font-size: 1.12em;
+  font-weight: 600;
+}
+:deep(.chat-prose h4) {
+  font-size: 1em;
+  font-weight: 600;
+  opacity: 0.85;
+}
 
-:deep(.chat-prose ul), :deep(.chat-prose ol) { margin-left: 1.4rem; margin-top: 0.55rem; margin-bottom: 0.55rem; }
-:deep(.chat-prose li) { margin-bottom: 0.4rem; }
-:deep(.chat-prose li::marker) { color: var(--color-primary); }
+:deep(.chat-prose ul),
+:deep(.chat-prose ol) {
+  margin-left: 1.4rem;
+  margin-top: 0.55rem;
+  margin-bottom: 0.55rem;
+}
+:deep(.chat-prose li) {
+  margin-bottom: 0.4rem;
+}
+:deep(.chat-prose li::marker) {
+  color: var(--color-primary);
+}
 
-:deep(.chat-prose strong) { font-weight: 600; color: rgba(255, 255, 255, 0.95); }
-:deep(.chat-prose em) { font-style: italic; opacity: 0.85; }
+:deep(.chat-prose strong) {
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.95);
+}
+:deep(.chat-prose em) {
+  font-style: italic;
+  opacity: 0.85;
+}
 
 :deep(.chat-prose code) {
   background-color: rgba(255, 255, 255, 0.07);
@@ -137,13 +180,45 @@ export default {
   margin-top: 0.65rem;
   margin-bottom: 0.65rem;
 }
-:deep(.chat-prose pre code) { background: transparent; padding: 0; color: #f8f8f2; font-size: 0.85em; }
-:deep(.chat-prose blockquote) { border-left: 3px solid var(--color-primary); padding-left: 0.85rem; margin: 0.65rem 0; opacity: 0.8; }
-:deep(.chat-prose a) { color: var(--color-primary); text-decoration: underline; opacity: 0.9; }
-:deep(.chat-prose hr) { border: none; border-top: 1px solid var(--color-border-dark); margin: 0.85rem 0; }
-:deep(.chat-prose table) { width: 100%; border-collapse: collapse; margin: 0.65rem 0; font-size: 0.9em; }
-:deep(.chat-prose th) { padding: 0.4rem 0.65rem; font-weight: 600; border-bottom: 1px solid var(--color-border-dark); text-align: left; background: rgba(255,255,255,0.05); }
-:deep(.chat-prose td) { padding: 0.35rem 0.65rem; border-bottom: 1px solid rgba(255,255,255,0.05); }
+:deep(.chat-prose pre code) {
+  background: transparent;
+  padding: 0;
+  color: #f8f8f2;
+  font-size: 0.85em;
+}
+:deep(.chat-prose blockquote) {
+  border-left: 3px solid var(--color-primary);
+  padding-left: 0.85rem;
+  margin: 0.65rem 0;
+  opacity: 0.8;
+}
+:deep(.chat-prose a) {
+  color: var(--color-primary);
+  text-decoration: underline;
+  opacity: 0.9;
+}
+:deep(.chat-prose hr) {
+  border: none;
+  border-top: 1px solid var(--color-border-dark);
+  margin: 0.85rem 0;
+}
+:deep(.chat-prose table) {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0.65rem 0;
+  font-size: 0.9em;
+}
+:deep(.chat-prose th) {
+  padding: 0.4rem 0.65rem;
+  font-weight: 600;
+  border-bottom: 1px solid var(--color-border-dark);
+  text-align: left;
+  background: rgba(255, 255, 255, 0.05);
+}
+:deep(.chat-prose td) {
+  padding: 0.35rem 0.65rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
 
 .chat-typing-loader {
   position: relative;
@@ -181,8 +256,12 @@ export default {
 }
 
 @keyframes chat-rotate {
-  from { transform: rotate(0deg); }
-  to   { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .copy-btn {
@@ -196,7 +275,9 @@ export default {
   cursor: pointer;
   color: rgba(255, 255, 255, 0.35);
   border-radius: 4px;
-  transition: color 0.15s, background 0.15s;
+  transition:
+    color 0.15s,
+    background 0.15s;
   flex-shrink: 0;
 }
 .copy-btn:hover {
