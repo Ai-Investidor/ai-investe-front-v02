@@ -15,7 +15,7 @@
     >
       <!-- Mensagens anexadas -->
       <div
-        class="border-l-2 border-border-pinned pl-2 flex flex-col gap-0.5 mb-2 dashed-border-left"
+        class="border-l-2 border-border-pinned pl-2 flex flex-col gap-1 mb-2 dashed-border-left pt-4 w-full min-w-0 overflow-hidden"
       >
         <CChatConversationItem
           v-for="conversation in pinnedConversations"
@@ -111,7 +111,11 @@ aside {
   height: 100%;
   min-height: 0;
   overflow: hidden;
-  background: linear-gradient(180deg, rgba(9, 10, 10, 1) 0%, rgba(0, 0, 0, 1) 100%);
+  background: linear-gradient(
+    180deg,
+    rgba(9, 10, 10, 1) 0%,
+    rgba(0, 0, 0, 1) 100%
+  );
 }
 
 .dashed-border-left {

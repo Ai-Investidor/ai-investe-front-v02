@@ -601,14 +601,7 @@
    =================================================== */
 @layer components {
   .chat-bubble-ai {
-    background:
-      linear-gradient(
-        106deg,
-        rgba(18, 18, 18, 0.34) 12.61%,
-        rgba(225, 255, 6, 0.34) 93.18%
-      ),
-      linear-gradient(90deg, #000 0%, #151515 100%);
-    background-blend-mode: hard-light, normal;
+    background: linear-gradient(90deg, #000 0%, #111111 100%);
     box-shadow: 0 2px 0 0 #000;
     border-radius: var(--radius-button);
     padding: 15px;

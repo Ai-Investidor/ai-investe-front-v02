@@ -1,7 +1,7 @@
 <template>
   <button
     type="button"
-    class="flex items-center flex-nowrap! gap-2 w-full px-2 py-2 rounded-button border-0 cursor-pointer text-left transition-colors duration-200 shrink-0 hover:bg-dark-elevated"
+    class="flex items-center flex-nowrap! gap-2 w-full max-w-full min-w-0 px-2 py-2 rounded-button border-0 cursor-pointer text-left transition-colors duration-200 shrink-0 hover:bg-dark-elevated"
     :class="{
       'bg-dark-elevated': active,
     }"
