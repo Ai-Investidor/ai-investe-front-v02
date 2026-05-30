@@ -33,7 +33,6 @@
     <div
       class="chat-container-content relative flex-1 min-w-0 overflow-hidden rounded-[12px] m-[10px] max-sm:m-[4px]"
     >
-
       <!-- Conteúdo: loading / welcome / mensagens -->
       <div
         v-if="chat.isLoadingMessages.value"
@@ -110,7 +109,6 @@ export default {
     CChatMessageList,
     CChatInputArea,
     CSpinner,
-    CModalRenameSession,
   },
 
   setup() {
@@ -220,7 +218,10 @@ export default {
         })
         .onOk(async (newTitle) => {
           if (newTitle === title) return;
-          const { error } = await this.sessionService.updateTitle(sessionId, newTitle);
+          const { error } = await this.sessionService.updateTitle(
+            sessionId,
+            newTitle,
+          );
           if (!error) {
             await this.onLoadSessions();
             this.$NotifySucess();
@@ -272,10 +273,10 @@ export default {
 }
 
 .chat-container-content::before {
-  content: '';
+  content: "";
   position: absolute;
   inset: 0;
-  background-image: url('../../assets/imgs/ai_investe_logo.webp');
+  background-image: url("../../assets/imgs/ai_investe_logo.webp");
   background-repeat: no-repeat;
   background-position: center;
   background-size: 95%;
@@ -309,7 +310,9 @@ export default {
 }
 
 .chat-disclaimer {
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', sans-serif;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display",
+    sans-serif;
   font-size: 12px;
   font-weight: 274;
   line-height: 100%;
