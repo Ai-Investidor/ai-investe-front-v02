@@ -77,8 +77,8 @@
       <q-menu
         v-model="menuOpen"
         no-parent-event
-        anchor="bottom right"
-        self="top right"
+        anchor="bottom left"
+        self="top left"
         :offset="[0, 4]"
         class="conversation-ctx-menu"
       >
@@ -87,7 +87,7 @@
             v-close-popup
             clickable
             class="ctx-item"
-            @click="$emit('rename', conversation.session_id)"
+            @click="$emit('rename', { sessionId: conversation.session_id, title: label })"
           >
             <q-item-section avatar>
               <q-icon name="edit" size="16px" />
@@ -201,11 +201,12 @@ export default {
 }
 
 .conversation-ctx-menu .ctx-item--danger {
-  color: var(--color-alert-error) !important;
+  color: var(--color-error) !important;
 }
 
 .conversation-ctx-menu .ctx-item--danger:hover {
-  background: rgba(255, 60, 60, 0.08) !important;
+  color: #fff !important;
+  background: var(--color-error) !important;
 }
 
 .conversation-ctx-menu .q-item__section--avatar {

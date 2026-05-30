@@ -23,6 +23,8 @@
         :active-conversation-id="chat.activeConversationId.value"
         @new-chat="openNewChat"
         @select-conversation="onSelectConversation"
+        @rename-conversation="onRenameConversation"
+        @delete-conversation="onDeleteConversation"
       />
     </transition>
 
@@ -91,6 +93,8 @@
 import { useChat } from "@composables/useChat";
 import { useAuthStore } from "@stores/auth.store";
 import { useUiStore } from "@stores/ui.store";
+import { useSessionService } from "@services/session.service";
+import CModalRenameSession from "@components/Modal/CModalRenameSession.vue";
 import CChatConversationsMenu from "@components/Chat/CChatConversationsMenu.vue";
 import CChatWelcome from "@components/Chat/CChatWelcome.vue";
 import CChatMessageList from "@components/Chat/CChatMessageList.vue";
@@ -106,15 +110,18 @@ export default {
     CChatMessageList,
     CChatInputArea,
     CSpinner,
+    CModalRenameSession,
   },
 
   setup() {
     const authStore = useAuthStore();
     const uiStore = useUiStore();
+    const sessionService = useSessionService();
     return {
       chat: useChat(),
       authStore,
       uiStore,
+      sessionService,
     };
   },
 
@@ -203,6 +210,26 @@ export default {
       if (this.isMobile) {
         this.sidebarOpen = false;
       }
+    },
+
+    onRenameConversation({ sessionId, title }) {
+      this.$q
+        .dialog({
+          component: CModalRenameSession,
+          componentProps: { title },
+        })
+        .onOk(async (newTitle) => {
+          if (newTitle === title) return;
+          const { error } = await this.sessionService.updateTitle(sessionId, newTitle);
+          if (!error) {
+            await this.onLoadSessions();
+            this.$NotifySucess();
+          }
+        });
+    },
+
+    onDeleteConversation(sessionId) {
+      alert(`Excluir conversa: ${sessionId}`);
     },
   },
 };

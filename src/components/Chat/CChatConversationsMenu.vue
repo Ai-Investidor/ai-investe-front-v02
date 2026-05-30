@@ -23,6 +23,8 @@
           :conversation="conversation"
           :active="conversation.session_id === activeConversationId"
           @select="$emit('select-conversation', $event)"
+          @rename="$emit('rename-conversation', $event)"
+          @delete="$emit('delete-conversation', $event)"
         />
       </div>
 
@@ -73,7 +75,7 @@ export default {
     },
   },
 
-  emits: ["new-chat", "select-conversation"],
+  emits: ["new-chat", "select-conversation", "rename-conversation", "delete-conversation"],
 
   computed: {
     pinnedConversations() {

@@ -12,6 +12,7 @@ export const URLS = {
   // supabase
   CHAT_SESSIONS: "/chat_sessions",
   CHAT_MESSAGES_PAGINATED: "get_session_messages_paginated",
+  CHAT_SESSION_UPDATE_TITLE: "update_chat_session_title",
 };
 
 const api = axios.create({ baseURL: BASE_URL });
