@@ -20,6 +20,7 @@
         :open="sidebarOpen"
         :class="{ 'absolute! inset-y-0 left-0 z-50': isMobile }"
         :conversations="chat.sessions.value"
+        :loading="chat.isLoadingSessions.value"
         :active-conversation-id="chat.activeConversationId.value"
         @new-chat="openNewChat"
         @select-conversation="onSelectConversation"
