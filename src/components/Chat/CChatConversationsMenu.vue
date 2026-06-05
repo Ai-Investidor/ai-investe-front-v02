@@ -22,34 +22,20 @@
         <CSpinner size="2.5rem" />
       </div>
 
-      <template v-if="!loading">
-        <div
-          v-for="section in conversationSections"
-          :key="section.key"
-          class="w-full min-w-0 overflow-hidden mb-2"
-          :class="{
-            'border-l-2 border-border-pinned pl-2 dashed-border-left': section.dashed,
-          }"
-        >
-          <h3
-            class="text-caps-1 text-dark-text-muted px-2 pt-4 mb-2"
-          >
-            {{ section.title }}
-          </h3>
-
-          <div class="flex flex-col gap-1">
-            <CChatConversationItem
-              v-for="conversation in section.conversations"
-              :key="`${section.key}-${conversation.id}`"
-              :conversation="conversation"
-              :active="conversation.session_id === activeConversationId"
-              @select="$emit('select-conversation', $event)"
-              @rename="$emit('rename-conversation', $event)"
-              @delete="$emit('delete-conversation', $event)"
-            />
-          </div>
-        </div>
-      </template>
+      <div
+        v-if="!loading"
+        class="border-l-2 border-border-pinned pl-2 dashed-border-left flex flex-col gap-1 pt-4 w-full min-w-0 overflow-hidden"
+      >
+        <CChatConversationItem
+          v-for="conversation in conversations"
+          :key="conversation.id"
+          :conversation="conversation"
+          :active="conversation.session_id === activeConversationId"
+          @select="$emit('select-conversation', $event)"
+          @rename="$emit('rename-conversation', $event)"
+          @delete="$emit('delete-conversation', $event)"
+        />
+      </div>
     </div>
 
     <!-- Footer: plano do usuário -->
@@ -64,11 +50,6 @@ import { useAuthStore } from "@stores/auth.store";
 import CSpinner from "@components/Spinner/CSpinner.vue";
 import CChatSessionsInfo from "./CChatSessionsInfo.vue";
 import CChatConversationItem from "./CChatConversationItem.vue";
-
-const SECTION_TITLES = {
-  pinned: "Mensagens anexadas",
-  recent: "Conversas recentes",
-};
 
 export default {
   name: "CChatConversationsMenu",
@@ -106,44 +87,6 @@ export default {
   ],
 
   computed: {
-    pinnedConversations() {
-      return this.conversations.filter(
-        (conversation) =>
-          conversation.has_attachment || conversation.attachment,
-      );
-    },
-
-    regularConversations() {
-      return this.conversations.filter(
-        (conversation) =>
-          !conversation.has_attachment && !conversation.attachment,
-      );
-    },
-
-    conversationSections() {
-      const sections = [];
-
-      if (this.pinnedConversations.length > 0) {
-        sections.push({
-          key: "pinned",
-          title: SECTION_TITLES.pinned,
-          conversations: this.pinnedConversations,
-          dashed: true,
-        });
-      }
-
-      if (this.regularConversations.length > 0) {
-        sections.push({
-          key: "recent",
-          title: SECTION_TITLES.recent,
-          conversations: this.regularConversations,
-          dashed: false,
-        });
-      }
-
-      return sections;
-    },
-
     userPlan() {
       const authStore = useAuthStore();
       return authStore.userPlan || "Plano X";
