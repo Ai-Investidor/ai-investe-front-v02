@@ -100,7 +100,7 @@
             <q-item-section>Editar título</q-item-section>
           </q-item>
 
-          <q-item
+          <!-- <q-item
             v-close-popup
             clickable
             class="ctx-item ctx-item--danger"
@@ -110,7 +110,7 @@
               <q-icon name="delete" size="16px" />
             </q-item-section>
             <q-item-section>Excluir</q-item-section>
-          </q-item>
+          </q-item> -->
         </q-list>
       </q-menu>
     </button>
