@@ -87,7 +87,12 @@
             v-close-popup
             clickable
             class="ctx-item"
-            @click="$emit('rename', { sessionId: conversation.session_id, title: label })"
+            @click="
+              $emit('rename', {
+                sessionId: conversation.session_id,
+                title: label,
+              })
+            "
           >
             <q-item-section avatar>
               <q-icon name="edit" size="16px" />
