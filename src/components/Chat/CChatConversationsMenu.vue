@@ -13,13 +13,22 @@
       ref="conversationsList"
       class="flex-1 min-h-0 overflow-y-auto overflow-x-hidden px-2 pt-3 pb-3 flex flex-col"
     >
-      <!-- Mensagens anexadas -->
       <div
-        class="border-l-2 border-border-pinned pl-2 flex flex-col gap-1 mb-2 dashed-border-left pt-4 w-full min-w-0 overflow-hidden"
+        v-if="loading"
+        class="flex flex-1 items-center justify-center min-h-0"
+        aria-busy="true"
+        aria-label="Carregando conversas"
+      >
+        <CSpinner size="2.5rem" />
+      </div>
+
+      <div
+        v-if="!loading"
+        class="border-l-2 border-border-pinned pl-2 dashed-border-left flex flex-col gap-1 pt-4 w-full min-w-0 overflow-hidden"
       >
         <CChatConversationItem
-          v-for="conversation in pinnedConversations"
-          :key="`pinned-${conversation.id}`"
+          v-for="conversation in conversations"
+          :key="conversation.id"
           :conversation="conversation"
           :active="conversation.session_id === activeConversationId"
           @select="$emit('select-conversation', $event)"
@@ -27,17 +36,6 @@
           @delete="$emit('delete-conversation', $event)"
         />
       </div>
-
-      <!-- Mensagens não anexadas -->
-      <!-- <div class="flex-1 flex flex-row gap-0.5 min-h-0 overflow-y-scroll!">
-        <CChatConversationItem
-          v-for="conversation in regularConversations"
-          :key="`regular-${conversation.id}`"
-          :conversation="conversation"
-          :active="conversation.session_id === activeConversationId"
-          @select="$emit('select-conversation', $event)"
-        />
-      </div> -->
     </div>
 
     <!-- Footer: plano do usuário -->
@@ -49,6 +47,7 @@
 
 <script>
 import { useAuthStore } from "@stores/auth.store";
+import CSpinner from "@components/Spinner/CSpinner.vue";
 import CChatSessionsInfo from "./CChatSessionsInfo.vue";
 import CChatConversationItem from "./CChatConversationItem.vue";
 
@@ -56,6 +55,7 @@ export default {
   name: "CChatConversationsMenu",
 
   components: {
+    CSpinner,
     CChatSessionsInfo,
     CChatConversationItem,
   },
@@ -69,21 +69,24 @@ export default {
       type: Array,
       required: true,
     },
+    loading: {
+      type: Boolean,
+      default: false,
+    },
     activeConversationId: {
       type: String,
       default: null,
     },
   },
 
-  emits: ["new-chat", "select-conversation", "rename-conversation", "delete-conversation"],
+  emits: [
+    "new-chat",
+    "select-conversation",
+    "rename-conversation",
+    "delete-conversation",
+  ],
 
   computed: {
-    pinnedConversations() {
-      return this.conversations.map((c) => ({ ...c, has_attachment: false }));
-    },
-    regularConversations() {
-      return this.conversations.map((c) => ({ ...c, has_attachment: false }));
-    },
     userPlan() {
       const authStore = useAuthStore();
       return authStore.userPlan || "Plano X";

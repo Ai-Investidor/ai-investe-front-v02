@@ -20,6 +20,7 @@
         :open="sidebarOpen"
         :class="{ 'absolute! inset-y-0 left-0 z-50': isMobile }"
         :conversations="chat.sessions.value"
+        :loading="chat.isLoadingSessions.value"
         :active-conversation-id="chat.activeConversationId.value"
         @new-chat="openNewChat"
         @select-conversation="onSelectConversation"
@@ -92,6 +93,7 @@
 import { useChat } from "@composables/useChat";
 import { useAuthStore } from "@stores/auth.store";
 import { useUiStore } from "@stores/ui.store";
+import { useChatStore } from "@stores/chat.store";
 import { useSessionService } from "@services/session.service";
 import CModalRenameSession from "@components/Modal/CModalRenameSession.vue";
 import CChatConversationsMenu from "@components/Chat/CChatConversationsMenu.vue";
@@ -114,11 +116,13 @@ export default {
   setup() {
     const authStore = useAuthStore();
     const uiStore = useUiStore();
+    const chatStore = useChatStore();
     const sessionService = useSessionService();
     return {
       chat: useChat(),
       authStore,
       uiStore,
+      chatStore,
       sessionService,
     };
   },
@@ -155,6 +159,10 @@ export default {
 
   mounted() {
     this.chat.selectedSession.value = null;
+
+    // Preserva o resultado quando chega via busca do header
+    if (this.chatStore.searchTerm) return;
+
     this.uiStore.setChatSidebarOpen(false);
     this.onLoadSessions();
   },

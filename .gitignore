@@ -114,3 +114,6 @@ test-results/
 docs
 CLAUDE.md
 .mcp.json
+
+# Config local do Zed (contém token do Supabase MCP - nao versionar)
+.zed/settings.json
