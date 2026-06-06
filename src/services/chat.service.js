@@ -14,6 +14,11 @@ export function useChatService() {
         .select("*")
         .eq("user_id", idSession)
         .order("created_at", { ascending: false }),
+    searchSessions: (term, limit = 20) =>
+      supabase.rpc(URLS.CHAT_SESSIONS_SEARCH, {
+        p_term: term,
+        p_limit: limit,
+      }),
     getMessagesPaginated: (
       sessionId,
       page = 1,

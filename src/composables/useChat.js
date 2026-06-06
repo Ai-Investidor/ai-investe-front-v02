@@ -1,19 +1,23 @@
 import { ref, computed } from "vue";
+import { storeToRefs } from "pinia";
 import { useChatService } from "@services/chat.service";
 import { safeJsonParse } from "src/utils/parse..utils";
 import { useAuthStore } from "src/stores/auth.store";
+import { useChatStore } from "@stores/chat.store";
 
 export function useChat() {
   const chatService = useChatService();
   const authStore = useAuthStore();
+  const chatStore = useChatStore();
 
   // ── Estado ────────────────────────────────────────────────────────────────
 
+  // Estado compartilhado (Header + sidebar) mora no store
+  const { sessions, isLoadingSessions } = storeToRefs(chatStore);
+
   const conversations = ref([]);
-  const sessions = ref([]);
   const activeConversationId = ref(null);
   const isTyping = ref(false);
-  const isLoadingSessions = ref(false);
   const isLoadingMessages = ref(false);
   const messagePagination = ref(null);
   const pendingFiles = ref([]);
@@ -106,19 +110,46 @@ export function useChat() {
   async function loadSessions(idSession) {
     if (!idSession) return;
 
-    isLoadingSessions.value = true;
+    chatStore.setLoadingSessions(true);
 
     try {
       const { data, error } = await chatService.getSessions(idSession);
 
       if (error) throw error;
 
-      sessions.value = data ?? [];
+      chatStore.setSessions(data ?? []);
     } catch (err) {
       console.error("Erro ao carregar sessions:", err);
-      sessions.value = [];
+      chatStore.setSessions([]);
     } finally {
-      isLoadingSessions.value = false;
+      chatStore.setLoadingSessions(false);
+    }
+  }
+
+  async function searchSessions(term) {
+    const trimmed = (term ?? "").trim();
+
+    chatStore.setSearchTerm(trimmed);
+
+    // Termo vazio: restaura a lista completa de sessões do usuário
+    if (!trimmed) {
+      await loadSessions(authStore.user?.id);
+      return;
+    }
+
+    chatStore.setLoadingSessions(true);
+
+    try {
+      const { data, error } = await chatService.searchSessions(trimmed);
+
+      if (error) throw error;
+
+      chatStore.setSessions(data ?? []);
+    } catch (err) {
+      console.error("Erro ao buscar sessions:", err);
+      chatStore.setSessions([]);
+    } finally {
+      chatStore.setLoadingSessions(false);
     }
   }
 
@@ -369,6 +400,7 @@ export function useChat() {
 
     // Sessions
     loadSessions,
+    searchSessions,
     getMessagesSessions,
     loadMoreMessages,
 

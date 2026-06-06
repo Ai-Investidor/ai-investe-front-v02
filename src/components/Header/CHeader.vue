@@ -54,6 +54,7 @@
             type="text"
             placeholder="Pesquisar histórico"
             class="header-search-input"
+            @keyup.enter="onSearch"
           />
           <button
             type="button"
@@ -277,10 +278,12 @@
 </template>
 
 <script>
+import { debounce } from "quasar";
 import { useAuthStore } from "@stores/auth.store";
 import { useUiStore } from "@stores/ui.store";
 import { useRouter } from "vue-router";
 import useAuth from "@composables/useAuth";
+import { useChat } from "@composables/useChat";
 import IconMenuToggle from "@assets/icons/icon-menu-toggle.svg";
 import IconChat from "@assets/icons/icon-chat.svg";
 import IconCards from "@assets/icons/icon-cards.svg";
@@ -290,7 +293,7 @@ export default {
 
   setup() {
     const auth = useAuth();
-    return { uiStore: useUiStore(), auth };
+    return { uiStore: useUiStore(), auth, chat: useChat() };
   },
 
   data() {
@@ -366,11 +369,32 @@ export default {
     userAvatar() {
       this.avatarError = false;
     },
+
+    searchQuery(value) {
+      this.debouncedSearch(value);
+      if (value.trim()) this.showResultsSidebar();
+    },
+  },
+
+  created() {
+    // Busca dinâmica enquanto digita (evita uma chamada por tecla)
+    this.debouncedSearch = debounce((term) => {
+      this.chat.searchSessions(term);
+    }, 350);
   },
 
   methods: {
     onSearch() {
-      // TODO: implement search
+      this.debouncedSearch.cancel();
+      this.chat.searchSessions(this.searchQuery);
+      this.showResultsSidebar();
+    },
+
+    showResultsSidebar() {
+      this.uiStore.setChatSidebarOpen(true);
+      if (this.$route.path !== "/ia-chat") {
+        this.$router.push("/ia-chat");
+      }
     },
 
     toggleChatSidebar() {
